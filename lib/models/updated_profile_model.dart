@@ -36,8 +36,8 @@ class ConsumerDetails {
   late final String profilePicLink;
   
   ConsumerDetails.fromJson(Map<String, dynamic> json){
-    firstName = json['first_name'];
-    lastName = json['last_name'];
+    firstName = json['first_name'] != null ? json['first_name'] : '';
+    lastName = json['last_name'] != null ? json['last_name'] : '';
     mobile = json['mobile'];
     email = json['email'];
     profilePic = json['profile_pic'];
