@@ -129,6 +129,10 @@ class _MyAccountState extends State<MyAccount> {
                                   consumerAccountModelProvider.consumer.mobile = value["mobile"];
                                   consumerAccountModelProvider.consumer.email = value["email"];
                                   consumerAccountModelProvider.consumer.profilePic = value["profilePicLink"];
+                                  consumerDetailsProvider.guidesTips = value["guide_and_tips"];
+                                  consumerDetailsProvider.smsMarketing = value["smsMarketing"];
+                                  consumerDetailsProvider.necessaryMessages = value["necessaryMessages"];
+                                  consumerDetailsProvider.emailMarketing = value["emailMarketing"];
                                 }
                                 setState(() {
                                 });

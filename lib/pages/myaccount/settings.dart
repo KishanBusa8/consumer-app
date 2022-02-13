@@ -98,13 +98,13 @@ class _MyAccountSettingsState extends State<MyAccountSettings> {
   }
  late ConsumerDetailsModel consumerDetailsModel;
   getMarketingPreferences() async {
-    consumerDetailsModel = (await ApiServices.getConsumerSettings())!;
+    // consumerDetailsModel = (await ApiServices.getConsumerSettings())!;
 
-    isSwitchTheme = consumerDetailsModel.darkTheme;
-    isSwitchGuideAndTips = consumerDetailsModel.guidesTips;
-    isSwitchEmailMarket = consumerDetailsModel.emailMarketing;
-    isSwitchSmsMarket = consumerDetailsModel.smsMarketing;
-    isSwitchNecessaryMessage = consumerDetailsModel.necessaryMessages;
+    isSwitchTheme = widget.consumerInformation.darkTheme!;
+    isSwitchGuideAndTips = widget.consumerInformation.guidesTips!;
+    isSwitchEmailMarket = widget.consumerInformation.emailMarketing!;
+    isSwitchSmsMarket = widget.consumerInformation.smsMarketing!;
+    isSwitchNecessaryMessage = widget.consumerInformation.necessaryMessages!;
     setState(() {
 
     });
@@ -159,7 +159,10 @@ class _MyAccountSettingsState extends State<MyAccountSettings> {
           "profilePicLink": imagePath != ''
               ? "https://s3-ap-southeast-2.amazonaws.com/hashching/uploads/cropper_images/${imagePath}"
               : widget.consumerInformation.consumerDetails.profilePicLink,
-
+          'guide_and_tips' : isSwitchGuideAndTips,
+          'smsMarketing' : isSwitchSmsMarket,
+          'necessaryMessages' : isSwitchNecessaryMessage,
+          'emailMarketing' : isSwitchEmailMarket,
         };
         // print();
         Navigator.pop(context, data);
@@ -338,7 +341,20 @@ class _MyAccountSettingsState extends State<MyAccountSettings> {
 
                           isVerifyOtp = true;
                         });
-                        Navigator.pop(context);
+                        Map data = {
+                          "firstName" : firstNameController.text,
+                          "lastName" : lastNameController.text,
+                          "email" : emailController.text,
+                          "mobile" : phoneController.text,
+                          "profilePicLink": imagePath != ''
+                              ? "https://s3-ap-southeast-2.amazonaws.com/hashching/uploads/cropper_images/${imagePath}"
+                              : widget.consumerInformation.consumerDetails.profilePicLink,
+                          'guide_and_tips' : isSwitchGuideAndTips,
+                          'smsMarketing' : isSwitchSmsMarket,
+                          'necessaryMessages' : isSwitchNecessaryMessage,
+                          'emailMarketing' : isSwitchEmailMarket,
+                        };
+                        Navigator.pop(context,data);
                       } else {}
                     },
                   )
@@ -412,7 +428,20 @@ class _MyAccountSettingsState extends State<MyAccountSettings> {
           ),
           leading: IconButton(
               onPressed: () {
-                Navigator.pop(context);
+                Map data = {
+                  "firstName" : firstNameController.text,
+                  "lastName" : lastNameController.text,
+                  "email" : emailController.text,
+                  "mobile" : phoneController.text,
+                  "profilePicLink": imagePath != ''
+                      ? "https://s3-ap-southeast-2.amazonaws.com/hashching/uploads/cropper_images/${imagePath}"
+                      : widget.consumerInformation.consumerDetails.profilePicLink,
+                  'guide_and_tips' : isSwitchGuideAndTips,
+                  'smsMarketing' : isSwitchSmsMarket,
+                  'necessaryMessages' : isSwitchNecessaryMessage,
+                  'emailMarketing' : isSwitchEmailMarket,
+                };
+                Navigator.pop(context,data);
               },
               icon: Icon(Icons.arrow_back_ios,
                   color: MasterStyle.appBarIconColor)),
@@ -431,202 +460,221 @@ class _MyAccountSettingsState extends State<MyAccountSettings> {
             )
           ],
         ),
-        body: Container(
-          margin: EdgeInsets.only(left: 16, right: 16, bottom: 0),
-          child: ListView(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Column(
-                    children: [
-                      Stack(
-                        alignment: Alignment.bottomLeft,
-                        children: [
-                          Container(
-                            height: 130.h,
-                            child: widget.consumerAccount.consumer.profilePic !=
-                                    ''
-                                ? Container(
-                              height: 114.h,
-                              width: 114.w,
-                              decoration: BoxDecoration(
-                                  color: MasterStyle.whiteColor,
-                                  shape: BoxShape.circle),
-                              padding: EdgeInsets.all(1),
-                              child: CircleAvatar(
-                                  backgroundColor: Colors.white,
-                                  backgroundImage: NetworkImage(
-                                    widget.consumerAccount.consumer.profilePic,
-                                  ),),
-                            )
-                                : !InitialData.isImageSelected
-                                    ? Container(
-                                        height: 114.h,
-                                        width: 114.w,
-                                        decoration: BoxDecoration(
-                                            color: Colors.grey[200],
-                                            shape: BoxShape.circle),
-                                        padding: EdgeInsets.all(1),
-                                        child: Center(
-                                            child: Text(
-                                          widget.consumerAccount
-                                              .consumer.firstName
-                                              .split("")
-                                              .first,
-                                          style: MasterStyle.dashbordHeader
-                                              .merge(TextStyle(
-                                                  color:
-                                                      MasterStyle.thedaryColor,
-                                                  fontSize: 60.sp)),
-                                        )))
-                                    : Container(
-                                        height: 114.h,
-                                        width: 114.w,
-                                        decoration: BoxDecoration(
-                                            color: MasterStyle.whiteColor,
-                                            shape: BoxShape.circle),
-                                        padding: EdgeInsets.all(1),
-                                        child: CircleAvatar(
-                                            backgroundColor: Colors.white,
-                                            backgroundImage: FileImage(
-                                              InitialData.image!,
-                                            )),
-                                      ),
-                          ),
-                          Positioned(
-                            right: 16,
-                            bottom: 6,
-                            left: MediaQuery.of(context).orientation ==
-                                    Orientation.landscape
-                                ? 95
-                                : null,
-                            child: InkWell(
-                              onTap: () {
-                                //   _bottomSheet(context);
-                                _handleImage(ImageSource.gallery);
-                              },
-                              child: Container(
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      shape: BoxShape.circle),
-                                  padding: EdgeInsets.all(4),
-                                  child: Icon(Icons.camera_alt_outlined,
-                                      color: MasterStyle.appIconColor,
-                                      size: 14)),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 4, bottom: 8),
-                        child: Text(
-                          widget.consumerAccount.consumer.uniqueId,
-                          style: MasterStyle.whiteStyleOpacityWithRegular,
-                        ),
-                      ),
-                      Text(
-                        widget.consumerAccount.consumer.firstName +
-                            ' ' +
-                            widget.consumerAccount.consumer.lastName!,
-                        style: MasterStyle.whiteTextStyleMedium,
-                      )
-                    ],
-                  )
-                ],
-              ),
-              Container(
-                margin: EdgeInsets.fromLTRB(0, 32, 0, 16),
-                padding: EdgeInsets.fromLTRB(16, 13, 16, 20),
-                decoration: boxCurvedDecoration,
-                child: NewColumn(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+        body: WillPopScope(
+          onWillPop: () {
+            Map data = {
+              "firstName" : firstNameController.text,
+              "lastName" : lastNameController.text,
+              "email" : emailController.text,
+              "mobile" : phoneController.text,
+              "profilePicLink": imagePath != ''
+                  ? "https://s3-ap-southeast-2.amazonaws.com/hashching/uploads/cropper_images/${imagePath}"
+                  : widget.consumerInformation.consumerDetails.profilePicLink,
+              'guide_and_tips' : isSwitchGuideAndTips,
+              'smsMarketing' : isSwitchSmsMarket,
+              'necessaryMessages' : isSwitchNecessaryMessage,
+              'emailMarketing' : isSwitchEmailMarket,
+            };
+            Navigator.pop(context,data);
+            return Future.value(false);
+          },
+          child: Container(
+            margin: EdgeInsets.only(left: 16, right: 16, bottom: 0),
+            child: ListView(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    textFormLabel('First Name'),
-                    firstNameTextField(
-                        firstNameController, isFirstNameInputField),
-                    Divider(
-                      height: 1.4,
-                      thickness: 1,
-                      color: MasterStyle.formBorderColor,
-                    ),
-                    SizedBox(
-                      height: 13,
-                    ),
-                    textFormLabel('Last Name'),
-                    lastNameTextField(lastNameController, isLastNameInputField),
-                    Divider(
-                      height: 1.4,
-                      thickness: 1,
-                      color: MasterStyle.formBorderColor,
-                    ),
-                    SizedBox(
-                      height: 13,
-                    ),
-                    textFormLabel('Email'),
-                    emailTextField(emailController, isEmailInputField),
-                    Divider(
-                      height: 1.4,
-                      thickness: 1,
-                      color: MasterStyle.formBorderColor,
-                    ),
-                    SizedBox(
-                      height: 13,
-                    ),
-                    textFormLabel('Phone'),
-                    phoneTextField(
-                      phoneController,
-                      isPhoneInputField,
-                    ),
-                    Divider(
-                      height: 1.4,
-                      thickness: 1,
-                      color: MasterStyle.formBorderColor,
-                    ),
+                    Column(
+                      children: [
+                        Stack(
+                          alignment: Alignment.bottomLeft,
+                          children: [
+                            Container(
+                              height: 130.h,
+                              child: widget.consumerAccount.consumer.profilePic !=
+                                      ''
+                                  ? Container(
+                                height: 114.h,
+                                width: 114.w,
+                                decoration: BoxDecoration(
+                                    color: MasterStyle.whiteColor,
+                                    shape: BoxShape.circle),
+                                padding: EdgeInsets.all(1),
+                                child: CircleAvatar(
+                                    backgroundColor: Colors.white,
+                                    backgroundImage: NetworkImage(
+                                      widget.consumerAccount.consumer.profilePic,
+                                    ),),
+                              )
+                                  : !InitialData.isImageSelected
+                                      ? Container(
+                                          height: 114.h,
+                                          width: 114.w,
+                                          decoration: BoxDecoration(
+                                              color: Colors.grey[200],
+                                              shape: BoxShape.circle),
+                                          padding: EdgeInsets.all(1),
+                                          child: Center(
+                                              child: Text(
+                                            widget.consumerAccount
+                                                .consumer.firstName
+                                                .split("")
+                                                .first,
+                                            style: MasterStyle.dashbordHeader
+                                                .merge(TextStyle(
+                                                    color:
+                                                        MasterStyle.thedaryColor,
+                                                    fontSize: 60.sp)),
+                                          )))
+                                      : Container(
+                                          height: 114.h,
+                                          width: 114.w,
+                                          decoration: BoxDecoration(
+                                              color: MasterStyle.whiteColor,
+                                              shape: BoxShape.circle),
+                                          padding: EdgeInsets.all(1),
+                                          child: CircleAvatar(
+                                              backgroundColor: Colors.white,
+                                              backgroundImage: FileImage(
+                                                InitialData.image!,
+                                              )),
+                                        ),
+                            ),
+                            Positioned(
+                              right: 16,
+                              bottom: 6,
+                              left: MediaQuery.of(context).orientation ==
+                                      Orientation.landscape
+                                  ? 95
+                                  : null,
+                              child: InkWell(
+                                onTap: () {
+                                  //   _bottomSheet(context);
+                                  _handleImage(ImageSource.gallery);
+                                },
+                                child: Container(
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        shape: BoxShape.circle),
+                                    padding: EdgeInsets.all(4),
+                                    child: Icon(Icons.camera_alt_outlined,
+                                        color: MasterStyle.appIconColor,
+                                        size: 14)),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4, bottom: 8),
+                          child: Text(
+                            widget.consumerAccount.consumer.uniqueId,
+                            style: MasterStyle.whiteStyleOpacityWithRegular,
+                          ),
+                        ),
+                        Text(
+                          widget.consumerAccount.consumer.firstName +
+                              ' ' +
+                              widget.consumerAccount.consumer.lastName!,
+                          style: MasterStyle.whiteTextStyleMedium,
+                        )
+                      ],
+                    )
                   ],
                 ),
-              ),
-              // Container(
-              //   decoration: boxCurvedDecoration,
-              //   padding: EdgeInsets.fromLTRB(16, 13, 16, 20),
-              //   child: NewColumn(
-              //     crossAxisAlignment: CrossAxisAlignment.start,
-              //     children: [
-              //       Text('Switch Theme'),
-              //       Row(
-              //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //         children: [
-              //           Expanded(
-              //               child: Text('Switch your dashboard to light mode')),
-              //           SizedBox(
-              //             width: 16,
-              //           ),
-              //           Transform.scale(
-              //             transformHitTests: false,
-              //             scale: .54,
-              //             child: CupertinoSwitch(
-              //               value: isSwitchTheme,
-              //               onChanged: (isChange) {
-              //                 setState(() {
-              //                   isSwitchTheme = !isSwitchTheme;
-              //                 });
-              //               },
-              //               activeColor: Colors.green,
-              //               trackColor: MasterStyle.switchTileTrackColor,
-              //             ),
-              //           )
-              //         ],
-              //       )
-              //     ],
-              //   ),
-              // ),
-              Container(
-                margin: EdgeInsets.symmetric(
-                  vertical: 16,
+                Container(
+                  margin: EdgeInsets.fromLTRB(0, 32, 0, 16),
+                  padding: EdgeInsets.fromLTRB(16, 13, 16, 20),
+                  decoration: boxCurvedDecoration,
+                  child: NewColumn(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      textFormLabel('First Name'),
+                      firstNameTextField(
+                          firstNameController, isFirstNameInputField),
+                      Divider(
+                        height: 1.4,
+                        thickness: 1,
+                        color: MasterStyle.formBorderColor,
+                      ),
+                      SizedBox(
+                        height: 13,
+                      ),
+                      textFormLabel('Last Name'),
+                      lastNameTextField(lastNameController, isLastNameInputField),
+                      Divider(
+                        height: 1.4,
+                        thickness: 1,
+                        color: MasterStyle.formBorderColor,
+                      ),
+                      SizedBox(
+                        height: 13,
+                      ),
+                      textFormLabel('Email'),
+                      emailTextField(emailController, isEmailInputField),
+                      Divider(
+                        height: 1.4,
+                        thickness: 1,
+                        color: MasterStyle.formBorderColor,
+                      ),
+                      SizedBox(
+                        height: 13,
+                      ),
+                      textFormLabel('Phone'),
+                      phoneTextField(
+                        phoneController,
+                        isPhoneInputField,
+                      ),
+                      Divider(
+                        height: 1.4,
+                        thickness: 1,
+                        color: MasterStyle.formBorderColor,
+                      ),
+                    ],
+                  ),
                 ),
-                child: toggleSwitchColumn(),
-              )
-            ],
+                // Container(
+                //   decoration: boxCurvedDecoration,
+                //   padding: EdgeInsets.fromLTRB(16, 13, 16, 20),
+                //   child: NewColumn(
+                //     crossAxisAlignment: CrossAxisAlignment.start,
+                //     children: [
+                //       Text('Switch Theme'),
+                //       Row(
+                //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //         children: [
+                //           Expanded(
+                //               child: Text('Switch your dashboard to light mode')),
+                //           SizedBox(
+                //             width: 16,
+                //           ),
+                //           Transform.scale(
+                //             transformHitTests: false,
+                //             scale: .54,
+                //             child: CupertinoSwitch(
+                //               value: isSwitchTheme,
+                //               onChanged: (isChange) {
+                //                 setState(() {
+                //                   isSwitchTheme = !isSwitchTheme;
+                //                 });
+                //               },
+                //               activeColor: Colors.green,
+                //               trackColor: MasterStyle.switchTileTrackColor,
+                //             ),
+                //           )
+                //         ],
+                //       )
+                //     ],
+                //   ),
+                // ),
+                Container(
+                  margin: EdgeInsets.symmetric(
+                    vertical: 16,
+                  ),
+                  child: toggleSwitchColumn(),
+                )
+              ],
+            ),
           ),
         ));
   }
@@ -666,9 +714,7 @@ class _MyAccountSettingsState extends State<MyAccountSettings> {
                           }
                         });
                        await ApiServices.setGuideTips(isSwitchGuideAndTips);
-                        setState(() {
 
-                        });
                       },
                       activeColor: Colors.green,
                       trackColor: MasterStyle.switchTileTrackColor,
@@ -708,9 +754,7 @@ class _MyAccountSettingsState extends State<MyAccountSettings> {
                         });
 
                         await ApiServices.setEmailMarketing(isSwitchEmailMarket);
-                        setState(() {
 
-                        });
                         print('isSwitch  $isSwitchEmailMarket');
                       },
                       activeColor: Colors.green,
@@ -751,9 +795,7 @@ class _MyAccountSettingsState extends State<MyAccountSettings> {
                           }
                         });
                      await ApiServices.setSmsMarketing(isSwitchSmsMarket);
-                        setState(() {
 
-                        });
                         print('isSwitchSmsMarketElse  $isSwitchSmsMarket');
                       },
                       activeColor: Colors.green,
@@ -791,13 +833,11 @@ class _MyAccountSettingsState extends State<MyAccountSettings> {
                             isSwitchEmailMarket = false;
                             isSwitchSmsMarket = false;
                           }
-
                         });
+
                         await ApiServices.setNecessaryMessages(isSwitchNecessaryMessage);
 
-                        setState(() {
 
-                        });
                         print('isSwitch  $isSwitchNecessaryMessage');
                       },
                       activeColor: Colors.green,
@@ -1133,7 +1173,20 @@ class _MyAccountSettingsState extends State<MyAccountSettings> {
               InkWell(
                 onTap: () {
                   _handleImage(ImageSource.gallery);
-                  Navigator.pop(context);
+                  Map data = {
+                    "firstName" : firstNameController.text,
+                    "lastName" : lastNameController.text,
+                    "email" : emailController.text,
+                    "mobile" : phoneController.text,
+                    "profilePicLink": imagePath != ''
+                        ? "https://s3-ap-southeast-2.amazonaws.com/hashching/uploads/cropper_images/${imagePath}"
+                        : widget.consumerInformation.consumerDetails.profilePicLink,
+                    'guide_and_tips' : isSwitchGuideAndTips,
+                    'smsMarketing' : isSwitchSmsMarket,
+                    'necessaryMessages' : isSwitchNecessaryMessage,
+                    'emailMarketing' : isSwitchEmailMarket,
+                  };
+                  Navigator.pop(context,data);
                 },
                 child: Container(
                   padding: EdgeInsets.only(top: 10.h, bottom: 10.h),
@@ -1157,7 +1210,20 @@ class _MyAccountSettingsState extends State<MyAccountSettings> {
                     InitialData.image = null;
                     isImageChanged = true;
                   });
-                  Navigator.pop(context);
+                  Map data = {
+                    "firstName" : firstNameController.text,
+                    "lastName" : lastNameController.text,
+                    "email" : emailController.text,
+                    "mobile" : phoneController.text,
+                    "profilePicLink": imagePath != ''
+                        ? "https://s3-ap-southeast-2.amazonaws.com/hashching/uploads/cropper_images/${imagePath}"
+                        : widget.consumerInformation.consumerDetails.profilePicLink,
+                    'guide_and_tips' : isSwitchGuideAndTips,
+                    'smsMarketing' : isSwitchSmsMarket,
+                    'necessaryMessages' : isSwitchNecessaryMessage,
+                    'emailMarketing' : isSwitchEmailMarket,
+                  };
+                  Navigator.pop(context,data);
                 },
                 child: Container(
                   padding: EdgeInsets.only(top: 10.h, bottom: 10.h),
