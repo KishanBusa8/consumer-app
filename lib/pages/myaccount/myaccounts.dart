@@ -47,11 +47,11 @@ class _MyAccountState extends State<MyAccount> {
 
   List onPressed(
       {RewardsModel? rewardsModel,
-      ConsumerDetailsModel? consumerInformation,
-      ConsumerDocumentListModel? consumerDocumentListModel,
-      ConsumerDashboardModel? consumerDashboardModel}) {
+        ConsumerDetailsModel? consumerInformation,
+        ConsumerDocumentListModel? consumerDocumentListModel,
+        ConsumerDashboardModel? consumerDashboardModel}) {
     return [
-      () {
+          () {
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -59,11 +59,11 @@ class _MyAccountState extends State<MyAccount> {
                     rewardsModelInformation: rewardsModel,
                     consumerInformation: consumerInformation)));
       },
-      () {
+          () {
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => MyProperty()));
       },
-      () {
+          () {
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -77,16 +77,16 @@ class _MyAccountState extends State<MyAccount> {
   @override
   Widget build(BuildContext context) {
     ConsumerDashboardModel consumerDashboardModel =
-        Provider.of<ConsumerDashboardModel>(context, listen: true);
+    Provider.of<ConsumerDashboardModel>(context, listen: true);
     ConsumerAccountModel consumerAccountModelProvider =
-        Provider.of<ConsumerAccountModel>(context);
+    Provider.of<ConsumerAccountModel>(context);
 
     ConsumerDetailsModel consumerDetailsProvider =
-        Provider.of<ConsumerDetailsModel>(context, listen: true);
+    Provider.of<ConsumerDetailsModel>(context, listen: true);
     RewardsModel consumerRewardsInfo =
-        Provider.of<RewardsModel>(context, listen: true);
+    Provider.of<RewardsModel>(context, listen: true);
     ConsumerDocumentListModel consumerDocumentListModel =
-        Provider.of<ConsumerDocumentListModel>(context, listen: true);
+    Provider.of<ConsumerDocumentListModel>(context, listen: true);
 
     if (consumerDetailsProvider == InitialData.consumerDashboardInitialData ||
         consumerRewardsInfo == InitialData.rewardsModelData ||
@@ -94,7 +94,7 @@ class _MyAccountState extends State<MyAccount> {
       return Center(
         child: CircularProgressIndicator(
           valueColor:
-              new AlwaysStoppedAnimation<Color>(MasterStyle.thedaryColor),
+          new AlwaysStoppedAnimation<Color>(MasterStyle.thedaryColor),
         ),
       );
     }
@@ -116,12 +116,26 @@ class _MyAccountState extends State<MyAccount> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => MyAccountSettings(
-                                consumerInformation: consumerDetailsProvider,
-                                consumerAccount: consumerAccountModelProvider,
-                              ))).then((value) {
-                                setState(() {
-                                  consumerAccountModelProvider.consumer.profilePic = value;
-                                });
+                            consumerInformation: consumerDetailsProvider,
+                            consumerAccount: consumerAccountModelProvider,
+                          ))).then((value) async {
+                    print("values ${ value}");
+                    if (value != null) {
+
+                      // Provider.of<ConsumerDetailsModel>(context, listen: false).consumerDetails.firstName = value["firstName"];
+                      // Provider.of<ConsumerAccountModel>(context, listen: false).consumer.firstName = value["firstName"];
+                      consumerAccountModelProvider.consumer.firstName = value["firstName"];
+                      consumerAccountModelProvider.consumer.lastName = value["lastName"];
+                      consumerAccountModelProvider.consumer.mobile = value["mobile"];
+                      consumerAccountModelProvider.consumer.email = value["email"];
+                      consumerAccountModelProvider.consumer.profilePic = value["profilePicLink"];
+                      consumerDetailsProvider.guidesTips = value["guide_and_tips"];
+                      consumerDetailsProvider.smsMarketing = value["smsMarketing"];
+                      consumerDetailsProvider.necessaryMessages = value["necessaryMessages"];
+                      consumerDetailsProvider.emailMarketing = value["emailMarketing"];
+                    }
+                    setState(() {
+                    });
                   });
                 },
                 icon: Icon(Icons.settings, color: Colors.white)),
@@ -146,20 +160,20 @@ class _MyAccountState extends State<MyAccount> {
                           Container(
                             width: MediaQuery.of(context).size.width,
                             padding:
-                                EdgeInsets.fromLTRB(40.w, 52.h, 40.w, 24.h),
+                            EdgeInsets.fromLTRB(40.w, 52.h, 40.w, 24.h),
                             decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(10))),
+                                BorderRadius.all(Radius.circular(10))),
                             child: NewColumn(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Padding(
                                   padding:
-                                      EdgeInsets.only(top: 8.h, bottom: 6.h),
+                                  EdgeInsets.only(top: 8.h, bottom: 6.h),
                                   child: Text(
                                     consumerAccountModelProvider
-                                            .consumer.firstName +
+                                        .consumer.firstName +
                                         ' ' +
                                         consumerAccountModelProvider
                                             .consumer.lastName!,
@@ -176,51 +190,51 @@ class _MyAccountState extends State<MyAccount> {
                           Positioned(
                             top: -60,
                             child: consumerAccountModelProvider
-                                        .consumer.profilePic !=
-                                    ''
+                                .consumer.profilePic !=
+                                ''
                                 ? Container(
-                                    height: 114.h,
-                                    width: 114.w,
-                                    decoration: BoxDecoration(
-                                        color: MasterStyle.whiteColor,
-                                        shape: BoxShape.circle),
-                                    padding: EdgeInsets.all(1),
-                                    child: CircleAvatar(
-                                      backgroundColor: Colors.white,
-                                      backgroundImage: NetworkImage(
-                                        consumerAccountModelProvider
-                                            .consumer.profilePic,
-                                      ),
-                                    ),
-                                  )
+                              height: 114.h,
+                              width: 114.w,
+                              decoration: BoxDecoration(
+                                  color: MasterStyle.whiteColor,
+                                  shape: BoxShape.circle),
+                              padding: EdgeInsets.all(1),
+                              child: CircleAvatar(
+                                backgroundColor: Colors.white,
+                                backgroundImage: NetworkImage(
+                                  consumerAccountModelProvider
+                                      .consumer.profilePic,
+                                ),
+                              ),
+                            )
                                 : Container(
-                                    height: 114.h,
-                                    width: 114.w,
-                                    decoration: BoxDecoration(
-                                        color: Colors.grey[200],
-                                        shape: BoxShape.circle),
-                                    child: !InitialData.isImageSelected
-                                        ? Center(
-                                            child: Text(
-                                              consumerAccountModelProvider
-                                                  .consumer.firstName
-                                                  .split("")
-                                                  .first
-                                                  .toString()
-                                                  .toUpperCase(),
-                                              style: MasterStyle.dashbordHeader
-                                                  .merge(TextStyle(
-                                                      color: MasterStyle
-                                                          .thedaryColor,
-                                                      fontSize: 60.sp)),
-                                            ),
-                                          )
-                                        : CircleAvatar(
-                                            backgroundImage:
-                                                FileImage(InitialData.image!),
-                                            maxRadius: 40.r,
-                                          ),
-                                  ),
+                              height: 114.h,
+                              width: 114.w,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey[200],
+                                  shape: BoxShape.circle),
+                              child: !InitialData.isImageSelected
+                                  ? Center(
+                                child: Text(
+                                  consumerAccountModelProvider
+                                      .consumer.firstName
+                                      .split("")
+                                      .first
+                                      .toString()
+                                      .toUpperCase(),
+                                  style: MasterStyle.dashbordHeader
+                                      .merge(TextStyle(
+                                      color: MasterStyle
+                                          .thedaryColor,
+                                      fontSize: 60.sp)),
+                                ),
+                              )
+                                  : CircleAvatar(
+                                backgroundImage:
+                                FileImage(InitialData.image!),
+                                maxRadius: 40.r,
+                              ),
+                            ),
                           )
                         ],
                       ),
@@ -238,9 +252,9 @@ class _MyAccountState extends State<MyAccount> {
                                 rewardsModel: consumerRewardsInfo,
                                 consumerInformation: consumerDetailsProvider,
                                 consumerDocumentListModel:
-                                    consumerDocumentListModel,
+                                consumerDocumentListModel,
                                 consumerDashboardModel:
-                                    consumerDashboardModel)[index],
+                                consumerDashboardModel)[index],
                             child: Container(
                                 width: MediaQuery.of(context).size.width,
                                 margin: EdgeInsets.only(bottom: 10.h),
@@ -265,9 +279,9 @@ class _MyAccountState extends State<MyAccount> {
                                       child: Expanded(
                                         child: NewColumnMain(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.start,
+                                          MainAxisAlignment.start,
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               titleList[index],
@@ -301,18 +315,18 @@ class _MyAccountState extends State<MyAccount> {
                         child: ElevatedButton(
                           onPressed: () async {
                             SharedPreferences prefs =
-                                await SharedPreferences.getInstance();
+                            await SharedPreferences.getInstance();
                             await prefs.setBool(LocalConstants.loggedIn, false);
                             Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(
                                     builder: (context) => StateProvider()),
-                                (Route<dynamic> route) => false);
+                                    (Route<dynamic> route) => false);
                           },
                           style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all<Color>(
                                   HexColor("#F56735")),
                               shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10.0),
                                       side: BorderSide(color: Colors.red)))),

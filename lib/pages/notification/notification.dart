@@ -10,6 +10,7 @@ import 'package:hashching/pages/mydeals/hash_auto.dart';
 import 'package:hashching/pages/mydeals/hash_connect.dart';
 import 'package:hashching/pages/mydeals/hash_convenyancing.dart';
 import 'package:hashching/pages/myloans/enquirey_details.dart';
+import 'package:hashching/services/api_services.dart';
 import 'package:hashching/styles/masterstyle.dart';
 import 'package:provider/provider.dart';
 
@@ -24,91 +25,91 @@ class NotificationLocal extends StatelessWidget {
     }
 
     ConsumerNotificationsModel consumerNotificationsModel =
-        Provider.of<ConsumerNotificationsModel>(context);
+    Provider.of<ConsumerNotificationsModel>(context,listen: true);
+
     ConsumerAccountModel consumerAccountModel =
-        Provider.of<ConsumerAccountModel>(context);
-    print('object ${consumerNotificationsModel}');
-    return consumerNotificationsModel.consumerNotifications.length != 0
+    Provider.of<ConsumerAccountModel>(context,listen: false);
+    return context.watch<ConsumerNotificationsModel>().consumerNotifications!.length != 0
         ? ListView.separated(
-            itemCount: consumerNotificationsModel.consumerNotifications.length,
-            itemBuilder: (context, index) {
-              String notificationMessage = consumerNotificationsModel
-                  .consumerNotifications[index].title
-                  .replaceAll("<u>", '')
-                  .replaceAll("</u>", '');
-              String action = consumerNotificationsModel
-                  .consumerNotifications[index].action;
-              String link = consumerNotificationsModel
-                  .consumerNotifications[index].link;
-              String encrypt_key = consumerNotificationsModel
-                  .consumerNotifications[index].encryptId;
-              return Container(
-                  margin: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 8.h),
-                  child: InkWell(
-                    onTap: () {
-                      if (action == LocalConstants.hashauto) {
-                        navigateToPage(HashAuto(
-                            consumerAccountModel: consumerAccountModel));
-                      } else if (action == LocalConstants.hashconnect) {
-                        navigateToPage(HashConnect(
-                            consumerAccountModel: consumerAccountModel));
-                      } else if (action == LocalConstants.hashconveyance) {
-                        navigateToPage(HashConvenyancing(
-                          consumerAccountModel: consumerAccountModel,
-                          hashConveyacingRawList:
-                              HashConveyacingRawList(hashconveyacingList: []),
-                        ));
-                      } else if(action == LocalConstants.videocall) {
-                        SimplifiedWidgets.launchInBrowser(link, context);
-                      }else{
-                        navigateToPage(EnquireyDetails(encryptkey: encrypt_key));
-                      }
-                    },
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          notificationMessage,
-                          style: MasterStyle.whiteTextNormal,
-                        ),
-                        MySizedBox.height(8.h),
-                        Text(
-                          consumerNotificationsModel
-                              .consumerNotifications[index].notificationTime,
-                          style: MasterStyle.whiteTextNormal.merge(TextStyle(
-                              color: MasterStyle.whiteColor.withOpacity(0.3),
-                              fontSize: 11.sp)),
-                        ),
-                      ],
-                    ),
+      itemCount: consumerNotificationsModel.consumerNotifications!.length,
+      itemBuilder: (context, index) {
+        String notificationMessage = consumerNotificationsModel
+            .consumerNotifications![index].title
+            .replaceAll("<u>", '')
+            .replaceAll("</u>", '');
+        String action = consumerNotificationsModel
+            .consumerNotifications![index].action;
+        String link = consumerNotificationsModel
+            .consumerNotifications![index].link;
+        String encrypt_key = consumerNotificationsModel
+            .consumerNotifications![index].encryptId;
+        return Container(
+            margin: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 8.h),
+            child: InkWell(
+              onTap: () {
+                if (action == LocalConstants.hashauto) {
+                  navigateToPage(HashAuto(
+                      consumerAccountModel: consumerAccountModel));
+                } else if (action == LocalConstants.hashconnect) {
+                  navigateToPage(HashConnect(
+                      consumerAccountModel: consumerAccountModel));
+                } else if (action == LocalConstants.hashconveyance) {
+                  navigateToPage(HashConvenyancing(
+                    consumerAccountModel: consumerAccountModel,
+                    hashConveyacingRawList:
+                    HashConveyacingRawList(hashconveyacingList: []),
                   ));
-            },
-            separatorBuilder: (BuildContext context, int index) {
-              return Container(
-                margin: EdgeInsets.symmetric(horizontal: 16.w),
-                height: 1,
-                color: MasterStyle.whiteColor.withOpacity(0.4),
-              );
-            },
-          )
-        : ListView(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
-                margin: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("No new notifications"),
-                  ],
-                ),
+                } else if(action == LocalConstants.videocall) {
+                  SimplifiedWidgets.launchInBrowser(link, context);
+                }else{
+                  navigateToPage(EnquireyDetails(encryptkey: encrypt_key));
+                }
+              },
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    notificationMessage,
+                    style: MasterStyle.whiteTextNormal,
+                  ),
+                  MySizedBox.height(8.h),
+                  Text(
+                    consumerNotificationsModel
+                        .consumerNotifications![index].notificationTime,
+                    style: MasterStyle.whiteTextNormal.merge(TextStyle(
+                        color: MasterStyle.whiteColor.withOpacity(0.3),
+                        fontSize: 11.sp)),
+                  ),
+                ],
               ),
-              this.floatingPanelWidget
+            ));
+      },
+      separatorBuilder: (BuildContext context, int index) {
+        return Container(
+          margin: EdgeInsets.symmetric(horizontal: 16.w),
+          height: 1,
+          color: MasterStyle.whiteColor.withOpacity(0.4),
+        );
+      },
+    )
+        : ListView(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(10))),
+          margin: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("No new notifications"),
             ],
-          );
+          ),
+        ),
+        this.floatingPanelWidget
+      ],
+    );
   }
 }

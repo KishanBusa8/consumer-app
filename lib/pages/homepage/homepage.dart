@@ -646,9 +646,11 @@ class _HomePageState extends State<HomePage> {
                   builder: (context) => DocumentVault(
                         consumerDocumentListModel: consumerDocumentListProvider,
                         consumerDashboardModel: consumerDashboardModel,
-                      ))).then((value) {setState(() {
+                      ))).then((value) {
+            consumerDashboardModel.consumerDocumentCount = value;
+            setState(() {
 
-                      });});
+            });});;
         },
         child: Container(
             margin: EdgeInsets.only(bottom: 6),

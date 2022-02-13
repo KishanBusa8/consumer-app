@@ -1095,4 +1095,96 @@ class ApiServices {
        return null;
     }
   }
+  static Future<bool> setGuideTips(bool guide_tips) async {
+    String? userToken = LocalStorage.UserToken;
+
+    var url = Uri.parse(LocalConstants.ConsumerGuideTipsUrl);
+    final response = await http.post(url, headers: <String, String>{
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $userToken'
+    }, body: jsonEncode({
+      "guide_tips" : guide_tips
+    }));
+    print("response.statusCode :${response.statusCode}");
+    print("***** response body${response.body}");
+    if (response.statusCode == 200) {
+      var jsonResponse = json.decode(response.body);
+      return true;
+    } else {
+      return false;
+    }
+  }
+  static Future<bool> setEmailMarketing(bool email_marketing) async {
+    String? userToken = LocalStorage.UserToken;
+
+    var url = Uri.parse(LocalConstants.ConsumerEmailMarketingUrl);
+    print(url);
+
+
+
+
+    final response = await http.post(url, headers: <String, String>{
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $userToken'
+    }, body: email_marketing ?  {
+      "email_marketing" : email_marketing.toString()
+    } : jsonEncode( {
+      "email_marketing" : email_marketing.toString()
+    }));
+    print("response.statusCode :${jsonEncode({
+      "email_marketing" : email_marketing
+    })}");
+    print("***** response body${response.body}");
+    if (response.statusCode == 200) {
+      var jsonResponse = json.decode(response.body);
+      return true;
+    } else {
+      return false;
+    }
+  }
+  static Future<bool> setSmsMarketing(bool sms_marketing) async {
+    String? userToken = LocalStorage.UserToken;
+
+    var url = Uri.parse(LocalConstants.ConsumerSmsMarketingUrl);
+    final response = await http.post(url, headers: <String, String>{
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $userToken'
+    }, body: sms_marketing ? {
+      "sms_marketing" : sms_marketing.toString()
+    } :  jsonEncode({
+      "sms_marketing" : sms_marketing
+    }));
+    print("response.statusCode :${response.statusCode}");
+    if (response.statusCode == 200) {
+      var jsonResponse = json.decode(response.body);
+      print("***** response body${jsonResponse}");
+
+      return true;
+    } else {
+      return false;
+    }
+  }
+  static Future<bool> setNecessaryMessages(bool necessary_messages) async {
+    String? userToken = LocalStorage.UserToken;
+
+    var url = Uri.parse(LocalConstants.ConsumerNecessaryMessageUrl);
+    print("apiUrl :${url}");
+
+    final response = await http.post(url, headers: <String, String>{
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $userToken'
+    }, body:necessary_messages ?  {
+      "necessary_messages" : necessary_messages.toString()
+    } : jsonEncode({
+      "necessary_messages" : necessary_messages
+    }));
+    print("response.statusCode :${response.statusCode}");
+    print("***** response body${response.body}");
+    if (response.statusCode == 200) {
+      var jsonResponse = json.decode(response.body);
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

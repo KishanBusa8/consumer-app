@@ -1,19 +1,30 @@
-class ConsumerNotificationsModel {
+import 'package:flutter/cupertino.dart';
+import 'package:hashching/services/api_services.dart';
+
+class ConsumerNotificationsModel extends ChangeNotifier {
   ConsumerNotificationsModel({
     required this.consumerNotifications,
     required this.consumerNotificationsUnread,
   });
-  late final List<ConsumerNotifications> consumerNotifications;
-  late final int consumerNotificationsUnread;
+  List<ConsumerNotifications>? consumerNotifications;
+  int? consumerNotificationsUnread;
   ConsumerNotificationsModel.fromJson(Map<String, dynamic> json){
     consumerNotifications = List.from(json['consumer_notifications']).map((e)=>ConsumerNotifications.fromJson(e)).toList();
     consumerNotificationsUnread = json['consumer_notifications_unread'];
   }
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
-    _data['consumer_notifications'] = consumerNotifications.map((e)=>e.toJson()).toList();
+    _data['consumer_notifications'] = consumerNotifications!.map((e)=>e.toJson()).toList();
     _data['consumer_notifications_unread'] = consumerNotificationsUnread;
     return _data;
+  }
+  void changeValue() async  {
+    ApiServices.fetchConsumerNotification().then((value) {
+      this.consumerNotifications = value!.consumerNotifications;
+      // this.consumerNotifications = [];
+      this.consumerNotificationsUnread = value.consumerNotificationsUnread;
+      notifyListeners();
+    });
   }
 }
 class ConsumerNotifications {

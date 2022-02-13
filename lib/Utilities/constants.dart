@@ -28,6 +28,15 @@ class LocalConstants {
       "https://api.hashching.com.au/api/v1/consumer-account";
   static String ConsumerDeshboardUrl =
       "https://api.hashching.com.au/api/v1/consumer-dashboard";
+  static String ConsumerEmailMarketingUrl =
+      "https://api.hashching.com.au/api/v1/consumer-email-marketing";
+  static String ConsumerGuideTipsUrl =
+      "https://api.hashching.com.au/api/v1/consumer-guide-tips";
+  static String ConsumerSmsMarketingUrl =
+      "https://api.hashching.com.au/api/v1/consumer-sms-marketing";
+  static String ConsumerNecessaryMessageUrl =
+      "https://api.hashching.com.au/api/v1/consumer-necessary-messages";
+
   static String ConsumerAllLoansUrl =
       "https://api.hashching.com.au/api/v1/all-consumer-loans";
   static String ConsumerAllBrokersUrl =

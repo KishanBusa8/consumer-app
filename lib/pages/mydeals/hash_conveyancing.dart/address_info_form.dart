@@ -159,7 +159,7 @@ class _HashConvenyancingAddressFormState extends State<HashConvenyancingAddressF
            Padding(
               padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Theme(
                       data:

@@ -327,20 +327,7 @@ class _FinanceEnquireyState extends State<FinanceEnquirey> {
     };
     var addNewLoan = await ApiServices.addNewLoan(addNewLoanDetails);
     Random _rend = Random();
-    Provider.of<LoanListProvider>(context, listen: false).addsinglelist(
-        AllLoans(
-            id: _rend.nextInt(1000),
-            leadType: "New Loan",
-            productType: "Equipment Finance",
-            loanAmount: amountController.text.toString().replaceAll(',', ''),
-            status: 1,
-            brokerLeadID: 2,
-            createdAt: DateFormat("yyyyMMdd").format(DateTime.now()),
-            uniqueId: "42253",
-            encryptkey: "qwertyuiop",
-            loantypeshow: "Business Loan",
-            createdate: DateFormat("yyyyMMdd").format(DateTime.now()),
-            statusname: "New"));
+    Provider.of<LoanListProvider>(context, listen: false).changeListFromApi();
     print('addNewLoan : $addNewLoan');
     if (addNewLoan) {
       ApiServices.fetchConsumerLoansList();

@@ -10,7 +10,7 @@ class ConsumerDashboardModel {
   late final bool completeTask;
   late final List<AllConsumerBrokers> allConsumerBrokers;
   late final int rewardPoints;
-  late final int consumerDocumentCount;
+  int? consumerDocumentCount;
   ConsumerDashboardModel.fromJson(Map<String, dynamic> json){
     allLoans = List.from(json['allLoans']).map((e)=>AllLoans.fromJson(e)).toList();
     completeTask = json['complete_task'];

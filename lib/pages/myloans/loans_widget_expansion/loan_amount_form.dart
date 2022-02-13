@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:hashching/Utilities/simplefiedwidgets.dart';
 import 'package:hashching/models/property_suggestions_model.dart';
@@ -12,13 +13,16 @@ import 'package:intl/intl.dart';
 class LoanAmountForm extends StatefulWidget {
   LoanAmountForm(
       {Key? key,
-      required this.amountController,
-      required this.postcodeController})
+        required this.amountController,
+        required this.postcodeController, this.lenderController,this.lenderModelList,  this.selectedLender, this.showDropDown = false})
       : super(key: key);
 
   TextEditingController amountController = TextEditingController();
   TextEditingController postcodeController = TextEditingController();
-
+  TextEditingController? lenderController = TextEditingController();
+  String? selectedLender;
+  bool? showDropDown;
+  List<String>? lenderModelList = [];
   @override
   State<LoanAmountForm> createState() => _LoanAmountFormState();
 }
@@ -80,6 +84,67 @@ class _LoanAmountFormState extends State<LoanAmountForm> {
                   ),
                 ),
               ),
+              widget.showDropDown! ? labelWithStyle('Current Lender:') : Container(),
+
+              widget.showDropDown! ?  DropdownButtonFormField<String>(
+                  onTap: () {},
+                  value: widget.selectedLender,
+                  validator: (value) {
+                    if (value == null) {
+                      return 'select lender';
+                    }
+                    return null;
+                  },
+                  selectedItemBuilder: (context) {
+                    return widget.lenderModelList!
+                        .map(
+                          (map) => DropdownMenuItem(
+                        child: Text(map.toString(),
+                            style: MasterStyle.whiteTextNormal),
+                        value: map,
+                      ),
+                    )
+                        .toList();
+                  },
+                  style: MasterStyle.whiteTextInputStyle,
+                  iconSize: 31,
+                  icon: Container(
+                    child: Icon(
+                      Icons.keyboard_arrow_down,
+                      color: MasterStyle.appSecondaryColor,
+                    ),
+                  ),
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  decoration: InputDecoration(
+                    counterText: '',
+                    contentPadding: EdgeInsets.only(
+                      left: 16.w,
+                      right: 15.w,
+                      bottom: 8.h,
+                    ),
+                    hintText: "Select current lender",
+                    hintStyle: MasterStyle.whiteHintStyle,
+                    enabledBorder: SimplifiedWidgets.outlineInputBorder,
+                    border: SimplifiedWidgets.outlineInputBorder,
+                    focusedBorder: SimplifiedWidgets.outlineInputBorder,
+                  ),
+                  items: widget.lenderModelList!
+                      .map(
+                        (map) => DropdownMenuItem(
+                      child: Text(map.toString(),
+                          style: MasterStyle.blackWithSmallStyle),
+                      value: map,
+                    ),
+                  )
+                      .toList(),
+                  onChanged: (newValue) {
+                    setState(() {
+                      widget.selectedLender = newValue.toString();
+                    });
+                    widget.lenderController!.text = newValue.toString();
+                  }): Container(),
+
+              widget.showDropDown! ?  SizedBox(height: 20,) : Container(),
               labelWithStyle('Your suburb/postcode :'),
 
               TypeAheadFormField(

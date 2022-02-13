@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hashching/Utilities/simplefiedwidgets.dart';
 import 'package:hashching/Utilities/sizedbox.dart';
+import 'package:hashching/listprovider/loadnlist_provider.dart';
 import 'package:hashching/models/consumer_account_model.dart';
 import 'package:hashching/models/consumer_dashboard_model.dart';
 import 'package:hashching/pages/myloans/alertdailougebox.dart';
@@ -67,7 +68,9 @@ class _MyLoansState extends State<MyLoans> {
           //     icon: Icon(Icons.search, color: MasterStyle.appBarIconColor)),
         ],
       ),
-      body: Container(
+      body: Consumer<LoanListProvider>(builder:
+          (BuildContext context, LoanListProvider bloc,
+          Widget? child) {return Container(
         color: MasterStyle.backgroundColor,
         child: ListView(
           children: [
@@ -89,7 +92,7 @@ class _MyLoansState extends State<MyLoans> {
                 initialPage: 1,
                 autoPlay: false,
               ),
-              items: myLoansCard(),
+              items: myLoansCard(bloc.list),
             )),
             TextButton(
                 onPressed: () {
@@ -145,7 +148,8 @@ class _MyLoansState extends State<MyLoans> {
             ),
           ],
         ),
-      ),
+      );})
+  ,
     );
   }
 
@@ -188,11 +192,10 @@ class _MyLoansState extends State<MyLoans> {
     }
   }
 
-  List<Widget> myLoansCard() {
-    ConsumerDashboardModel consumerLoansModel =
-        Provider.of<ConsumerDashboardModel>(context);
+  List<Widget> myLoansCard(List<AllLoans>  bloc) {
 
-    return consumerLoansModel.allLoans.map((loansDetails) {
+
+    return bloc.map((loansDetails) {
       // readBrokerInfo(String brokerId) {
       //   var brokerDocument = consumerLoansModel.allConsumerBrokers
       //       .firstWhere((element) => element.userId.toString() == '193');
