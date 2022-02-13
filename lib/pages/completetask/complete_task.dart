@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hashching/Utilities/constants.dart';
 import 'package:hashching/Utilities/simplefiedwidgets.dart';
 import 'package:hashching/models/consumer_dashboard_model.dart';
 import 'package:hashching/models/fetch_loan_model.dart';
@@ -9,8 +10,7 @@ import 'package:hashching/styles/hexcolor.dart';
 import 'package:hashching/styles/masterstyle.dart';
 
 class CompleteTask extends StatefulWidget {
-  const CompleteTask(
-      {Key? key, required this.encryptId, required this.statusName})
+  const CompleteTask({Key? key, required this.encryptId,required this.statusName})
       : super(key: key);
 
   final String encryptId;
@@ -21,42 +21,39 @@ class CompleteTask extends StatefulWidget {
 }
 
 class _CompleteTaskState extends State<CompleteTask> {
-  List<AllLoans> consumerLoansList = [];
-  late FetchLoanModel? fetchLoanModel;
+  List<AllLoans> consumerLoansList=[];
+ late FetchLoanModel? fetchLoanModel;
   bool isLoading = false;
   bool setInitThe = false;
-  initialData() async {
+  initialData()  async {
+
     setState(() {
       setInitThe = true;
     });
-    fetchLoanModel = await ApiServices.fetchLoans(encryptId: widget.encryptId);
+   fetchLoanModel = await ApiServices.fetchLoans(encryptId:widget.encryptId);
     setState(() {
       setInitThe = false;
     });
+  
   }
-
   @override
   void initState() {
-    initialData();
+   initialData();
     super.initState();
   }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: MasterStyle.backgroundColor,
-        appBar: SimplifiedWidgets.appbar(
-            appBarTitle: 'Complete task', context: context),
-        body: setInitThe
-            ? Center(
-                child: CircularProgressIndicator(
-                    valueColor:
-                        AlwaysStoppedAnimation(MasterStyle.appSecondaryColor)))
-            : Column(
-                children: [
-                  completedTaskCards(consumerLoans: fetchLoanModel!),
-                ],
-              ));
+    return   Scaffold(
+      backgroundColor: MasterStyle.backgroundColor,
+      appBar: SimplifiedWidgets.appbar(
+          appBarTitle: 'Complete task', context: context),
+      body: setInitThe?  Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(MasterStyle.appSecondaryColor))): Column(
+        children: [
+          completedTaskCards(
+              consumerLoans: fetchLoanModel!),
+        ],
+      )
+    );
   }
 
   String getImageAssets(String loanType) {
@@ -87,7 +84,8 @@ class _CompleteTaskState extends State<CompleteTask> {
   Widget completedTaskCards({
     required FetchLoanModel consumerLoans,
   }) {
-    return Container(
+
+   return Container(
       margin: EdgeInsets.only(bottom: 16.h, left: 16.w, right: 16.w),
       decoration: BoxDecoration(
           color: MasterStyle.whiteColor,
@@ -126,8 +124,8 @@ class _CompleteTaskState extends State<CompleteTask> {
                           ),
                           Text(
                             widget.statusName,
-                            style: widget.statusName == 'Settled' ||
-                                    widget.statusName == 'New'
+                            style:  widget.statusName == 'Settled' ||
+                                widget.statusName == 'New'
                                 ? MasterStyle.possitiveStatusStyle
                                 : MasterStyle.assignedStatusStyle,
                           ),
@@ -167,17 +165,15 @@ class _CompleteTaskState extends State<CompleteTask> {
               ],
             ),
           ),
-          Visibility(
-            child: InkWell(
-              onTap: () {
-                SimplifiedWidgets.launchInBrowser(
-                    consumerLoans.loan.bankStatementIframeLink, context);
+           Visibility(
+             child: InkWell(
+              onTap: (){
+                SimplifiedWidgets.launchInBrowser(consumerLoans.loan.bankStatementIframeLink, context);
               },
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
                 decoration: BoxDecoration(
-                    border:
-                        Border(bottom: BorderSide(color: HexColor("#E4E4E4")))),
+                    border: Border(bottom: BorderSide(color: HexColor("#E4E4E4")))),
                 child: Center(
                   child: Text(
                     "Upload bank statements",
@@ -185,15 +181,13 @@ class _CompleteTaskState extends State<CompleteTask> {
                   ),
                 ),
               ),
-            ),
-            visible: consumerLoans.loan.bankStatementRequest,
           ),
+             visible:  consumerLoans.loan.bankStatementRequest,
+           ),
           Visibility(
             child: InkWell(
-              onTap: () {
-                SimplifiedWidgets.launchInBrowser(
-                    consumerLoans.loan.mystroServicesList[0].iframeLink,
-                    context);
+              onTap: (){
+                SimplifiedWidgets.launchInBrowser(consumerLoans.loan.mystroServicesList[0].iframeLink, context);
                 // submitCompleteFactFind(consumerLoans.encryptkey);
               },
               child: Container(
@@ -205,15 +199,18 @@ class _CompleteTaskState extends State<CompleteTask> {
                   ),
                 ),
               ),
+
             ),
-            visible: consumerLoans.loan.leadDetailsMystroRequested,
+            visible:  consumerLoans.loan.leadDetailsMystroRequested,
           ),
         ],
       ),
     );
+
   }
 
-  submitCompleteFactFind(encrypt_id) async {
-    var iFrameLink = await ApiServices.getIFrameLink(encrypt_id);
+  submitCompleteFactFind(encrypt_id) async{
+
+    var iFrameLink = await  ApiServices.getIFrameLink(encrypt_id);
   }
 }

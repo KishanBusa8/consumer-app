@@ -11,9 +11,10 @@ import 'package:hashching/Utilities/validator.dart';
 import 'package:hashching/listprovider/loadnlist_provider.dart';
 import 'package:hashching/models/consumer_account_model.dart';
 import 'package:hashching/models/consumer_dashboard_model.dart';
-import 'package:hashching/pages/myloans/loans_widget_expansion/loan_amount_form.dart';
-import 'package:hashching/pages/myloans/loans_widget_expansion/loan_contact_form.dart';
-import 'package:hashching/pages/myloans/loans_widget_expansion/new_loan_personal_details.dart';
+import 'package:hashching/pages/myloans/businessloan/business_loan_personal_details.dart';
+import 'package:hashching/pages/myloans/loans_widget_expansion.dart/loan_amount_form.dart';
+import 'package:hashching/pages/myloans/loans_widget_expansion.dart/loan_contact_form.dart';
+import 'package:hashching/pages/myloans/loans_widget_expansion.dart/new_loan_personal_details.dart';
 import 'package:hashching/services/api_services.dart';
 import 'package:hashching/styles/hexcolor.dart';
 import 'package:hashching/styles/masterstyle.dart';
@@ -391,20 +392,21 @@ class _BusinessLoanEnquireyState extends State<BusinessLoanEnquirey>
     };
     var addNewLoan = await ApiServices.addNewLoan(addNewLoanDetails);
     Random _rend = Random();
-    Provider.of<LoanListProvider>(context, listen: false).addsinglelist(
-        AllLoans(
-            id: _rend.nextInt(1000),
-            leadType: "New Loan",
-            productType: "Home Loan",
-            loanAmount: amountController.text.toString().replaceAll(',', ''),
-            status: 1,
-            brokerLeadID: 2,
-            createdAt: DateFormat("yyyyMMdd").format(DateTime.now()),
-            uniqueId: "42253",
-            encryptkey: "qwertyuiop",
-            loantypeshow: "Business Loan",
-            createdate: DateFormat("yyyyMMdd").format(DateTime.now()),
-            statusname: "New"));
+    // Provider.of<LoanListProvider>(context, listen: false).addsinglelist(
+    //     AllLoans(
+    //         id: _rend.nextInt(1000),
+    //         leadType: "New Loan",
+    //         productType: "Home Loan",
+    //         loanAmount:amountController.text.toString().replaceAll(',', ''),
+    //         status: 1,
+    //         brokerLeadID: 2,
+    //         createdAt: DateFormat("yyyyMMdd").format(DateTime.now()),
+    //         uniqueId: "42253",
+    //         encryptkey: "qwertyuiop",
+    //         loantypeshow: "Business Loan",
+    //         createdate: DateFormat("yyyyMMdd").format(DateTime.now()),
+    //         statusname: "New"));
+    Provider.of<LoanListProvider>(context, listen: false).changeListFromApi();
     print('addNewLoan : $addNewLoan');
     if (addNewLoan) {
       ApiServices.fetchConsumerLoansList();

@@ -52,7 +52,7 @@ class _HomePageState extends State<HomePage> {
           Provider.of<ConsumerDashboardModel>(context, listen: false);
       Provider.of<LoanListProvider>(context, listen: false)
           .changewholelist(_dummy.allLoans);
-      isCompleteTask = _dummy.completeTask;
+      isCompleteTask=  _dummy.completeTask;
       setintthe = false;
       setState(() {});
       print("===> End");
@@ -104,50 +104,43 @@ class _HomePageState extends State<HomePage> {
                                     "${consumerAccountModel.consumer.firstName} ${consumerAccountModel.consumer.lastName} 👋",
                                     style: MasterStyle.dashbordHeader,
                                   ),
-                                  if (bloc.list.length != 0 &&
-                                      consumerDashboardModel.completeTask)
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 20),
-                                      child: Container(
-                                        height: 30.h,
-                                        child: ElevatedButton(
-                                          onPressed: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) => CompleteTask(
-                                                        statusName:
-                                                            consumerDashboardModel
-                                                                .allLoans[0]
-                                                                .statusname,
-                                                        encryptId:
-                                                            consumerDashboardModel
-                                                                .allLoans[0]
-                                                                .encryptkey)));
-                                          },
-                                          child: Text('Complete task',
-                                              style: MasterStyle
-                                                  .whiteStyleRegularNormal
-                                                  .merge(TextStyle(
-                                                      fontSize: 14.sp))),
-                                          style: ElevatedButton.styleFrom(
-                                              padding: EdgeInsets.only(
-                                                  left: 13.w,
-                                                  right: 21.w,
-                                                  top: 4.h,
-                                                  bottom: 5.h),
-                                              primary:
-                                                  MasterStyle.quaternaryColor,
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(
-                                                              15.0.r)))),
-                                        ),
-                                      ),
-                                    )
-                                  else
-                                    SizedBox(),
+                                  if (bloc.list.length != 0 && consumerDashboardModel.completeTask) Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 20),
+                                          child: Container(
+                                            height: 30.h,
+                                            child: ElevatedButton(
+                                              onPressed: () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            CompleteTask(
+                                                              statusName: consumerDashboardModel.allLoans[0].statusname,
+                                                                encryptId:
+                                                                    consumerDashboardModel.allLoans[0].encryptkey)));
+                                              },
+                                              child: Text('Complete task',
+                                                  style: MasterStyle
+                                                      .whiteStyleRegularNormal
+                                                      .merge(TextStyle(
+                                                          fontSize: 14.sp))),
+
+                                                      style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.only(
+                            left: 13.w,             right: 21.w,
+                                                      top: 4.h,
+                                                      bottom: 5.h),
+                                                  primary: MasterStyle
+                                                      .quaternaryColor,
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  15.0.r)))),
+                                            ),
+                                          ),
+                                        ) else SizedBox(),
                                   bloc.list.length == 0
                                       ? NoLoans()
                                       : Container(
@@ -182,14 +175,6 @@ class _HomePageState extends State<HomePage> {
                                                       (BuildContext context,
                                                           int index) {
                                                     return HomeMyLoansPanel(
-                                                      loanTypeDisplay: bloc
-                                                                  .list[index]
-                                                                  .loanType ==
-                                                              ""
-                                                          ? bloc.list[index]
-                                                              .loantypeshow
-                                                          : bloc.list[index]
-                                                              .loanType,
                                                       encryptkey: bloc
                                                           .list[index]
                                                           .encryptkey,
@@ -197,11 +182,11 @@ class _HomePageState extends State<HomePage> {
                                                           .loantypeshow,
                                                       status: bloc.list[index]
                                                           .statusname,
-                                                      loanAmount: SimplifiedWidgets
-                                                          .getloanAmountWithComma(
-                                                              bloc.list[index]
-                                                                  .loanAmount
-                                                                  .toString()),
+                                                      loanAmount: SimplifiedWidgets.getloanAmountWithComma(bloc
+                                                          .list[index]
+                                                          .loanAmount
+                                                          .toString()
+                                                      ),
                                                       createDate: bloc
                                                           .list[index]
                                                           .createdate,
@@ -607,7 +592,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ],
                 ),
-                /* Row(
+               /* Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Flexible(
@@ -659,8 +644,11 @@ class _HomePageState extends State<HomePage> {
                         consumerDocumentListModel: consumerDocumentListProvider,
                         consumerDashboardModel: consumerDashboardModel,
                       ))).then((value) {
-            setState(() {});
-          });
+                        print("llll $value");
+            consumerDashboardModel.consumerDocumentCount = value;
+                        setState(() {
+
+                      });});
         },
         child: Container(
             margin: EdgeInsets.only(bottom: 6),

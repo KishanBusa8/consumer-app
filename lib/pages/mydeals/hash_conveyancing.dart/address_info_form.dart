@@ -3,11 +3,13 @@
 import 'package:flutter/material.dart';
 import 'package:hashching/Utilities/simplefiedwidgets.dart';
 import 'package:hashching/pages/myloans/businessloan/business_loan_personal_details.dart';
-import 'package:hashching/pages/myloans/loans_widget_expansion/loan_components.dart';
-import 'package:hashching/pages/myloans/loans_widget_expansion/loan_contact_form.dart';
+import 'package:hashching/pages/myloans/loans_widget_expansion.dart/loan_components.dart';
+import 'package:hashching/pages/myloans/loans_widget_expansion.dart/loan_contact_form.dart';
 import 'package:hashching/styles/hexcolor.dart';
 import 'package:hashching/styles/masterstyle.dart';
 import 'package:intl/intl.dart';
+
+
 
 class HashConvenyancingAddressForm extends StatefulWidget {
   HashConvenyancingAddressForm({
@@ -17,27 +19,30 @@ class HashConvenyancingAddressForm extends StatefulWidget {
     required this.streetNameController,
     required this.streetTypeController,
     required this.checkbox,
+
+
+    
   }) : super(key: key);
   TextEditingController moveInDateController;
   TextEditingController streetNumberController;
   TextEditingController streetNameController;
   TextEditingController streetTypeController;
   Checkbox checkbox;
+  
 
   @override
-  State<HashConvenyancingAddressForm> createState() =>
-      _HashConvenyancingAddressFormState();
+  State<HashConvenyancingAddressForm> createState() => _HashConvenyancingAddressFormState();
 }
 
-class _HashConvenyancingAddressFormState
-    extends State<HashConvenyancingAddressForm> {
-  DateTime _selectedDate = DateTime.now();
+class _HashConvenyancingAddressFormState extends State<HashConvenyancingAddressForm> {
+ DateTime _selectedDate = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
     return ListView(
       shrinkWrap: true,
       children: [
+             
         SimplifiedWidgets.containerBox(
           radius: 10,
           padding: EdgeInsets.all(16),
@@ -47,32 +52,33 @@ class _HashConvenyancingAddressFormState
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               labelWithStyle('Move in date :'),
-              Container(
-                padding: EdgeInsets.only(bottom: 24),
-                child: TextFormField(
+       Container(
+              padding: EdgeInsets.only(bottom: 24),
+              child: TextFormField(
                   validator: (value) {
                     if (value!.trim().isEmpty) {
                       return 'Please select valid date';
                     }
                     return null;
                   },
-                  focusNode: AlwaysDisabledFocusNode(),
-                  controller: widget.moveInDateController,
-                  onTap: () {
-                    _selectDate(context);
-                  },
-                  style: MasterStyle.whiteTextInputStyle,
-                  decoration: InputDecoration(
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    hintText: 'select',
-                    hintStyle: MasterStyle.whiteHintStyle,
-                    enabledBorder: SimplifiedWidgets.outlineInputBorder,
-                    border: SimplifiedWidgets.outlineInputBorder,
-                    focusedBorder: SimplifiedWidgets.outlineInputBorder,
-                  ),
+                focusNode: AlwaysDisabledFocusNode(),
+                controller: widget.moveInDateController,
+                onTap: () {
+                  _selectDate(context);
+                },
+                style: MasterStyle.whiteTextInputStyle,
+                decoration: InputDecoration(
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  hintText: 'select',
+                  hintStyle: MasterStyle.whiteHintStyle,
+                  enabledBorder: SimplifiedWidgets.outlineInputBorder,
+                  border: SimplifiedWidgets.outlineInputBorder,
+                  focusedBorder: SimplifiedWidgets.outlineInputBorder,
                 ),
               ),
+            ),
+          
               labelWithStyle('Street number :'),
               Container(
                 padding: EdgeInsets.only(bottom: 24),
@@ -98,7 +104,7 @@ class _HashConvenyancingAddressFormState
                   ),
                 ),
               ),
-              labelWithStyle('Street name :'),
+                labelWithStyle('Street name :'),
               Container(
                 padding: EdgeInsets.only(bottom: 24),
                 child: TextFormField(
@@ -123,7 +129,8 @@ class _HashConvenyancingAddressFormState
                   ),
                 ),
               ),
-              labelWithStyle('Select street :'),
+     
+         labelWithStyle('Select street :'),
               Container(
                 padding: EdgeInsets.only(bottom: 24),
                 child: TextFormField(
@@ -148,37 +155,37 @@ class _HashConvenyancingAddressFormState
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Theme(
-                        data: ThemeData(
-                            unselectedWidgetColor: HexColor('#6D7B95')),
-                        child: widget.checkbox),
-                    Flexible(
-                      child: RichText(
-                          text: TextSpan(children: [
-                        textSpanNormal(text: 'I understand and accept the '),
-                        PrivacyPolicy(
-                            text: 'privacy policy ', context: context),
-                        textSpanNormal(text: 'and '),
-                        TermsAndConditions(
-                            text: 'terms of use.', context: context)
-                      ])),
-                    )
-                  ],
-                ),
-              )
+     
+           Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Theme(
+                      data:
+                          ThemeData(unselectedWidgetColor: HexColor('#6D7B95')),
+                      child: widget.checkbox),
+                  Flexible(
+                    child: RichText(
+                        text: TextSpan(children: [
+                      textSpanNormal(text: 'I understand and accept the '),
+                      PrivacyPolicy(text: 'privacy policy ',context: context),
+                      textSpanNormal(text: 'and '),
+                      TermsAndConditions(text: 'terms of use.',context: context)
+                    ])),
+                  )
+                ],
+              ),
+            )
+
+
             ],
           ),
         ),
       ],
     );
   }
-
-  _selectDate(BuildContext context) async {
+   _selectDate(BuildContext context) async {
     DateTime? newSelectedDate = await showDatePicker(
         context: context,
         initialDate: _selectedDate,
@@ -201,7 +208,7 @@ class _HashConvenyancingAddressFormState
 
     if (newSelectedDate != null) {
       _selectedDate = newSelectedDate;
-
+      
       widget.moveInDateController
         ..text = DateFormat.yMMMd().format(_selectedDate)
         ..selection = TextSelection.fromPosition(TextPosition(
@@ -209,6 +216,8 @@ class _HashConvenyancingAddressFormState
             affinity: TextAffinity.upstream));
     }
   }
+
+
 
   labelWithStyle(label) {
     return Padding(
@@ -220,3 +229,4 @@ class _HashConvenyancingAddressFormState
     );
   }
 }
+

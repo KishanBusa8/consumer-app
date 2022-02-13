@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hashching/Utilities/constants.dart';
 import 'package:hashching/models/consumer_account_model.dart';
 import 'package:hashching/models/consumer_details_model.dart';
+import 'package:hashching/models/consumer_notification_model.dart';
 import 'package:hashching/models/hash_convenyancing_model.dart';
 import 'package:hashching/pages/brokers/brokers.dart';
 import 'package:hashching/pages/myaccount/myaccounts.dart';
@@ -158,12 +159,17 @@ class _HaschingDashboardState extends State<HaschingDashboard>
             color: HexColor("#F56735"),
           ),
           onPressed: () {
+            ConsumerNotificationsModel consumerNotificationsModel =
+            Provider.of<ConsumerNotificationsModel>(context,listen: false);
+            consumerNotificationsModel.changeValue();
+
             setState(() {
               isInbox = false;
               isNotification = false;
               isHomePage = true;
               currenIndex = 0;
             });
+
           },
         ),
         titleSpacing: 0,
@@ -176,6 +182,7 @@ class _HaschingDashboardState extends State<HaschingDashboard>
           // SvgPicture.asset('assets/home_assets/search.svg'),
           GestureDetector(
             onTap: () {
+
               setState(() {
                 isInbox = false;
                 isNotification = true;
@@ -258,6 +265,9 @@ class _HaschingDashboardState extends State<HaschingDashboard>
           // SvgPicture.asset('assets/home_assets/search.svg'),
           GestureDetector(
             onTap: () {
+              ConsumerNotificationsModel consumerNotificationsModel =
+                Provider.of<ConsumerNotificationsModel>(context,listen: false);
+              consumerNotificationsModel.changeValue();
               setState(() {
                 isInbox = false;
                 isNotification = true;
@@ -460,7 +470,17 @@ class _HaschingDashboardState extends State<HaschingDashboard>
   @override
   void initState() {
     initialData();
+    Future.delayed(Duration(milliseconds: 20), () {
+      updateData();
+    });
     super.initState();
+  }
+
+  updateData() {
+    ConsumerNotificationsModel consumerNotificationsModel =
+    Provider.of<ConsumerNotificationsModel>(context,listen: false);
+    consumerNotificationsModel.changeValue();
+
   }
 
   screens(context) {
@@ -472,8 +492,8 @@ class _HaschingDashboardState extends State<HaschingDashboard>
       willPopScopeWidget(child: Brokers(brokerNavigation: myNavigation())),
       willPopScopeWidget(
           child: MyAccount(myAccountNavigation: myAccountNavigation())),
-      NotificationLocal(floatingPanelWidget: floatingPanel()),
-      Inbox(floatingPanelWidget: floatingPanel()),
+      willPopScopeWidget(child: NotificationLocal(floatingPanelWidget: floatingPanel())),
+    willPopScopeWidget(child:Inbox(floatingPanelWidget: floatingPanel())),
     ];
   }
 
@@ -482,6 +502,7 @@ class _HaschingDashboardState extends State<HaschingDashboard>
       child: child,
       onWillPop: () async {
         print('object');
+
         setState(() {
           currenIndex = 0;
           isHomePage = true;

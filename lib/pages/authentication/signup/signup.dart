@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hashching/Utilities/constants.dart';
 import 'package:hashching/common_widgets/common_widgets.dart';
 import 'package:hashching/pages/authentication/login_page/otpscreen.dart';
+import 'package:hashching/pages/authentication/signup/otp_for_signup.dart';
 import 'package:hashching/styles/masterstyle.dart';
 import 'package:hashching/styles/styles.dart';
 import 'package:http/http.dart' as http;
@@ -49,19 +50,20 @@ class _SignupPageState extends State<SignupPage> {
         print('*********** status :  ${jsonResponse['status']}');
         if (jsonResponse['status'] == 101) {
           var responseId = jsonResponse['responseId'];
-
+       
           print('Success');
           setState(() {
             isLoading = false;
           });
           Navigator.of(context).push(MaterialPageRoute(
-              builder: (BuildContext context) =>
-                  OtpScreen(_mobileNumberController.text, email, responseId)));
+              builder: (BuildContext context) => OtpScreen(
+                  _mobileNumberController.text, email, responseId)));
         } else if (jsonResponse['status'] == 103) {
-          snackBar('${jsonResponse['message']}');
+       snackBar('${jsonResponse['message']}');
           setState(() {
             isLoading = false;
           });
+          
         } else {
           setState(() {
             isLoading = false;
@@ -90,16 +92,15 @@ class _SignupPageState extends State<SignupPage> {
 
   OutlineInputBorder _outlineInputBorder = OutlineInputBorder(
     borderSide: BorderSide(color: Colors.white),
-    borderRadius: BoxBorders.primaryButton,
+    borderRadius: BoxBorders.primaryButton,  
   );
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Color.fromRGBO(254, 140, 0, 1),
-        resizeToAvoidBottomInset: false,
-        body: Container(
+    return SafeArea(child:Scaffold(
+      backgroundColor: Color.fromRGBO(254, 140, 0, 1),
+      resizeToAvoidBottomInset: false,
+      body:Container(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
           decoration: const BoxDecoration(
@@ -113,10 +114,9 @@ class _SignupPageState extends State<SignupPage> {
             ),
           ),
           child: Stack(
-            children: [
-              Form(
-                key: _formKey,
-                child: SingleChildScrollView(
+            children: [Form(
+                  key: _formKey,
+              child: SingleChildScrollView(
                   child: Column(
                     children: <Widget>[
                       Row(
@@ -154,7 +154,7 @@ class _SignupPageState extends State<SignupPage> {
                       Padding(
                         padding: const EdgeInsets.only(left: 32.0, right: 32),
                         child: TextFormField(
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           validator: (value) {
                             if (value == null || value.trim().isEmpty) {
                               return 'Please enter your email address';
@@ -168,19 +168,20 @@ class _SignupPageState extends State<SignupPage> {
                           enabled: !isLoading,
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(
+                               contentPadding: EdgeInsets.only(
                                   left: 16.w, top: 13.h, bottom: 12.h),
-                              errorStyle: MasterStyle.errorText,
-                              errorMaxLines: 2,
-                              filled: true,
-                              fillColor: Colors.white,
-                              hintText: "example@email.com",
-                              hintStyle: loginHint.primaryText,
-                              focusedBorder: _outlineInputBorder,
-                              focusedErrorBorder: _outlineInputBorder,
-                              disabledBorder: _outlineInputBorder,
-                              enabledBorder: _outlineInputBorder,
-                              border: _outlineInputBorder),
+                            errorStyle:MasterStyle.errorText,
+                             errorMaxLines: 2,
+                            filled: true,
+                            fillColor: Colors.white,
+                            hintText: "example@email.com",
+                            hintStyle: loginHint.primaryText,
+                            focusedBorder: _outlineInputBorder,
+                            focusedErrorBorder: _outlineInputBorder,
+                            disabledBorder: _outlineInputBorder,
+                            enabledBorder: _outlineInputBorder,
+                            border: _outlineInputBorder
+                          ),
                         ),
                       ),
                       Container(
@@ -202,23 +203,24 @@ class _SignupPageState extends State<SignupPage> {
                           style: TextFonts.quaternaryText,
                           keyboardType: TextInputType.phone,
                           decoration: InputDecoration(
-                              hintStyle: loginHint.primaryText,
-                              errorStyle: MasterStyle.errorText,
-                              errorMaxLines: 2,
-                              filled: true,
-                              fillColor: Colors.white,
-                              hintText: '0412345678',
+                            hintStyle: loginHint.primaryText,
+                            errorStyle: MasterStyle.errorText,
+                            errorMaxLines: 2,
+                            filled: true,
+                            fillColor: Colors.white,
+                            hintText: '0412345678',
                               contentPadding: EdgeInsets.only(
                                   left: 16.w, top: 13.h, bottom: 12.h),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white),
-                                borderRadius: BoxBorders.primaryButton,
-                                gapPadding: 50.0,
-                              ),
-                              disabledBorder: _outlineInputBorder,
-                              enabledBorder: _outlineInputBorder,
-                              focusedErrorBorder: _outlineInputBorder,
-                              border: _outlineInputBorder),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius: BoxBorders.primaryButton,
+                              gapPadding: 50.0,
+                            ),
+                            disabledBorder: _outlineInputBorder,
+                            enabledBorder: _outlineInputBorder,
+                            focusedErrorBorder: _outlineInputBorder,
+                            border: _outlineInputBorder
+                          ),
                         ),
                       ),
                       !isLoading
@@ -240,7 +242,7 @@ class _SignupPageState extends State<SignupPage> {
                     ],
                   ),
                 ),
-              ),
+            ),
               // Container(child: BottomWidget())
             ],
           ),

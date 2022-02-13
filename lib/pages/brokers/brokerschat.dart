@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hashching/Utilities/simplefiedwidgets.dart';
@@ -15,7 +16,7 @@ import 'package:image_picker/image_picker.dart';
 
 class BrokersChat extends StatefulWidget {
   BrokersChat({Key? key, required this.consumerBrokers}) : super(key: key);
-  final AllConsumerBrokers consumerBrokers;
+ final AllConsumerBrokers consumerBrokers;
 
   @override
   _BrokersChatState createState() => _BrokersChatState();
@@ -32,8 +33,7 @@ class _BrokersChatState extends State<BrokersChat> {
 
         //  getCroppedImage(context, _image);
       });
-      senderInbox.insert(
-          0, ChatMessageModel(image: image!, messageType: "file", message: ""));
+     senderInbox.insert(0, ChatMessageModel(image: image!, messageType: "file", message: ""));
     }
   }
 
@@ -53,7 +53,7 @@ class _BrokersChatState extends State<BrokersChat> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      backgroundColor: MasterStyle.backgroundColor,
+    backgroundColor: MasterStyle.backgroundColor,
       // appBar: appbar(context),
       body: SafeArea(
         child: Container(
@@ -67,6 +67,7 @@ class _BrokersChatState extends State<BrokersChat> {
                   itemCount: senderInbox.length,
                   scrollDirection: Axis.vertical,
                   itemBuilder: (BuildContext context, int index) {
+                  
                     return SendMessageScreen(message: senderInbox[index]);
                   },
                 ),
@@ -142,21 +143,14 @@ class _BrokersChatState extends State<BrokersChat> {
                         if (chatController.text.trim().isEmpty) {
                         } else {
                           FocusScope.of(context).unfocus();
-                          ApiServices.sendMessageToBroker(
-                              widget.consumerBrokers.brokerId,
-                              chatController.text);
-                          senderInbox.insert(
-                              0,
-                              ChatMessageModel(
-                                  image: "",
-                                  messageType: "text",
-                                  message: chatController.text));
+                          ApiServices.sendMessageToBroker(widget.consumerBrokers.brokerId, chatController.text);
+                         senderInbox.insert(0, ChatMessageModel( image:"",messageType: "text", message: chatController.text));
                           chatController.clear();
                         }
                       },
                       child: Container(
                         child: SvgPicture.asset(
-                          "assets/icons/chat_arrow.svg",
+                          "assets/icons/chat_arrow.svg",  
                           matchTextDirection: true,
                           height: 40,
                           width: 40,
@@ -180,12 +174,7 @@ class _BrokersChatState extends State<BrokersChat> {
       titleSpacing: 0,
       title: GestureDetector(
         onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => BrokerProfile(
-                        consumerBrokers: widget.consumerBrokers,
-                      )));
+           Navigator.push(context, MaterialPageRoute(builder: (context)=>BrokerProfile(consumerBrokers: widget.consumerBrokers,)));
         },
         child: Row(
           children: [

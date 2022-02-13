@@ -12,6 +12,7 @@ import 'package:hashching/models/consumer_account_model.dart';
 import 'package:hashching/pages/mydeals/hash_auto/auto_comments.dart';
 import 'package:hashching/pages/mydeals/hash_auto/hash_auto_body_type.dart';
 import 'package:hashching/pages/mydeals/hash_auto/hash_auto_enquirey_details.dart';
+import 'package:hashching/pages/mydeals/hash_auto/hash_select_vehicle.dart';
 import 'package:hashching/services/api_services.dart';
 import 'package:hashching/styles/hexcolor.dart';
 import 'package:hashching/styles/masterstyle.dart';
@@ -98,7 +99,7 @@ class _HashAutoEnquireyState extends State<HashAutoEnquirey> {
 
   initData() async {
     firstNameController.text = widget.consumerAccountModel.consumer.firstName;
-    lastNameController.text = widget.consumerAccountModel.consumer.lastName!;
+     lastNameController.text =   widget.consumerAccountModel.consumer.lastName!;
     emailController.text = widget.consumerAccountModel.consumer.email;
     phoneController.text = widget.consumerAccountModel.consumer.mobile;
     consumerMobileNumber = widget.consumerAccountModel.consumer.mobile;
@@ -569,7 +570,7 @@ class _HashAutoEnquireyState extends State<HashAutoEnquirey> {
             child: HashAutoEnquireyDetails(
                 phoneController: phoneController,
                 emailController: emailController,
-                firstNameController: firstNameController,
+                     firstNameController: firstNameController,
                 lastNameController: lastNameController,
                 postcodeController: postcodeController,
                 checkbox: _checkBox(),
@@ -1044,13 +1045,13 @@ class _HashAutoEnquireyState extends State<HashAutoEnquirey> {
   submitaddnewHashAuto() async {
     print("object1${postcodeController.text}");
     var addHashAutoDetails = {
+      
       "first_name": firstNameController.text,
       "last_name": lastNameController.text,
       "email": emailController.text,
       "mobile": phoneController.text,
       "type": "Buy",
-      "postcode_s":
-          "2000, Haymarket, NSW", //postcodeController.text.toString(),
+      "postcode_s": "2000, Haymarket, NSW",//postcodeController.text.toString(),
       "postcode_id": 39082,
       "suburb": postcodeController.text.toString(),
 
@@ -1075,7 +1076,7 @@ class _HashAutoEnquireyState extends State<HashAutoEnquirey> {
     var addNewHashAuto = await ApiServices.addNewHashAuto(addHashAutoDetails);
     print('addNewHashAuto : $addNewHashAuto');
     if (addNewHashAuto) {
-      snackBar('successfully submitted');
+        snackBar('successfully submitted');
       setState(() {
         isSubmitting = false;
       });

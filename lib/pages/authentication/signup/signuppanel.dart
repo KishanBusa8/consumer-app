@@ -1,6 +1,8 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hashching/Utilities/constants.dart';
+import 'package:hashching/Utilities/simplefiedwidgets.dart';
 import 'package:hashching/common_widgets/common_widgets.dart';
 import 'package:hashching/pages/authentication/login_page/loginscreen.dart';
 import 'package:hashching/pages/authentication/signup/signup.dart';
@@ -91,7 +93,7 @@ class _SignupPanelScreenState extends State<SignupPanelScreen> {
                           enabled: true,
                           keyboardType: TextInputType.emailAddress,
                           decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(
+                               contentPadding: EdgeInsets.only(
                                   left: 16.w, top: 13.h, bottom: 12.h),
                               // errorBorder: InputBorder.none,
                               errorStyle: MasterStyle.errorText,

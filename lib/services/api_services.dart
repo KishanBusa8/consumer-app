@@ -1,31 +1,31 @@
 // ignore_for_file: unused_local_variable
 
 import 'dart:convert';
+import 'dart:developer';
+import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:hashching/Utilities/constants.dart';
 import 'package:hashching/Utilities/shared_preference.dart';
 import 'package:hashching/models/all_loans_model.dart';
-import 'package:hashching/models/enquiry_details_static_model.dart';
 import 'package:hashching/models/brokers_details_model.dart';
 import 'package:hashching/models/carmake_model_list.dart';
 import 'package:hashching/models/carmakemodel.dart';
-import 'package:hashching/models/closed_enquiry_model.dart';
 import 'package:hashching/models/consumer_account_model.dart';
 import 'package:hashching/models/consumer_brokers_list_model.dart';
 import 'package:hashching/models/consumer_dashboard_model.dart';
 import 'package:hashching/models/consumer_details_model.dart';
 import 'package:hashching/models/consumer_documet_list_model.dart';
 import 'package:hashching/models/consumer_notification_model.dart';
+import 'package:hashching/models/consumer_setting_model.dart';
 import 'package:hashching/models/fetch_loan_model.dart';
 import 'package:hashching/models/hash_auto_model.dart';
 import 'package:hashching/models/hash_connect_model.dart';
+import 'package:hashching/models/hash_convenyancing_model.dart';
 import 'package:hashching/models/loan_enquirey_model.dart';
-import 'package:hashching/models/lodged_enquiry_model.dart';
 import 'package:hashching/models/newloan_enquirey_model.dart';
-import 'package:hashching/models/onhold_enquiry_model.dart';
 import 'package:hashching/models/postcode_model.dart';
 import 'package:hashching/models/property_details_model.dart';
 import 'package:hashching/models/property_suggestions_model.dart';
-import 'package:hashching/models/qualified_enquiry_model.dart';
 import 'package:hashching/models/rewards_model.dart';
 import 'package:hashching/models/updated_profile_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -74,7 +74,26 @@ class ApiServices {
       return null;
     }
   }
-
+//   static Future<ConsumerSettingModel?> fetchConsumerSettings() async {
+//     SharedPreferences preferences = await SharedPreferences.getInstance();
+//
+//
+//     String? userToken = preferences.getString(LocalConstants.userToken);
+//     LocalStorage.UserToken = await userToken!;
+//     var url = Uri.parse(LocalConstants.ConsumerSettingUrl);
+//     final response = await http.get(url, headers: <String, String>{
+//       'Accept': 'application/json',
+//       'Authorization': 'Bearer $userToken'
+//     });
+//     print("response.statusCode :${response.statusCode}");
+//     print("**********consumerDashboard ########## ${response.body}");
+//     if (response.statusCode == 200) {
+// //print("respone ${response.body}");
+//       return ConsumerSettingModel.fromJson(jsonDecode(response.body));
+//     } else {
+//       return null;
+//     }
+//   }
   static Future<ConsumerLoansModel?> fetchConsumerLoansList() async {
     String? userToken = LocalStorage.UserToken;
 
@@ -96,7 +115,118 @@ class ApiServices {
       return null;
     }
   }
+  static Future<bool> setGuideTips(bool guide_tips) async {
+    String? userToken = LocalStorage.UserToken;
 
+    var url = Uri.parse(LocalConstants.ConsumerGuideTipsUrl);
+    final response = await http.post(url, headers: <String, String>{
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $userToken'
+    }, body: jsonEncode({
+      "guide_tips" : guide_tips
+    }));
+    print("response.statusCode :${response.statusCode}");
+    print("***** response body${response.body}");
+    if (response.statusCode == 200) {
+      var jsonResponse = json.decode(response.body);
+      return true;
+    } else {
+      return false;
+    }
+  }
+  static Future<bool> setGuideTips2(bool guide_tips) async {
+    String? userToken = LocalStorage.UserToken;
+
+    var url = Uri.parse(LocalConstants.ConsumerEmailMarketingUrl);
+    final response = await http.post(url, headers: <String, String>{
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $userToken'
+    }, body: jsonEncode({
+      "email_marketing" : guide_tips
+    }));
+    print("response.statusCode :${response.statusCode}");
+    print("***** response body${response.body}");
+    if (response.statusCode == 200) {
+      var jsonResponse = json.decode(response.body);
+      return true;
+    } else {
+      return false;
+    }
+  }
+  static Future<bool> setEmailMarketing(bool email_marketing) async {
+    String? userToken = LocalStorage.UserToken;
+
+    var url = Uri.parse(LocalConstants.ConsumerEmailMarketingUrl);
+    print(url);
+    
+    
+    
+    
+    final response = await http.post(url, headers: <String, String>{
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $userToken'
+    }, body: email_marketing ?  {
+      "email_marketing" : email_marketing.toString()
+    } : jsonEncode( {
+      "email_marketing" : email_marketing.toString()
+    }));
+    print("response.statusCode :${jsonEncode({
+      "email_marketing" : email_marketing
+    })}");
+    print("***** response body${response.body}");
+    if (response.statusCode == 200) {
+      var jsonResponse = json.decode(response.body);
+      return true;
+    } else {
+      return false;
+    }
+  }
+  static Future<bool> setSmsMarketing(bool sms_marketing) async {
+    String? userToken = LocalStorage.UserToken;
+
+    var url = Uri.parse(LocalConstants.ConsumerSmsMarketingUrl);
+    log(userToken);
+    final response = await http.post(url, headers: <String, String>{
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $userToken'
+    }, body: sms_marketing ? {
+    "sms_marketing" : sms_marketing.toString()
+    } :  jsonEncode({
+      "sms_marketing" : sms_marketing
+    }));
+    print("response.statusCode :${response.statusCode}");
+    if (response.statusCode == 200) {
+      var jsonResponse = json.decode(response.body);
+      print("***** response body${jsonResponse}");
+
+      return true;
+    } else {
+      return false;
+    }
+  }
+  static Future<bool> setNecessaryMessages(bool necessary_messages) async {
+    String? userToken = LocalStorage.UserToken;
+
+    var url = Uri.parse(LocalConstants.ConsumerNecessaryMessageUrl);
+    print("apiUrl :${url}");
+
+    final response = await http.post(url, headers: <String, String>{
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $userToken'
+    }, body:necessary_messages ?  {
+      "necessary_messages" : necessary_messages.toString()
+    } : jsonEncode({
+      "necessary_messages" : necessary_messages
+    }));
+    print("response.statusCode :${response.statusCode}");
+    print("***** response body${response.body}");
+    if (response.statusCode == 200) {
+      var jsonResponse = json.decode(response.body);
+      return true;
+    } else {
+      return false;
+    }
+  }
   static Future<ConsumerDetailsModel?> getConsumerSettings() async {
     String? userToken = LocalStorage.UserToken;
     var url = Uri.parse(LocalConstants.ConsumerSettingsUrl);
@@ -309,7 +439,6 @@ class ApiServices {
       return null;
     }
   }
-
   static Future<LoanEnquireyModel?> fetchLoanDetails({
     String? encryptId,
   }) async {
@@ -335,7 +464,7 @@ class ApiServices {
     }
   }
 
-  static Future<OnholdEnquiryModel?> fetchOnHoldLoanDetails({
+  static Future<NewLoanEnquireyModel?> fetchNewLoanDetails({
     String? encryptId,
   }) async {
     var jsonData = jsonEncode({"encrypt_id": encryptId});
@@ -354,133 +483,7 @@ class ApiServices {
     if (response.statusCode == 200) {
       var jsonResponse = jsonDecode(response.body);
 
-      return OnholdEnquiryModel.fromJson(jsonDecode(response.body));
-    } else {
-      return null;
-    }
-  }
-
-  static Future<ClosedEnquiryModel?> fetchClosedLoanDetails({
-    String? encryptId,
-  }) async {
-    var jsonData = jsonEncode({"encrypt_id": encryptId});
-
-    String? userToken = LocalStorage.UserToken;
-    var url = Uri.parse(LocalConstants.fetchLoanDetailsUrl);
-    final response = await http.post(url,
-        headers: <String, String>{
-          'Accept': 'application/json',
-          'Authorization': 'Bearer $userToken'
-        },
-        body: jsonData);
-    print(response.statusCode);
-    print('loanEnquireyModel**${response.body}');
-
-    if (response.statusCode == 200) {
-      var jsonResponse = jsonDecode(response.body);
-
-      return ClosedEnquiryModel.fromJson(jsonDecode(response.body));
-    } else {
-      return null;
-    }
-  }
-
-  static Future<LodgedEnquiryModel?> fetchLodgedLoanDetails({
-    String? encryptId,
-  }) async {
-    var jsonData = jsonEncode({"encrypt_id": encryptId});
-
-    String? userToken = LocalStorage.UserToken;
-    var url = Uri.parse(LocalConstants.fetchLoanDetailsUrl);
-    final response = await http.post(url,
-        headers: <String, String>{
-          'Accept': 'application/json',
-          'Authorization': 'Bearer $userToken'
-        },
-        body: jsonData);
-    print(response.statusCode);
-    print('loanEnquireyModel**${response.body}');
-
-    if (response.statusCode == 200) {
-      var jsonResponse = jsonDecode(response.body);
-
-      return LodgedEnquiryModel.fromJson(jsonDecode(response.body));
-    } else {
-      return null;
-    }
-  }
-
-  static Future<EnquiryDetailsStaticModel?> getEnquiryLoanDetails({
-    String? encryptId,
-  }) async {
-    var jsonData = jsonEncode({"encrypt_id": encryptId});
-
-    String? userToken = LocalStorage.UserToken;
-    var url = Uri.parse(LocalConstants.fetchLoanDetailsUrl);
-    final response = await http.post(url,
-        headers: <String, String>{
-          'Accept': 'application/json',
-          'Authorization': 'Bearer $userToken'
-        },
-        body: jsonData);
-    print(response.statusCode);
-    print('loanEnquireyModel**${response.body}');
-
-    if (response.statusCode == 200) {
-      print("***********************Alex");
-      var jsonResponse = jsonDecode(response.body);
-
-      return EnquiryDetailsStaticModel.fromJson(jsonDecode(response.body));
-    } else {
-      return null;
-    }
-  }
-
-  static Future<QualifiedEnquiryModel?> fetchQualifiedLoanDetails({
-    String? encryptId,
-  }) async {
-    var jsonData = jsonEncode({"encrypt_id": encryptId});
-
-    String? userToken = LocalStorage.UserToken;
-    var url = Uri.parse(LocalConstants.fetchLoanDetailsUrl);
-    final response = await http.post(url,
-        headers: <String, String>{
-          'Accept': 'application/json',
-          'Authorization': 'Bearer $userToken'
-        },
-        body: jsonData);
-    print(response.statusCode);
-    print('loanEnquireyModel**${response.body}');
-
-    if (response.statusCode == 200) {
-      var jsonResponse = jsonDecode(response.body);
-
-      return QualifiedEnquiryModel.fromJson(jsonDecode(response.body));
-    } else {
-      return null;
-    }
-  }
-
-  static Future<NewLoanEnquiryModel?> fetchNewLoanDetails({
-    String? encryptId,
-  }) async {
-    var jsonData = jsonEncode({"encrypt_id": encryptId});
-
-    String? userToken = LocalStorage.UserToken;
-    var url = Uri.parse(LocalConstants.fetchLoanDetailsUrl);
-    final response = await http.post(url,
-        headers: <String, String>{
-          'Accept': 'application/json',
-          'Authorization': 'Bearer $userToken'
-        },
-        body: jsonData);
-    print(response.statusCode);
-    print('loanEnquireyModel**${response.body}');
-
-    if (response.statusCode == 200) {
-      var jsonResponse = jsonDecode(response.body);
-
-      return NewLoanEnquiryModel.fromJson(jsonDecode(response.body));
+      return NewLoanEnquireyModel.fromJson(jsonDecode(response.body));
     } else {
       return null;
     }
@@ -515,6 +518,7 @@ class ApiServices {
 
   static Future addNewLoan(Object addNewLoanDetails) async {
     var jsonData = jsonEncode(addNewLoanDetails);
+    log('  response.statusCode : ${jsonData} ');
 
     String? userToken = LocalStorage.UserToken;
     var url = Uri.parse(LocalConstants.addNewLoanUrl);
@@ -623,17 +627,16 @@ class ApiServices {
         print("__________");
         print('${jsonDecodeSuggestions["postcodes"]}');
 
-        if (jsonDecodeSuggestions["postcodes"] != null) {
-          if (jsonDecodeSuggestions["postcodes"].length != 0) {
-            suggestions = List<Postcodes>.from(
-                jsonDecodeSuggestions["postcodes"].map((model) {
-              return Postcodes.fromJson(model);
-            }));
-          } else {}
+        if(jsonDecodeSuggestions["postcodes"] != null){
+        if (jsonDecodeSuggestions["postcodes"].length != 0) {
+          suggestions = List<Postcodes>.from(
+              jsonDecodeSuggestions["postcodes"].map((model) {
+           return     Postcodes.fromJson(model);
+          }));
+        } else {}
 
-          print('Number of suggestion: ${suggestions.length}.');
-        }
-      } else {
+        print('Number of suggestion: ${suggestions.length}.');
+      }} else {
         print('Request failed with status: ${response.statusCode}.');
       }
       if (suggestions.length == 0) {
@@ -645,19 +648,17 @@ class ApiServices {
           }
         ]);
       }
-      return Future.value(suggestions
-          .map((e) => {
-                "status": "true",
-                'suggestions':
-                    "${e.postcode.toString()} ,${e.locality} ,${e.statecode}",
-              })
-          .toList());
-      // .map((e) => {
-      //       "status": "true",
-      //       'suggestions': e.postcode.toString() +" ,"+e.locality,+" ,"+e.statecode,
-      //
-      //     })
-      // .toList());
+      return Future.value(suggestions.map((e) => {
+        "status": "true",
+        'suggestions': "${e.postcode.toString()} ,${e.locality} ,${e.statecode}",
+
+      }).toList());
+          // .map((e) => {
+          //       "status": "true",
+          //       'suggestions': e.postcode.toString() +" ,"+e.locality,+" ,"+e.statecode,
+          //
+          //     })
+          // .toList());
     }
   }
 
@@ -991,14 +992,13 @@ class ApiServices {
     print('hash auto list : ${response.body} ');
     if (response.statusCode == 200) {
       print(' hash auto list : ${response.body} ');
-      //  return jsonDecode(response.body);
-      return HashautoListingModel.fromJson(jsonDecode(response.body));
+    //  return jsonDecode(response.body);
+       return HashautoListingModel.fromJson(jsonDecode(response.body));
     } else {
       throw Exception('Failed to load response');
       // return null;
     }
   }
-
   static Future<HashConnectListModel> fetchHashConnectList() async {
     String? userToken = LocalStorage.UserToken;
     var url = Uri.parse(LocalConstants.hashConnectListenerUrl);
@@ -1020,6 +1020,7 @@ class ApiServices {
       // return null;
     }
   }
+
 
   static sendCode(request) async {
     var jsonData = jsonEncode({"mobile": 470276369});
@@ -1077,8 +1078,7 @@ class ApiServices {
       print('"****** body: ${response.body}');
     }
   }
-
-  static Future<ConsumerNotificationsModel?> fetchConsumerNotification() async {
+    static Future<ConsumerNotificationsModel?> fetchConsumerNotification() async {
     String? userToken = LocalStorage.UserToken;
     var url = Uri.parse(LocalConstants.getConsumerNotificationUrl);
     final response = await http.get(
@@ -1092,11 +1092,11 @@ class ApiServices {
     print('getConsumerNotification response : ${response.body} ');
     if (response.statusCode == 200) {
       print('getConsumerNotification body : ${response.body} ');
-
+      
       return ConsumerNotificationsModel.fromJson(jsonDecode(response.body));
     } else {
-      // throw Exception('Failed to load response');
-      return null;
+     // throw Exception('Failed to load response');
+       return null;
     }
   }
 }

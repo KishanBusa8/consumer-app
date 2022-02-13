@@ -4,20 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hashching/Utilities/simplefiedwidgets.dart';
+import 'package:hashching/listprovider/loadnlist_provider.dart';
 import 'package:hashching/models/consumer_account_model.dart';
 import 'package:hashching/models/consumer_dashboard_model.dart';
 import 'package:hashching/pages/myloans/alertdailougebox.dart';
+import 'package:hashching/pages/myloans/enquirey_details/assigned_loan_details.dart';
 import 'package:hashching/pages/myloans/enquirey_details/newloandetails.dart';
 import 'package:hashching/styles/masterstyle.dart';
-
-import 'loans_widget_expansion/closed_enquiry_details.dart';
-import 'loans_widget_expansion/loan_enquiry_details.dart';
+import 'package:provider/provider.dart';
 
 class MyLoansList extends StatefulWidget {
   MyLoansList(
       {Key? key,
       required this.consumerLoansModel,
-      required this.consumerAccountModel})
+      required this.consumerAccountModel,})
       : super(key: key);
   ConsumerDashboardModel consumerLoansModel;
   ConsumerAccountModel consumerAccountModel;
@@ -27,6 +27,7 @@ class MyLoansList extends StatefulWidget {
 }
 
 class _MyLoansListState extends State<MyLoansList> {
+
   String getImageAssets(String loanType) {
     switch (loanType) {
       case 'Home Loan':
@@ -123,10 +124,12 @@ class _MyLoansListState extends State<MyLoansList> {
           //     icon: Icon(Icons.search, color: MasterStyle.appBarIconColor)),
         ],
       ),
-      body: Container(
+      body: Consumer<LoanListProvider>(builder:
+    (BuildContext context, LoanListProvider bloc,
+    Widget? child) { return Container(
         padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 0),
         child: ListView.builder(
-            itemCount: widget.consumerLoansModel.allLoans.length,
+            itemCount: bloc.list.length,
             itemBuilder: (context, int index) {
               return NewColumn(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -137,36 +140,20 @@ class _MyLoansListState extends State<MyLoansList> {
                   ),
                   InkWell(
                     onTap: () {
-                      var loansDetails =
-                          widget.consumerLoansModel.allLoans[index];
-                      if (loansDetails.statusname == "New") {
+                      if (bloc.list[index].statusname ==
+                          "New") {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => NewLoanEnquireyDetails(
-                                    encryptkey: loansDetails.encryptkey,
-                                    loanTypeDisplay: loansDetails.loanType == ''
-                                        ? loansDetails.loantypeshow
-                                        : loansDetails.loanType)));
-                      } else if (loansDetails.statusname == 'Closed') {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ClosedEnquiryDetails(
-                                    encryptkey: loansDetails.encryptkey,
-                                    loanTypeDisplay: loansDetails.loanType == ''
-                                        ? loansDetails.loantypeshow
-                                        : loansDetails.loanType)));
+                                    encryptkey: bloc.list[index].encryptkey)));
                       } else {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => LoanEnquiryDetails(
-                                    encryptkey: loansDetails.encryptkey,
-                                    statusName: loansDetails.statusname,
-                                    loanTypeDisplay: loansDetails.loanType == ''
-                                        ? loansDetails.loantypeshow
-                                        : loansDetails.loanType)));
+                                builder: (context) =>
+                                    AssignedLoanEnquireyDetails(
+                                        encryptkey: bloc.list[index].encryptkey)));
                       }
                     },
                     child: Container(
@@ -183,9 +170,7 @@ class _MyLoansListState extends State<MyLoansList> {
                               Container(
                                   height: 62.w,
                                   width: 62.h,
-                                  child: SvgPicture.asset(getImageAssets(widget
-                                      .consumerLoansModel
-                                      .allLoans[index]
+                                  child: SvgPicture.asset(getImageAssets(bloc.list[index]
                                       .loantypeshow))),
                               Expanded(
                                 child: Container(
@@ -197,8 +182,7 @@ class _MyLoansListState extends State<MyLoansList> {
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
                                       Text(
-                                          widget.consumerLoansModel
-                                              .allLoans[index].loantypeshow,
+                                          bloc.list[index].loantypeshow,
                                           style: MasterStyle
                                               .blackWithSemiBoldStyle),
                                     ],
@@ -226,25 +210,16 @@ class _MyLoansListState extends State<MyLoansList> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
-                                    textWithStyle(widget.consumerLoansModel
-                                                .allLoans[index].statusname ==
-                                            'New'
-                                        ? '  _'
-                                        : widget.consumerLoansModel
-                                            .allLoans[index].brokerName),
+                                    textWithStyle(bloc.list[index].statusname=='New'?'  _':bloc.list[index].brokerName),
                                     textWithStyle(
-                                        '\$${widget.consumerLoansModel.allLoans[index].loanAmount.split('.').first}'),
-                                    textWithStyle(widget
-                                        .consumerLoansModel.allLoans[index].id
+                                        '\$${bloc.list[index].loanAmount.split('.').first}'),
+                                    textWithStyle(bloc.list[index].id
                                         .toString()),
                                     Padding(
                                       padding: EdgeInsets.only(bottom: 8.0.h),
                                       child: Text(
-                                        widget.consumerLoansModel
-                                            .allLoans[index].statusname,
-                                        style: getStatusColor(widget
-                                            .consumerLoansModel
-                                            .allLoans[index]
+                                        bloc.list[index].statusname,
+                                        style: getStatusColor(bloc.list[index]
                                             .statusname),
                                       ),
                                     )
@@ -366,7 +341,7 @@ class _MyLoansListState extends State<MyLoansList> {
          
           */
             }),
-      ),
+      );})
     );
   }
 

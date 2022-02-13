@@ -10,6 +10,7 @@ import 'package:hashching/pages/mydeals/hash_auto.dart';
 import 'package:hashching/pages/mydeals/hash_connect.dart';
 import 'package:hashching/pages/mydeals/hash_convenyancing.dart';
 import 'package:hashching/pages/myloans/enquirey_details.dart';
+import 'package:hashching/services/api_services.dart';
 import 'package:hashching/styles/masterstyle.dart';
 import 'package:provider/provider.dart';
 
@@ -24,24 +25,24 @@ class NotificationLocal extends StatelessWidget {
     }
 
     ConsumerNotificationsModel consumerNotificationsModel =
-        Provider.of<ConsumerNotificationsModel>(context,listen: false);
+        Provider.of<ConsumerNotificationsModel>(context,listen: true);
+
     ConsumerAccountModel consumerAccountModel =
         Provider.of<ConsumerAccountModel>(context,listen: false);
-    print('object ${consumerNotificationsModel}');
-    return consumerNotificationsModel.consumerNotifications.length != 0
+    return context.watch<ConsumerNotificationsModel>().consumerNotifications!.length != 0
         ? ListView.separated(
-            itemCount: consumerNotificationsModel.consumerNotifications.length,
+            itemCount: consumerNotificationsModel.consumerNotifications!.length,
             itemBuilder: (context, index) {
               String notificationMessage = consumerNotificationsModel
-                  .consumerNotifications[index].title
+                  .consumerNotifications![index].title
                   .replaceAll("<u>", '')
                   .replaceAll("</u>", '');
               String action = consumerNotificationsModel
-                  .consumerNotifications[index].action;
+                  .consumerNotifications![index].action;
               String link = consumerNotificationsModel
-                  .consumerNotifications[index].link;
+                  .consumerNotifications![index].link;
               String encrypt_key = consumerNotificationsModel
-                  .consumerNotifications[index].encryptId;
+                  .consumerNotifications![index].encryptId;
               return Container(
                   margin: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 8.h),
                   child: InkWell(
@@ -75,7 +76,7 @@ class NotificationLocal extends StatelessWidget {
                         MySizedBox.height(8.h),
                         Text(
                           consumerNotificationsModel
-                              .consumerNotifications[index].notificationTime,
+                              .consumerNotifications![index].notificationTime,
                           style: MasterStyle.whiteTextNormal.merge(TextStyle(
                               color: MasterStyle.whiteColor.withOpacity(0.3),
                               fontSize: 11.sp)),

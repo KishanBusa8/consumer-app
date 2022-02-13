@@ -3,6 +3,7 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:hashching/Utilities/simplefiedwidgets.dart';
+import 'package:hashching/Utilities/validator.dart';
 import 'package:hashching/styles/masterstyle.dart';
 
 class HashConvenyancingEnquireyDetails extends StatefulWidget {
@@ -89,7 +90,7 @@ class _HashConvenyancingEnquireyDetailsState
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(
                     contentPadding:
-                        EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     hintText: 'Haynes',
                     hintStyle: MasterStyle.whiteHintStyle,
                     enabledBorder: SimplifiedWidgets.outlineInputBorder,
@@ -98,6 +99,7 @@ class _HashConvenyancingEnquireyDetailsState
                   ),
                 ),
               ),
+
 
               labelWithStyle('E-mail ID :'),
               Container(
@@ -127,8 +129,8 @@ class _HashConvenyancingEnquireyDetailsState
                 ),
               ),
               labelWithStyle('Phone no :'),
-              widget.phoneNumberInputField,
-              widget.sendCodeButton
+          widget.phoneNumberInputField,
+          widget.sendCodeButton
               //    Row(mainAxisAlignment: MainAxisAlignment.end, children: [
               // SimplifiedWidgets.elevatedButton(
               //   padding: EdgeInsets.only(left:24,right: 24,top: 3,bottom: 8),

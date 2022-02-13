@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:hashching/Utilities/simplefiedwidgets.dart';
 import 'package:hashching/styles/masterstyle.dart';
+import 'package:intl/intl.dart';
 
 String label = 'label';
 String hint = 'hint';
@@ -24,21 +25,20 @@ List<String> listOfHintTextNew = ['Select year', 'Select car', '\$30,000'];
 List buildYear = List.generate(100, (index) => "${index}");
 
 class FinanceEquipmentDetails extends StatefulWidget {
-  FinanceEquipmentDetails(
-      {Key? key,
-      required this.buildYearController,
-      required this.makeController,
-      required this.modelController,
-      required this.buildYearWidget})
-      : super(key: key);
+  FinanceEquipmentDetails({
+    Key? key,
+    required this.buildYearController,
+    required this.makeController,
+    required this.modelController,
+    required this.buildYearWidget
+  }) : super(key: key);
   TextEditingController buildYearController;
   TextEditingController makeController;
   TextEditingController modelController;
   Widget buildYearWidget;
 
   @override
-  State<FinanceEquipmentDetails> createState() =>
-      _FinanceEquipmentDetailsState();
+  State<FinanceEquipmentDetails> createState() => _FinanceEquipmentDetailsState();
 }
 
 class _FinanceEquipmentDetailsState extends State<FinanceEquipmentDetails> {
@@ -132,7 +132,7 @@ class _FinanceEquipmentDetailsState extends State<FinanceEquipmentDetails> {
               //     ),
               //   ),
               // ),
-
+             
               labelWithStyle(listOfLabel[1]),
               Container(
                 padding: EdgeInsets.only(bottom: 24),
@@ -173,6 +173,7 @@ class _FinanceEquipmentDetailsState extends State<FinanceEquipmentDetails> {
                   controller: this.widget.modelController,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
+                    
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     hintText: listOfHintText[2],

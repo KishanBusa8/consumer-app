@@ -3,6 +3,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hashching/Utilities/constants.dart';
+import 'package:hashching/Utilities/simplefiedwidgets.dart';
 import 'package:hashching/common_widgets/common_widgets.dart';
 import 'package:hashching/pages/authentication/login_page/otpscreen.dart';
 import 'package:hashching/pages/authentication/signup/signuppanel.dart';
@@ -78,6 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Form(
                         key: _formKey,
                         child: TextFormField(
+                          
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           validator: (value) {
                             if (value == null || value.trim().isEmpty) {
@@ -135,12 +137,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            if (!isLoading) {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (context) => SignupPanelScreen(
-                                        emailController: _controller)),
-                              );
+                            if(!isLoading){
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) => SignupPanelScreen(
+                                      emailController: _controller)),
+                            );
                             }
                           },
                           child: Text("Signup",

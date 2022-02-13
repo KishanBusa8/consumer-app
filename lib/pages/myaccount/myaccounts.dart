@@ -1,5 +1,7 @@
 // ignore_for_file: must_be_immutable
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -16,6 +18,7 @@ import 'package:hashching/pages/myaccount/myrewards/myrewards.dart';
 import 'package:hashching/pages/myaccount/settings.dart';
 import 'package:hashching/provider/initialdata.dart';
 import 'package:hashching/provider/stateprovider.dart';
+import 'package:hashching/services/api_services.dart';
 import 'package:hashching/styles/hexcolor.dart';
 import 'package:hashching/styles/masterstyle.dart';
 import 'package:provider/provider.dart';
@@ -116,22 +119,19 @@ class _MyAccountState extends State<MyAccount> {
                                 consumerInformation: consumerDetailsProvider,
                                 consumerAccount: consumerAccountModelProvider,
                               ))).then((value) async {
-                    print("values ${value}");
-                    if (value != null) {
-                      // Provider.of<ConsumerDetailsModel>(context, listen: false).consumerDetails.firstName = value["firstName"];
-                      // Provider.of<ConsumerAccountModel>(context, listen: false).consumer.firstName = value["firstName"];
-                      consumerAccountModelProvider.consumer.firstName =
-                          value["firstName"];
-                      consumerAccountModelProvider.consumer.lastName =
-                          value["lastName"];
-                      consumerAccountModelProvider.consumer.mobile =
-                          value["mobile"];
-                      consumerAccountModelProvider.consumer.email =
-                          value["email"];
-                      consumerAccountModelProvider.consumer.profilePic =
-                          value["profilePicLink"];
-                    }
-                    setState(() {});
+                                print("values ${ value}");
+                                if (value != null) {
+
+                                  // Provider.of<ConsumerDetailsModel>(context, listen: false).consumerDetails.firstName = value["firstName"];
+                                  // Provider.of<ConsumerAccountModel>(context, listen: false).consumer.firstName = value["firstName"];
+                                  consumerAccountModelProvider.consumer.firstName = value["firstName"];
+                                  consumerAccountModelProvider.consumer.lastName = value["lastName"];
+                                  consumerAccountModelProvider.consumer.mobile = value["mobile"];
+                                  consumerAccountModelProvider.consumer.email = value["email"];
+                                  consumerAccountModelProvider.consumer.profilePic = value["profilePicLink"];
+                                }
+                                setState(() {
+                                });
                   });
                 },
                 icon: Icon(Icons.settings, color: Colors.white)),

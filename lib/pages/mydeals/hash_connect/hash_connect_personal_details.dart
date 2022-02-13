@@ -3,8 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:hashching/Utilities/simplefiedwidgets.dart';
-import 'package:hashching/pages/myloans/loans_widget_expansion/new_loan_personal_details.dart';
-import 'package:hashching/pages/myloans/loans_widget_expansion/loan_components.dart';
+import 'package:hashching/Utilities/validator.dart';
+import 'package:hashching/pages/myloans/loans_widget_expansion.dart/new_loan_personal_details.dart';
+import 'package:hashching/pages/myloans/loans_widget_expansion.dart/loan_components.dart';
 import 'package:hashching/services/api_services.dart';
 import 'package:hashching/styles/hexcolor.dart';
 import 'package:hashching/styles/masterstyle.dart';
@@ -82,7 +83,7 @@ class _HashConnectPersonalDetailsFormState
                   ),
                 ),
               ),
-              labelWithStyle('Last name :'),
+                   labelWithStyle('Last name :'),
               Container(
                 padding: EdgeInsets.only(bottom: 24),
                 child: TextFormField(
@@ -140,13 +141,12 @@ class _HashConnectPersonalDetailsFormState
                 padding: EdgeInsets.only(bottom: 10),
                 child: TypeAheadFormField(
                   minCharsForSuggestions: 3,
-                  suggestionsBoxDecoration:
-                      SuggestionsBoxDecoration(hasScrollbar: true),
+                  suggestionsBoxDecoration: SuggestionsBoxDecoration (hasScrollbar: true),
                   loadingBuilder: (context) {
                     return Center(
                       child: CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation(
-                            MasterStyle.appSecondaryColor),
+                        valueColor:
+                            AlwaysStoppedAnimation(MasterStyle.appSecondaryColor),
                       ),
                     );
                   },
@@ -155,7 +155,8 @@ class _HashConnectPersonalDetailsFormState
                   hideOnLoading: false,
                   textFieldConfiguration: TextFieldConfiguration(
                       onSubmitted: (value) {
-                        setState(() {});
+                        setState(() {
+                        });
                       },
                       controller: widget.postcodeController,
                       style: MasterStyle.whiteTextInputStyle,
@@ -170,6 +171,7 @@ class _HashConnectPersonalDetailsFormState
                         focusedBorder: SimplifiedWidgets.outlineInputBorder,
                       )),
                   suggestionsCallback: (pattern) async {
+    
                     return await ApiServices.getSuggestions(pattern);
                   },
                   itemBuilder: (context, Map<String, String> suggestion) {
@@ -201,7 +203,7 @@ class _HashConnectPersonalDetailsFormState
                   },
                 ),
               ),
-              Padding(
+     Padding(
                 padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -225,7 +227,8 @@ class _HashConnectPersonalDetailsFormState
             ],
           ),
         ),
-        SizedBox(height: 100)
+        SizedBox(height:100)
+    
       ],
     );
   }

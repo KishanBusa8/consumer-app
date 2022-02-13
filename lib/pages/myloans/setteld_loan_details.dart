@@ -7,8 +7,8 @@ import 'package:hashching/Utilities/sizedbox.dart';
 import 'package:hashching/models/loan_enquirey_model.dart';
 import 'package:hashching/pages/myloans/details_widgets.dart';
 
-class ApprovedLoanDetails extends StatelessWidget {
-  ApprovedLoanDetails({Key? key, required this.loanEnquireyModel})
+class SettledLoanDetails extends StatelessWidget {
+  SettledLoanDetails({Key? key, required this.loanEnquireyModel})
       : super(key: key);
   LoanEnquireyModel? loanEnquireyModel;
 
@@ -27,19 +27,19 @@ class ApprovedLoanDetails extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               MyColumn(children: [
-                detailsHeader('Approved date'),
+                detailsHeader('Settlement date'),
                 MySizedBox.height(8),
-                  detailsContent(
-                    this.loanEnquireyModel!.loan.approvedDate.toString()),
-               MySizedBox.height(16),
+                detailsContent(
+                    this.loanEnquireyModel!.loan.settlementDate.toString()),
+                MySizedBox.height(16),
                 detailsHeader('Rate of interest'),
                 MySizedBox.height(8),
-                 detailsContent(
+                detailsContent(
                     this.loanEnquireyModel!.loan.secondInterestRate.toString()),
-               MySizedBox.height(16),
+                MySizedBox.height(16),
                 detailsHeader('Product type'),
                 MySizedBox.height(8),
-                 detailsContent(
+                detailsContent(
                     this.loanEnquireyModel!.loan.productType.toString()),
                 MySizedBox.height(16),
                 detailsHeader('Repayment type'),
@@ -52,29 +52,29 @@ class ApprovedLoanDetails extends StatelessWidget {
                 MySizedBox.height(16),
               ]),
               MyColumn(children: [
-                detailsHeader('Lodged date'),
+                detailsHeader('Approved date'),
                 MySizedBox.height(8),
-                 detailsContent(
-                    this.loanEnquireyModel!.loan.lodgedDate.toString()),
+                detailsContent(
+                    this.loanEnquireyModel!.loan.approvedDate.toString()),
                 MySizedBox.height(16),
                 detailsHeader('Lender'),
                 MySizedBox.height(8),
                 detailsContent(
                     this.loanEnquireyModel!.loan.closingLender.toString()),
-                 MySizedBox.height(16),
+                MySizedBox.height(16),
                 detailsHeader('Fixed year'),
                 MySizedBox.height(8),
-                  detailsContent(
+                detailsContent(
                     this.loanEnquireyModel!.loan.fixedYears.toString()),
-               MySizedBox.height(16),
+                MySizedBox.height(16),
                 detailsHeader('Repayment year'),
                 MySizedBox.height(8),
                 detailsContent('_'),
                 MySizedBox.height(16),
                 detailsHeader('Property type'),
                 MySizedBox.height(8),
-               detailsContent( this.loanEnquireyModel!.loan.productType),
-                 MySizedBox.height(16),
+                detailsContent(this.loanEnquireyModel!.loan.productType),
+                MySizedBox.height(16),
               ]),
             ],
           ),

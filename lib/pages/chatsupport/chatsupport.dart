@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hashching/pages/leave_page/leave_page_components/leave_page_components.dart';
 import 'package:hashching/styles/masterstyle.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 class ChatWithSupport extends StatefulWidget {
@@ -88,87 +89,90 @@ class _ChatWithSupportState extends State<ChatWithSupport> {
                 title: "How can we help you?",
                 hinttext: "",
               ),
-
+            
               HowCanIHelpYou(controller: howICanController),
-
+             
               DetailsWidget(
                 title: "How can we help you?",
                 hinttext: "",
               ),
-
+             
+            
               // DetailsWidget(title:'E-mail address',hinttext: '',),
               // MessageWidget(),
-              // Builder(
-              //   builder: (BuildContext context) => _isLoading
-              //       ? Padding(
-              //           padding: const EdgeInsets.only(bottom: 10.0),
-              //           child: const CircularProgressIndicator(),
-              //         )
-              //       : _userAborted
-              //           ? Padding(
-              //               padding: const EdgeInsets.only(bottom: 10.0),
-              //               child: const Text(
-              //                 'User has aborted the dialog',
-              //               ),
-              //             )
-              //           : _directoryPath != null
-              //               ? ListTile(
-              //                   title: const Text('Directory path'),
-              //                   subtitle: Text(_directoryPath!),
-              //                 )
-              //               : _paths != null
-              //                   ? Container(
-              //                       padding:
-              //                           const EdgeInsets.only(bottom: 30.0),
-              //                       height:
-              //                           MediaQuery.of(context).size.height *
-              //                               0.50,
-              //                       child: Scrollbar(
-              //                           child: ListView.separated(
-              //                         itemCount: _paths != null &&
-              //                                 _paths!.isNotEmpty
-              //                             ? _paths!.length
-              //                             : 1,
-              //                         itemBuilder: (BuildContext context,
-              //                             int index) {
+                  // Builder(
+                  //   builder: (BuildContext context) => _isLoading
+                  //       ? Padding(
+                  //           padding: const EdgeInsets.only(bottom: 10.0),
+                  //           child: const CircularProgressIndicator(),
+                  //         )
+                  //       : _userAborted
+                  //           ? Padding(
+                  //               padding: const EdgeInsets.only(bottom: 10.0),
+                  //               child: const Text(
+                  //                 'User has aborted the dialog',
+                  //               ),
+                  //             )
+                  //           : _directoryPath != null
+                  //               ? ListTile(
+                  //                   title: const Text('Directory path'),
+                  //                   subtitle: Text(_directoryPath!),
+                  //                 )
+                  //               : _paths != null
+                  //                   ? Container(
+                  //                       padding:
+                  //                           const EdgeInsets.only(bottom: 30.0),
+                  //                       height:
+                  //                           MediaQuery.of(context).size.height *
+                  //                               0.50,
+                  //                       child: Scrollbar(
+                  //                           child: ListView.separated(
+                  //                         itemCount: _paths != null &&
+                  //                                 _paths!.isNotEmpty
+                  //                             ? _paths!.length
+                  //                             : 1,
+                  //                         itemBuilder: (BuildContext context,
+                  //                             int index) {
+                         
+                  //                           final bool isMultiPath =
+                  //                               _paths != null &&
+                  //                                   _paths!.isNotEmpty;
+                  //                           final String name =
+                  //                               'File $index: ' +
+                  //                                   (isMultiPath
+                  //                                       ? _paths!
+                  //                                           .map((e) => e.name.toString())
+                  //                                           .toList()[index]
+                  //                                       : _fileName ?? '...');
+                  //                           final path = kIsWeb
+                  //                               ? null
+                  //                               : _paths!
+                  //                                   .map((e) => e.size)
+                  //                                   .toList()[index]
+                  //                                   .toString();
+                                                 
+          
 
-              //                           final bool isMultiPath =
-              //                               _paths != null &&
-              //                                   _paths!.isNotEmpty;
-              //                           final String name =
-              //                               'File $index: ' +
-              //                                   (isMultiPath
-              //                                       ? _paths!
-              //                                           .map((e) => e.name.toString())
-              //                                           .toList()[index]
-              //                                       : _fileName ?? '...');
-              //                           final path = kIsWeb
-              //                               ? null
-              //                               : _paths!
-              //                                   .map((e) => e.size)
-              //                                   .toList()[index]
-              //                                   .toString();
-
-              //                           return ListTile(
-              //                             title: Text(
-              //                               name,
-              //                             ),
-              //                             subtitle: Text(path ?? ''),
-              //                           );
-              //                         },
-              //                         separatorBuilder:
-              //                             (BuildContext context,
-              //                                     int index) =>
-              //                                 const Divider(),
-              //                       )),
-              //                     )
-              //                   : _saveAsFileName != null
-              //                       ? ListTile(
-              //                           title: const Text('Save file'),
-              //                           subtitle: Text(_saveAsFileName!),
-              //                         )
-              //                       : const SizedBox(),
-              // ),
+                  //                           return ListTile(
+                  //                             title: Text(
+                  //                               name,
+                  //                             ),
+                  //                             subtitle: Text(path ?? ''),
+                  //                           );
+                  //                         },
+                  //                         separatorBuilder:
+                  //                             (BuildContext context,
+                  //                                     int index) =>
+                  //                                 const Divider(),
+                  //                       )),
+                  //                     )
+                  //                   : _saveAsFileName != null
+                  //                       ? ListTile(
+                  //                           title: const Text('Save file'),
+                  //                           subtitle: Text(_saveAsFileName!),
+                  //                         )
+                  //                       : const SizedBox(),
+                  // ),
               // ListView.separated(
               //                             itemCount: _paths != null &&
               //                                     _paths!.isNotEmpty
@@ -176,7 +180,7 @@ class _ChatWithSupportState extends State<ChatWithSupport> {
               //                                 : 1,
               //                             itemBuilder: (BuildContext context,
               //                                 int index) {
-
+                         
               //                               final bool isMultiPath =
               //                                   _paths != null &&
               //                                       _paths!.isNotEmpty;
@@ -193,6 +197,8 @@ class _ChatWithSupportState extends State<ChatWithSupport> {
               //                                       .map((e) => e.size)
               //                                       .toList()[index]
               //                                       .toString();
+                                                 
+          
 
               //                               return ListTile(
               //                                 title: Text(
@@ -206,94 +212,87 @@ class _ChatWithSupportState extends State<ChatWithSupport> {
               //                                         int index) =>
               //                                     const Divider(),
               // ),
-              SizedBox(
-                height: 10,
-              ),
-              ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: fileNames.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                        padding: EdgeInsets.all(6),
-                        margin: EdgeInsets.only(bottom: 10),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10))),
-                        child: ListTile(
-                          title: Text(
-                            fileNames[index],
-                            style: MasterStyle.commonTextStyle,
-                          ),
-                          trailing: IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  fileNames.removeAt(index);
-                                });
-                              },
-                              icon: Icon(Icons.close)),
-                        ));
-                  }),
+              SizedBox(height: 10,),
+                         ListView.builder(
+                           shrinkWrap: true,
+                           itemCount: fileNames.length,
+                           itemBuilder: (context ,index){
+                           return Container(
+                             padding: EdgeInsets.all(6),
+                             margin: EdgeInsets.only(bottom: 10),
+                             decoration: BoxDecoration(
+                               color: Colors.white,
+                               borderRadius: BorderRadius.all(Radius.circular(10))
+                             ),
+                             child: ListTile(title: Text(fileNames[index],style: MasterStyle.commonTextStyle,),
+                             trailing: IconButton(onPressed: (){
+                              setState(() {
+                                 fileNames.removeAt(index);
+                              });
+
+                             }, icon: Icon(Icons.close)),
+                             ));
+                         })       ,    
               InkWell(
-                  onTap: () {
+                onTap:(){
                     _pickFiles();
 // Navigator.push(context, MaterialPageRoute(builder: (context)=> FilePickerDemo()));
-                  },
-                  child: DottedWidget()),
+                },
+                child: DottedWidget()),
               ButtonWidget(formKey: _formKey)
+
             ],
           ),
         ),
       ),
     );
   }
-
-  void _pickFiles() async {
+   void _pickFiles() async {
     // _resetState();
 
-    if (fileNames.length != 5) {
-      try {
-        _directoryPath = null;
-        _paths = (await FilePicker.platform.pickFiles(
-          type: _pickingType,
-          allowMultiple: _multiPick,
-          onFileLoading: (FilePickerStatus status) => print(status),
-          allowedExtensions: (_extension?.isNotEmpty ?? false)
-              ? _extension?.replaceAll(' ', '').split(',')
-              : null,
-        ))
-            ?.files;
-      } on PlatformException catch (e) {
-        _logException('Unsupported operation' + e.toString());
-      } catch (e) {
-        _logException(e.toString());
-      }
-      if (!mounted) return;
-      setState(() {
-        _isLoading = false;
-        _fileName =
-            _paths != null ? _paths!.map((e) => e.name).toString() : '...';
-        var replace = _fileName!.replaceAll('(', '');
-        var filename = replace.replaceAll(')', '');
-        fileNames.add(filename);
-        print('object  ${_fileName}');
-        _logException(_fileName.toString());
-        _userAborted = _paths == null;
-      });
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            duration: Duration(seconds: 3),
-            backgroundColor: MasterStyle.appSecondaryColor,
-            content: Text(
-              'Attachment limit reached You can upload a maximum of 5 attachments.',
-              style: MasterStyle.whiteStyleRegularSmall,
-            )),
-      );
+    if(fileNames.length != 5){
+    try {
+      _directoryPath = null;
+      _paths = (await FilePicker.platform.pickFiles(
+        type: _pickingType,
+        allowMultiple: _multiPick,
+        onFileLoading: (FilePickerStatus status) => print(status),
+        allowedExtensions: (_extension?.isNotEmpty ?? false)
+            ? _extension?.replaceAll(' ', '').split(',')
+            : null,
+      ))
+          ?.files;
+    } on PlatformException catch (e) {
+     _logException('Unsupported operation' + e.toString());
+    } catch (e) {
+     _logException(e.toString());
+    }
+    if (!mounted) return;
+    setState(() {
+      _isLoading = false;
+      _fileName =
+          _paths != null ? _paths!.map((e) => e.name).toString() : '...';
+         var replace= _fileName!.replaceAll('(', '');
+         var filename= replace.replaceAll(')', '');
+          fileNames.add(filename);
+print('object  ${_fileName}');
+          _logException(_fileName.toString());
+      _userAborted = _paths == null;
+    });
+    }else{
+       ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+                duration: Duration(seconds: 3),
+                backgroundColor: MasterStyle.appSecondaryColor,
+                content: Text(
+                  'Attachment limit reached You can upload a maximum of 5 attachments.',
+                  style: MasterStyle.whiteStyleRegularSmall,
+                )),
+          );
     }
   }
 
-  void _logException(String message) {
+    void _logException(String message) {
     print(message);
     _scaffoldMessengerKey.currentState?.hideCurrentSnackBar();
     _scaffoldMessengerKey.currentState?.showSnackBar(
@@ -302,4 +301,5 @@ class _ChatWithSupportState extends State<ChatWithSupport> {
       ),
     );
   }
+
 }

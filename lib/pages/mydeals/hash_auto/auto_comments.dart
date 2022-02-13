@@ -3,14 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:hashching/Utilities/simplefiedwidgets.dart';
 import 'package:hashching/pages/myloans/businessloan/business_loan_personal_details.dart';
-import 'package:hashching/pages/myloans/loans_widget_expansion/loan_components.dart';
+import 'package:hashching/pages/myloans/loans_widget_expansion.dart/loan_components.dart';
 import 'package:hashching/styles/hexcolor.dart';
 import 'package:hashching/styles/masterstyle.dart';
 
 class HashAutoComments extends StatefulWidget {
-  HashAutoComments(
-      {Key? key, required this.hashCommentsController, required this.checkbox})
-      : super(key: key);
+   HashAutoComments({ Key? key,required this.hashCommentsController ,required this.checkbox}) : super(key: key);
   TextEditingController hashCommentsController;
   Checkbox checkbox;
 
@@ -24,13 +22,10 @@ class _HashAutoCommentsState extends State<HashAutoComments> {
     return ListView(
       shrinkWrap: true,
       children: [
-        Container(
-          padding: EdgeInsets.only(top: 20, left: 16, right: 16),
-          child: Text(
-            'About the vehicle ',
-            style: MasterStyle.whiteTextStyleNormal,
-          ),
-        ),
+                 Container(
+        padding: EdgeInsets.only(top: 20, left: 16, right: 16),
+        child: Text('About the vehicle ',style: MasterStyle.whiteTextStyleNormal,),
+      ),
         SimplifiedWidgets.containerBox(
           radius: 10,
           padding: EdgeInsets.all(16),
@@ -40,13 +35,14 @@ class _HashAutoCommentsState extends State<HashAutoComments> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               labelWithStyle('Comments :'),
+    
               Container(
                 padding: EdgeInsets.only(bottom: 24),
                 child: TextFormField(
                   style: MasterStyle.whiteTextInputStyle,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (value) {
-                    if (value!.trim().isEmpty) {
+                    if (value!.trim().isEmpty ) {
                       return 'Please enter valid Comments';
                     }
                     return null;
@@ -57,7 +53,7 @@ class _HashAutoCommentsState extends State<HashAutoComments> {
                   decoration: InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    hintText: 'Type your message',
+                    hintText:'Type your message',
                     hintStyle: MasterStyle.whiteHintStyle,
                     enabledBorder: SimplifiedWidgets.outlineInputBorder,
                     border: SimplifiedWidgets.outlineInputBorder,
@@ -65,33 +61,36 @@ class _HashAutoCommentsState extends State<HashAutoComments> {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Theme(
-                        data: ThemeData(
-                            unselectedWidgetColor: HexColor('#6D7B95')),
-                        child: widget.checkbox),
-                    Flexible(
-                      child: RichText(
-                          text: TextSpan(children: [
-                        textSpanNormal(text: 'I understand and accept the '),
-                        PrivacyPolicy(
-                            text: 'privacy policy ', context: context),
-                        textSpanNormal(text: 'and '),
-                        TermsAndConditions(
-                            text: 'terms of use.', context: context)
-                      ])),
-                    )
-                  ],
-                ),
-              )
+
+             Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Theme(
+                      data:
+                          ThemeData(unselectedWidgetColor: HexColor('#6D7B95')),
+                      child: widget.checkbox),
+                  Flexible(
+                    child: RichText(
+                        text: TextSpan(children: [
+                      textSpanNormal(text: 'I understand and accept the '),
+                      PrivacyPolicy(text: 'privacy policy ',context:context),
+                      textSpanNormal(text: 'and '),
+                      TermsAndConditions(text: 'terms of use.',context:context)
+                    ])),
+                  )
+                ],
+              ),
+            )
+         
+
+
             ],
           ),
         ),
       ],
     );
+  
   }
 }

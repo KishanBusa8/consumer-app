@@ -2,6 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hashching/models/consumer_brokers_list_model.dart';
 import 'package:hashching/models/consumer_dashboard_model.dart';
 import 'package:hashching/services/api_services.dart';
 import 'package:hashching/styles/masterstyle.dart';
@@ -32,8 +33,7 @@ class _VisibilitySettingsState extends State<VisibilitySettings> {
     );
     return shareConsumerDocumentServices;
   }
-
-  int i = 0;
+  int i =0;
   @override
   void initState() {
     super.initState();
@@ -42,7 +42,6 @@ class _VisibilitySettingsState extends State<VisibilitySettings> {
     }
     print('isCheckBoxList ${isSwitchList} ${isSwitchList.length}');
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -102,8 +101,8 @@ class _VisibilitySettingsState extends State<VisibilitySettings> {
                         style: MasterStyle.whiteStyleWithRegular,
                       ),
                       subtitle: Text(
-                          widget.consumerDashboardModel!
-                                  .allConsumerBrokers[index].locality +
+                          widget.consumerDashboardModel!.allConsumerBrokers[index]
+                                  .locality +
                               ', ' +
                               widget.consumerDashboardModel!
                                   .allConsumerBrokers[index].state,

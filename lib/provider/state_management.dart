@@ -61,11 +61,13 @@ class StateManagementProvider extends StatelessWidget {
                       FutureProvider<ConsumerLoansModel?>.value(
                           value: ApiServices.fetchConsumerLoansList(),
                           initialData: InitialData.consumerLoansList),
-                      FutureProvider<ConsumerNotificationsModel?>.value(
-                        initialData: ConsumerNotificationsModel(
+                    ChangeNotifierProvider<ConsumerNotificationsModel?>(
+                      create: (_) =>  ConsumerNotificationsModel(
                             consumerNotifications: [],
                             consumerNotificationsUnread: 0),
-                        value: ApiServices.fetchConsumerNotification(),
+
+                        // create: (_) => ApiServices.fetchConsumerNotification(),
+                        // value: ApiServices.fetchConsumerNotification(),
                       )
                     ],
                   builder: (context, child) {

@@ -3,8 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hashching/Utilities/simplefiedwidgets.dart';
+import 'package:hashching/models/consumer_brokers_list_model.dart';
 import 'package:hashching/models/consumer_dashboard_model.dart';
 import 'package:hashching/pages/brokers/brokerprofile.dart';
+import 'package:hashching/pages/brokers/brokerschat.dart';
 import 'package:hashching/styles/masterstyle.dart';
 import 'package:provider/provider.dart';
 
@@ -57,7 +59,7 @@ class _BrokersState extends State<Brokers> {
     );
   }
 
-  AppBar appbar(context, brokerNavigation) {
+  AppBar appbar(context,brokerNavigation) {
     return AppBar(
       centerTitle: false,
       backgroundColor: MasterStyle.backgroundColor,
@@ -84,7 +86,7 @@ class _BrokersState extends State<Brokers> {
       brokerAddress,
       profileImage,
       context,
-      required AllConsumerBrokers consumerInformation,
+    required AllConsumerBrokers  consumerInformation,
       phoneNumber}) {
     return Container(
       decoration: BoxDecoration(

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hashching/Utilities/simplefiedwidgets.dart';
 import 'package:hashching/models/carmake_model_list.dart';
+import 'package:hashching/models/carmakemodel.dart';
 import 'package:hashching/services/api_services.dart';
 import 'package:hashching/styles/masterstyle.dart';
 import 'package:intl/intl.dart';
@@ -387,15 +388,16 @@ class NewEquipmentDetailsState extends State<NewEquipmentDetails> {
                     labelWithStyle(listOfLabelNew[1]),
 
                     Container(
-                        height: 40.h,
+                      height: 40.h,
                         margin: EdgeInsets.only(bottom: 24),
                         child: DropdownButtonFormField(
-                            value: widget.carMake[1],
+                          value:widget.carMake[1],
                             validator: (value) {
                               if (value == null) {
                                 return 'please select the car';
                               }
                             },
+                          
                             selectedItemBuilder: (context) {
                               return widget.carMake
                                   .map(
@@ -425,6 +427,7 @@ class NewEquipmentDetailsState extends State<NewEquipmentDetails> {
                               ),
                               hintText: listOfHintTextNew[1],
                               hintStyle: MasterStyle.whiteHintStyle,
+                            
                               enabledBorder:
                                   SimplifiedWidgets.outlineInputBorder,
                               border: SimplifiedWidgets.outlineInputBorder,
@@ -440,6 +443,7 @@ class NewEquipmentDetailsState extends State<NewEquipmentDetails> {
                                   ),
                                 )
                                 .toList(),
+                                
                             onChanged: (value) async {
                               setState(() {
                                 widget.carMakevalue = value;

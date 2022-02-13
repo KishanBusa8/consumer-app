@@ -3,6 +3,7 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:hashching/Utilities/simplefiedwidgets.dart';
+import 'package:hashching/Utilities/validator.dart';
 import 'package:hashching/styles/hexcolor.dart';
 import 'package:hashching/styles/masterstyle.dart';
 

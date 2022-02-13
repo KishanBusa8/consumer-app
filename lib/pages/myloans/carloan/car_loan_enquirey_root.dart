@@ -14,10 +14,10 @@ import 'package:hashching/models/carmakemodel.dart';
 import 'package:hashching/models/consumer_account_model.dart';
 import 'package:hashching/models/consumer_dashboard_model.dart';
 import 'package:hashching/pages/myloans/carloan/equipment_details.dart';
-import 'package:hashching/pages/myloans/loans_widget_expansion/carloan_amount_form.dart';
-import 'package:hashching/pages/myloans/loans_widget_expansion/loan_amount_form.dart';
-import 'package:hashching/pages/myloans/loans_widget_expansion/loan_contact_form.dart';
-import 'package:hashching/pages/myloans/loans_widget_expansion/new_loan_personal_details.dart';
+import 'package:hashching/pages/myloans/loans_widget_expansion.dart/carloan_amount_form.dart';
+import 'package:hashching/pages/myloans/loans_widget_expansion.dart/loan_amount_form.dart';
+import 'package:hashching/pages/myloans/loans_widget_expansion.dart/loan_contact_form.dart';
+import 'package:hashching/pages/myloans/loans_widget_expansion.dart/new_loan_personal_details.dart';
 import 'package:hashching/provider/initialdata.dart';
 import 'package:hashching/services/api_services.dart';
 import 'package:hashching/styles/hexcolor.dart';
@@ -50,7 +50,7 @@ class _CarLoanEnquireyRootState extends State<CarLoanEnquireyRoot> {
   final equipmentDetailsKey = GlobalKey<FormState>();
   final loanAmountFormkey = GlobalKey<FormState>();
   final selectContactFormkey = GlobalKey<FormState>();
-  final personalDetailsFormkey = GlobalKey<FormState>();
+   final personalDetailsFormkey = GlobalKey<FormState>();
   TextEditingController firstNameController = TextEditingController(text: '');
   TextEditingController lastNameController = TextEditingController(text: '');
   TextEditingController emailController = TextEditingController(text: '');
@@ -73,19 +73,19 @@ class _CarLoanEnquireyRootState extends State<CarLoanEnquireyRoot> {
   bool carMakeValidate = false;
   bool carMakeModelValidate = false;
   bool carEquipmentSubmit = false;
-  bool isSendCodeLoading = false;
-  String responseId = '';
-  bool isSendCode = false;
-  bool isVerifyOtp = false;
+   bool isSendCodeLoading = false;
+     String responseId = '';
+     bool isSendCode = false;
+       bool isVerifyOtp = false;
   bool isValidOtp = false;
   bool isResend = false;
   late String consumerMobileNumber;
   List verifiedConsumer = [];
   int maxYear = 2022;
   late int currentYear;
-  final _otpFormKey = GlobalKey<FormState>();
+    final _otpFormKey = GlobalKey<FormState>();
   TextEditingController otpController = TextEditingController(text: '');
-
+ 
   range(int a, [int? stop, int? step]) {
     int start;
     if (stop == null) {
@@ -132,8 +132,7 @@ class _CarLoanEnquireyRootState extends State<CarLoanEnquireyRoot> {
     print(consumerMobileNumber);
     verifiedConsumer.add(widget.consumerAccountModel.consumer.convertMobile);
   }
-
-  otpResend(request) async {
+   otpResend(request) async {
     FocusScope.of(context).unfocus();
     setState(() {
       isResend = true;
@@ -151,7 +150,7 @@ class _CarLoanEnquireyRootState extends State<CarLoanEnquireyRoot> {
     });
   }
 
-  Future _otpInputDialog(BuildContext context) async {
+    Future _otpInputDialog(BuildContext context) async {
     var request = {"mobile": phoneController.text.substring(1)};
     return showDialog(
       context: context,
@@ -310,6 +309,7 @@ class _CarLoanEnquireyRootState extends State<CarLoanEnquireyRoot> {
     );
   }
 
+
   initialData() async {
     if (InitialData.carMakeList.length == 0) {
       setState(() {
@@ -338,8 +338,7 @@ class _CarLoanEnquireyRootState extends State<CarLoanEnquireyRoot> {
     buildYear = getSuggestions();
     super.initState();
   }
-
-  Widget phoneNumberInputField() {
+    Widget phoneNumberInputField() {
     return Container(
       padding: EdgeInsets.only(bottom: 8),
       child: TextFormField(
@@ -454,21 +453,22 @@ class _CarLoanEnquireyRootState extends State<CarLoanEnquireyRoot> {
     );
   }
 
+
   List listOfPages() {
     if (isUsedType) {
       return [
         EquipmentType(),
         DealershipType(),
-        Form(
-            key: personalDetailsFormkey,
-            child: NewLoanPersonalDetails(
-              firstNameController: firstNameController,
-              lastNameController: lastNameController,
-              emailController: emailController,
-              phoneController: phoneController,
-              sendCodeButton: sendCodeButton(),
-              phoneNumberInputField: phoneNumberInputField(),
-            )),
+            Form(
+          key: personalDetailsFormkey,
+          child: NewLoanPersonalDetails(
+            firstNameController: firstNameController,
+            lastNameController: lastNameController,
+            emailController: emailController,
+            phoneController: phoneController,
+            sendCodeButton: sendCodeButton(),
+            phoneNumberInputField: phoneNumberInputField(),
+          )),
         Form(key: equipmentDetailsKey, child: carEquipmentDetailsSection()
             //  NewEquipmentDetails(
             //   carMakevalue: carMakevalue,
@@ -497,16 +497,16 @@ class _CarLoanEnquireyRootState extends State<CarLoanEnquireyRoot> {
       return [
         EquipmentType(),
         Container(),
-        Form(
-            key: personalDetailsFormkey,
-            child: NewLoanPersonalDetails(
-              firstNameController: firstNameController,
-              lastNameController: lastNameController,
-              emailController: emailController,
-              phoneController: phoneController,
-              sendCodeButton: sendCodeButton(),
-              phoneNumberInputField: phoneNumberInputField(),
-            )),
+           Form(
+          key: personalDetailsFormkey,
+          child: NewLoanPersonalDetails(
+            firstNameController: firstNameController,
+            lastNameController: lastNameController,
+            emailController: emailController,
+            phoneController: phoneController,
+            sendCodeButton: sendCodeButton(),
+            phoneNumberInputField: phoneNumberInputField(),
+          )),
         Form(key: equipmentDetailsKey, child: carEquipmentDetailsSection()
             //  NewEquipmentDetails(
             //   carMakevalue: carMakevalue,
@@ -998,10 +998,10 @@ class _CarLoanEnquireyRootState extends State<CarLoanEnquireyRoot> {
   submitaddnewloan() async {
     var addNewLoanDetails = {
       "product_type": "Car Finance",
-      "first_name": firstNameController.text,
+      "first_name":firstNameController.text,
       "last_name": lastNameController.text,
       "email": emailController.text,
-      "mobile": phoneController.text,
+      "mobile":phoneController.text,
       "loan_amount": amountController.text.toString().replaceAll(',', ''),
       "postcode_s": postcodeController.text.toString(),
       "postcode_id": 42253,
@@ -1022,20 +1022,7 @@ class _CarLoanEnquireyRootState extends State<CarLoanEnquireyRoot> {
     };
     var addNewLoan = await ApiServices.addNewLoan(addNewLoanDetails);
     Random _rend = Random();
-    Provider.of<LoanListProvider>(context, listen: false).addsinglelist(
-        AllLoans(
-            id: _rend.nextInt(1000),
-            leadType: "New Loan",
-            productType: "Car Finance",
-            loanAmount: amountController.text.toString().replaceAll(',', ''),
-            status: 1,
-            brokerLeadID: 2,
-            createdAt: DateFormat("yyyyMMdd").format(DateTime.now()),
-            uniqueId: "42253",
-            encryptkey: "qwertyuiop",
-            loantypeshow: "Business Loan",
-            createdate: DateFormat("yyyyMMdd").format(DateTime.now()),
-            statusname: "New"));
+    Provider.of<LoanListProvider>(context, listen: false).changeListFromApi();
     print('addNewLoan : $addNewLoan');
     if (addNewLoan) {
       ApiServices.fetchConsumerLoansList();
@@ -1284,7 +1271,7 @@ class _CarLoanEnquireyRootState extends State<CarLoanEnquireyRoot> {
                                 } else if (_currentPageNotifier.value == 2) {
                                   if (personalDetailsFormkey.currentState!
                                       .validate()) {
-                                    if (consumerMobileNumber !=
+                                     if (consumerMobileNumber !=
                                         phoneController.text) {
                                       print(isSendCode);
                                       if (isSendCode) {
@@ -1304,7 +1291,7 @@ class _CarLoanEnquireyRootState extends State<CarLoanEnquireyRoot> {
                                           curve: Curves.easeIn);
                                     }
                                   } else {}
-                                } else if (_currentPageNotifier.value == 3) {
+                                }  else if (_currentPageNotifier.value == 3) {
                                   if (!isCarModelLoading) {
                                     if (equipmentDetailsKey.currentState!
                                         .validate()) {
@@ -1394,6 +1381,8 @@ class _CarLoanEnquireyRootState extends State<CarLoanEnquireyRoot> {
           })
         : SizedBox();
   }
+
+
 }
 
 var _locale = 'en';

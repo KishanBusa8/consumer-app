@@ -8,7 +8,7 @@ import 'package:hashching/Utilities/simplefiedwidgets.dart';
 import 'package:hashching/Utilities/validator.dart';
 import 'package:hashching/models/consumer_account_model.dart';
 import 'package:hashching/pages/myloans/businessloan/business_loan_personal_details.dart';
-import 'package:hashching/pages/myloans/loans_widget_expansion/loan_components.dart';
+import 'package:hashching/pages/myloans/loans_widget_expansion.dart/loan_components.dart';
 import 'package:hashching/services/api_services.dart';
 import 'package:hashching/styles/hexcolor.dart';
 import 'package:hashching/styles/masterstyle.dart';
@@ -57,8 +57,8 @@ class _HashConnectEnquireyState extends State<HashConnectEnquirey> {
   }
 
   initData() {
-    firstNameController.text = widget.consumerAccountModel.consumer.firstName;
-    lastNameController.text = widget.consumerAccountModel.consumer.lastName!;
+    firstNameController.text = widget.consumerAccountModel.consumer.firstName ;
+      lastNameController.text =  widget.consumerAccountModel.consumer.lastName!;
     emailController.text = widget.consumerAccountModel.consumer.email;
     phoneController.text = widget.consumerAccountModel.consumer.mobile;
     consumerMobileNumber = widget.consumerAccountModel.consumer.mobile;
@@ -307,8 +307,8 @@ class _HashConnectEnquireyState extends State<HashConnectEnquirey> {
         await ApiServices.addNewHashConnect(addHashConnectDetails);
     print('addNewHashConnect : $addNewHashConnect');
     if (addNewHashConnect) {
-      snackBar('successfully submitted');
-      //   await  ApiServices.fetchHashConvenyancingList();
+       snackBar('successfully submitted');
+  //   await  ApiServices.fetchHashConvenyancingList();
       setState(() {
         isSubmitting = false;
       });
@@ -345,8 +345,9 @@ class _HashConnectEnquireyState extends State<HashConnectEnquirey> {
       bottomNavigationBar: bottomNavigationBar(),
       body: Container(
         child: Form(
-            key: hashConnectPersonalInfoFormKey, child: hashPersonalDetails()
-
+            key: hashConnectPersonalInfoFormKey,
+            child:  hashPersonalDetails()
+            
             //  HashConnectPersonalDetailsForm(
             //   phoneController: phoneController,
             //   emailController: emailController,
@@ -361,8 +362,7 @@ class _HashConnectEnquireyState extends State<HashConnectEnquirey> {
       ),
     );
   }
-
-  Widget hashPersonalDetails() {
+  Widget hashPersonalDetails(){
     return ListView(
       shrinkWrap: true,
       children: [
@@ -393,7 +393,7 @@ class _HashConnectEnquireyState extends State<HashConnectEnquirey> {
                     }
                     return null;
                   },
-                  controller: firstNameController,
+                  controller:firstNameController,
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(
                     contentPadding:
@@ -406,7 +406,7 @@ class _HashConnectEnquireyState extends State<HashConnectEnquirey> {
                   ),
                 ),
               ),
-              labelWithStyle('Last name :'),
+                   labelWithStyle('Last name :'),
               Container(
                 padding: EdgeInsets.only(bottom: 24),
                 child: TextFormField(
@@ -458,19 +458,18 @@ class _HashConnectEnquireyState extends State<HashConnectEnquirey> {
               ),
               labelWithStyle('Phone no :'),
               phoneNumberInputField(),
-              sendCodeButton(),
+             sendCodeButton(),
               labelWithStyle('Your suburb/postcode :'),
               Container(
                 padding: EdgeInsets.only(bottom: 10),
                 child: TypeAheadFormField(
                   minCharsForSuggestions: 3,
-                  suggestionsBoxDecoration:
-                      SuggestionsBoxDecoration(hasScrollbar: true),
+                  suggestionsBoxDecoration: SuggestionsBoxDecoration (hasScrollbar: true),
                   loadingBuilder: (context) {
                     return Center(
                       child: CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation(
-                            MasterStyle.appSecondaryColor),
+                        valueColor:
+                            AlwaysStoppedAnimation(MasterStyle.appSecondaryColor),
                       ),
                     );
                   },
@@ -479,7 +478,8 @@ class _HashConnectEnquireyState extends State<HashConnectEnquirey> {
                   hideOnLoading: false,
                   textFieldConfiguration: TextFieldConfiguration(
                       onSubmitted: (value) {
-                        setState(() {});
+                        setState(() {
+                        });
                       },
                       controller: postcodeController,
                       style: MasterStyle.whiteTextInputStyle,
@@ -494,6 +494,7 @@ class _HashConnectEnquireyState extends State<HashConnectEnquirey> {
                         focusedBorder: SimplifiedWidgets.outlineInputBorder,
                       )),
                   suggestionsCallback: (pattern) async {
+    
                     return await ApiServices.getSuggestions(pattern);
                   },
                   itemBuilder: (context, Map<String, String> suggestion) {
@@ -519,13 +520,13 @@ class _HashConnectEnquireyState extends State<HashConnectEnquirey> {
                     if (suggestion['status'] == "true") {
                       setState(() {
                         var postCodeSuggestion = suggestion['suggestions']!;
-                        postcodeController.text = postCodeSuggestion;
+                       postcodeController.text = postCodeSuggestion;
                       });
                     } else {}
                   },
                 ),
               ),
-              Padding(
+     Padding(
                 padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
@@ -533,7 +534,7 @@ class _HashConnectEnquireyState extends State<HashConnectEnquirey> {
                     Theme(
                         data: ThemeData(
                             unselectedWidgetColor: HexColor('#6D7B95')),
-                        child: _checkBox()),
+                        child:  _checkBox()),
                     Flexible(
                       child: RichText(
                           text: TextSpan(children: [
@@ -549,9 +550,11 @@ class _HashConnectEnquireyState extends State<HashConnectEnquirey> {
             ],
           ),
         ),
-        SizedBox(height: 100)
+        SizedBox(height:100)
+    
       ],
     );
+ 
   }
 
   Checkbox _checkBox() {

@@ -2,9 +2,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:hashching/Utilities/assigned_loan_process_timeline.dart';
+import 'package:hashching/Utilities/constants.dart';
+import 'package:hashching/Utilities/newloan_process_timeline.dart';
 import 'package:hashching/Utilities/simplefiedwidgets.dart';
 import 'package:hashching/Utilities/sizedbox.dart';
+import 'package:hashching/models/consumer_dashboard_model.dart';
+import 'package:hashching/models/newloan_enquirey_model.dart';
+import 'package:hashching/pages/brokers/brokerschat.dart';
 import 'package:hashching/pages/myloans/enquirey_details/assigned_loan_enquirey_report.dart';
+import 'package:hashching/pages/myloans/enquirey_details/newloan_enquirey_report.dart';
 import 'package:hashching/pages/myloans/enquirey_details/newloan_enquirey_timeline.dart';
 import 'package:hashching/services/api_services.dart';
 import 'package:hashching/styles/masterstyle.dart';
@@ -134,48 +140,43 @@ class _AssignedLoanEnquireyDetailsState
                             color: MasterStyle.dashColor,
                             thickness: 1,
                           ),
-                          loanEnquireyModel['loan']
-                                      ['lead_details_mystro_requested'] ||
-                                  loanEnquireyModel['loan']
-                                      ['bank_statement_request']
-                              ? InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      isClickToComplete = !isClickToComplete;
-                                    });
-                                  },
-                                  child: Card(
-                                    elevation: 0,
-                                    margin: EdgeInsets.only(top: 12, bottom: 8),
-                                    color: MasterStyle.appSecondaryColor,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(6),
-                                    ),
-                                    child: Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 18, vertical: 6),
-                                      child: Column(children: [
-                                        Text(
-                                          'Click to complete',
-                                          style: MasterStyle.whiteTextLatoBold,
-                                        ),
-                                        SizedBox(
-                                          height: 8,
-                                        ),
-                                        Text(
-                                          'You have outstanding tasks to complete for your home loan enquiry',
-                                          textAlign: TextAlign.center,
-                                          style: MasterStyle
-                                              .whiteStyleRegularSmallNormal,
-                                        ),
-                                      ]),
-                                    ),
+                      loanEnquireyModel['loan']['lead_details_mystro_requested']|| loanEnquireyModel['loan']['bank_statement_request']
+                          ?InkWell(
+                            onTap: () {
+                              setState(() {
+                                isClickToComplete = !isClickToComplete;
+                              });
+                            },
+                            child: Card(
+                              elevation: 0,
+                              margin: EdgeInsets.only(top: 12, bottom: 8),
+                              color: MasterStyle.appSecondaryColor,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 18, vertical: 6),
+                                child: Column(children: [
+                                  Text(
+                                    'Click to complete',
+                                    style: MasterStyle.whiteTextLatoBold,
                                   ),
-                                )
-                              : SizedBox(),
+                                  SizedBox(
+                                    height: 8,
+                                  ),
+                                  Text(
+                                    'You have outstanding tasks to complete for your home loan enquiry',
+                                    textAlign: TextAlign.center,
+                                    style: MasterStyle
+                                        .whiteStyleRegularSmallNormal,
+                                  ),
+                                ]),
+                              ),
+                            ),
+                          ) :SizedBox(),
                           isClickToComplete
-                              ? completeLoanEnquireyCard(
-                                  loanEnquireyModel['loan'])
+                              ? completeLoanEnquireyCard(loanEnquireyModel['loan'])
                               : SizedBox(
                                   height: 8,
                                 ),
@@ -269,40 +270,35 @@ class _AssignedLoanEnquireyDetailsState
               height: 6,
             ),
           ),
-          loanEnquireyModel['mystro_services_list'].length != 0
-              ? ListView.separated(
-                  itemBuilder: (context, index) {
-                    return InkWell(
-                        onTap: () {
-                          SimplifiedWidgets.launchInBrowser(
-                              loanEnquireyModel['mystro_services_list'][index]
-                                  ['iframe_link'],
-                              context);
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(top: 16, bottom: 8),
-                              child: Text(
-                                loanEnquireyModel['mystro_services_list'][index]
-                                    ['title'],
-                                style: MasterStyle
-                                    .appBarSecondaryTextWithOpacityStyle,
-                              ),
-                            ),
-                          ],
-                        ));
-                  },
-                  separatorBuilder: (context, index) {
-                    return Container(
-                      height: 1,
-                      color: MasterStyle.customGreyColor,
-                    );
-                  },
-                  itemCount: loanEnquireyModel['mystro_services_list'].length,
-                )
-              : SizedBox(),
+          loanEnquireyModel['mystro_services_list'].length !=0?  ListView.separated(itemBuilder: (context ,index){
+            return InkWell(
+                onTap: () {
+                  SimplifiedWidgets.launchInBrowser(
+                      loanEnquireyModel['mystro_services_list'][index]['iframe_link'], context);
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(top: 16, bottom: 8),
+                      child: Text(
+                        loanEnquireyModel['mystro_services_list'][index]['title'],
+                        style: MasterStyle.appBarSecondaryTextWithOpacityStyle,
+                      ),
+                    ),
+                  ],
+                ));
+
+          }, separatorBuilder: (context,index){
+            return Container(
+              height: 1,
+              color:  MasterStyle.customGreyColor,
+            );
+          }, itemCount: loanEnquireyModel['mystro_services_list'].length,
+          ):SizedBox(),
+
+
+
         ],
       ),
     );
@@ -326,8 +322,7 @@ class _AssignedLoanEnquireyDetailsState
             title,
             style: isClick
                 ? MasterStyle.appBarSecondaryBoldStyle
-                : MasterStyle.unselectstatusStyle
-                    .merge(TextStyle(color: Colors.grey)),
+                : MasterStyle.unselectstatusStyle.merge(TextStyle(color:Colors.grey)),
           ),
         ),
       ),
