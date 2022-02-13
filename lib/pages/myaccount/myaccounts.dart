@@ -8,7 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:hashching/Utilities/constants.dart';
 import 'package:hashching/Utilities/simplefiedwidgets.dart';
 import 'package:hashching/models/consumer_account_model.dart';
-import 'package:hashching/models/consumer_dashboard_model.dart';
+import 'package:hashching/models/consumer_dashboard.dart';
 import 'package:hashching/models/consumer_details_model.dart';
 import 'package:hashching/models/consumer_documet_list_model.dart';
 import 'package:hashching/models/rewards_model.dart';
@@ -118,23 +118,9 @@ class _MyAccountState extends State<MyAccount> {
                           builder: (context) => MyAccountSettings(
                                 consumerInformation: consumerDetailsProvider,
                                 consumerAccount: consumerAccountModelProvider,
-                              ))).then((value) async {
-                                print("values ${ value}");
-                                if (value != null) {
-
-                                  // Provider.of<ConsumerDetailsModel>(context, listen: false).consumerDetails.firstName = value["firstName"];
-                                  // Provider.of<ConsumerAccountModel>(context, listen: false).consumer.firstName = value["firstName"];
-                                  consumerAccountModelProvider.consumer.firstName = value["firstName"];
-                                  consumerAccountModelProvider.consumer.lastName = value["lastName"];
-                                  consumerAccountModelProvider.consumer.mobile = value["mobile"];
-                                  consumerAccountModelProvider.consumer.email = value["email"];
-                                  consumerAccountModelProvider.consumer.profilePic = value["profilePicLink"];
-                                  consumerDetailsProvider.guidesTips = value["guide_and_tips"];
-                                  consumerDetailsProvider.smsMarketing = value["smsMarketing"];
-                                  consumerDetailsProvider.necessaryMessages = value["necessaryMessages"];
-                                  consumerDetailsProvider.emailMarketing = value["emailMarketing"];
-                                }
+                              ))).then((value) {
                                 setState(() {
+                                  consumerAccountModelProvider.consumer.profilePic = value;
                                 });
                   });
                 },
@@ -176,7 +162,7 @@ class _MyAccountState extends State<MyAccount> {
                                             .consumer.firstName +
                                         ' ' +
                                         consumerAccountModelProvider
-                                            .consumer.lastName!,
+                                            .consumer.lastName,
                                     style: MasterStyle.lightBlackBoldStyle,
                                   ),
                                 ),

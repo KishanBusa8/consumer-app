@@ -10,7 +10,7 @@ import 'package:hashching/Utilities/simplefiedwidgets.dart';
 import 'package:hashching/Utilities/validator.dart';
 import 'package:hashching/listprovider/loadnlist_provider.dart';
 import 'package:hashching/models/consumer_account_model.dart';
-import 'package:hashching/models/consumer_dashboard_model.dart';
+import 'package:hashching/models/consumer_dashboard.dart';
 import 'package:hashching/pages/myaccount/settings.dart';
 import 'package:hashching/pages/myloans/loans_widget_expansion.dart/new_loan_personal_details.dart';
 import 'package:hashching/pages/myloans/loans_widget_expansion.dart/loan_amount_form.dart';
@@ -64,16 +64,12 @@ class _HomeLoanEnquireyState extends State<HomeLoanEnquirey>
   TextEditingController phoneController = TextEditingController(text: '');
   TextEditingController amountController = TextEditingController();
   TextEditingController postcodeController = TextEditingController();
-  TextEditingController lenderController = TextEditingController();
   late String consumerMobileNumber;
   bool isVerifyOtp = false;
   bool isValidOtp = false;
   bool isResend = false;
   final _otpFormKey = GlobalKey<FormState>();
   TextEditingController otpController = TextEditingController(text: '');
-  String? selectedLender;
-  List<String> lenderModelList = [];
-
   otpResend(request) async {
     FocusScope.of(context).unfocus();
     setState(() {
@@ -93,15 +89,8 @@ class _HomeLoanEnquireyState extends State<HomeLoanEnquirey>
   }
 
   initData() {
-    lenderModelList = [
-      "CBA",
-      "NAB",
-      "ANZ",
-      "Westpac",
-      "Other",
-    ];
     firstNameController.text = widget.consumerAccountModel.consumer.firstName;
-    lastNameController.text = widget.consumerAccountModel.consumer.lastName!;
+    lastNameController.text = widget.consumerAccountModel.consumer.lastName;
     emailController.text = widget.consumerAccountModel.consumer.email;
     phoneController.text = widget.consumerAccountModel.consumer.convertMobile;
     consumerMobileNumber = widget.consumerAccountModel.consumer.convertMobile;
@@ -422,13 +411,8 @@ class _HomeLoanEnquireyState extends State<HomeLoanEnquirey>
           key: loanAmountFormkey,
           child: LoanAmountForm(
             amountController: amountController,
-            lenderController: lenderController,
             postcodeController: postcodeController,
-            lenderModelList: lenderModelList,
-            selectedLender: selectedLender,
-            showDropDown: isRefinance,
           )),
-
       Form(
           key: selectContactFormkey,
           child: LoanContactForm(
@@ -563,11 +547,8 @@ class _HomeLoanEnquireyState extends State<HomeLoanEnquirey>
 
                         // if (!isLiveIn) {
                         isLiveIn = !isLiveIn;
-
                         isInverst = false;
-                        print("isLive $isLiveIn");
-                        setState(() {
-                        });
+                        print("isLive");
                         // }
                       });
                     },
@@ -691,7 +672,7 @@ class _HomeLoanEnquireyState extends State<HomeLoanEnquirey>
       "email": emailController.text,
       "mobile": phoneController.text,
       "estimated_property_value": "400324",
-      "loan_amount": amountController.text.toString().replaceAll(',', ''),
+      "loan_amount": amountController.text.toString(),
       "postcode_s": postcodeController.text.toString(),
       "postcode_id": "42253",
       "suburb": postcodeController.text.toString(),
@@ -702,11 +683,24 @@ class _HomeLoanEnquireyState extends State<HomeLoanEnquirey>
       "terms_and_conditions": isCheckBox ? "1" : "0",
       "postcode": postcodeController.text.toString(),
       "timezoneoffset": "-330",
-      "current_lender": lenderController.text
+      "current_lender": "buyer"
     };
     var addNewLoan = await ApiServices.addNewLoan(addNewLoanDetails);
     Random _rend = Random();
-    Provider.of<LoanListProvider>(context, listen: false).changeListFromApi();
+    Provider.of<LoanListProvider>(context, listen: false).addsinglelist(
+        AllLoans(
+            id: _rend.nextInt(1000),
+            leadType: isNewLoan ? "New Loan" : "Refinance",
+            productType: "Home Loan",
+            loanAmount: amountController.text.toString(),
+            status: isNewLoan ? 1 : 0,
+            brokerLeadID: 2,
+            createdAt: DateFormat("yyyyMMdd").format(DateTime.now()),
+            uniqueId: "42253",
+            encryptkey: "qwertyuiop",
+            loantypeshow: "Home Loan",
+            createdate: DateFormat("yyyyMMdd").format(DateTime.now()),
+            statusname: "New"));
     print('addNewLoan : $addNewLoan');
     if (addNewLoan) {
       ApiServices.fetchConsumerLoansList();
@@ -917,14 +911,4 @@ class _HomeLoanEnquireyState extends State<HomeLoanEnquirey>
           })
         : SizedBox();
   }
-}
-class LenderModel {
-  String id;
-  String name;
-  @override
-  String toString() {
-    return '$id $name';
-  }
-  LenderModel(this.id, this.name);
-
 }

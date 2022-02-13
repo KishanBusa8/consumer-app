@@ -1,9 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:hashching/Utilities/constants.dart';
-import 'package:hashching/models/consumer_dashboard_model.dart';
+import 'package:hashching/models/consumer_dashboard.dart';
 import 'package:hashching/models/consumer_documet_list_model.dart';
-import 'package:hashching/models/consumer_setting_model.dart';
 import 'package:hashching/models/rewards_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
@@ -77,7 +76,6 @@ class _MyAccountSettingsState extends State<MyAccountSettings> {
   String imageName = '';
   String imagePath = '';
   bool imageSelection = false;
-  late ConsumerSettingModel consumerSettingModel;
 
   _handleImage(ImageSource source) async {
     setState(() {
@@ -96,21 +94,6 @@ class _MyAccountSettingsState extends State<MyAccountSettings> {
       imageSelection = false;
     });
   }
- late ConsumerDetailsModel consumerDetailsModel;
-  getMarketingPreferences() async {
-    // consumerDetailsModel = (await ApiServices.getConsumerSettings())!;
-
-    isSwitchTheme = widget.consumerInformation.darkTheme!;
-    isSwitchGuideAndTips = widget.consumerInformation.guidesTips!;
-    isSwitchEmailMarket = widget.consumerInformation.emailMarketing!;
-    isSwitchSmsMarket = widget.consumerInformation.smsMarketing!;
-    isSwitchNecessaryMessage = widget.consumerInformation.necessaryMessages!;
-    setState(() {
-
-    });
-  }
-
-
 
   updatedConsumerProfileSettings(bool isMainProfileupdated) async {
     //     File file = File(image!.path);
@@ -151,21 +134,7 @@ class _MyAccountSettingsState extends State<MyAccountSettings> {
 
     if (profileUpdated!.status) {
       if (isMainProfileupdated) {
-        Map data = {
-          "firstName" : firstNameController.text,
-          "lastName" : lastNameController.text,
-          "email" : emailController.text,
-          "mobile" : phoneController.text,
-          "profilePicLink": imagePath != ''
-              ? "https://s3-ap-southeast-2.amazonaws.com/hashching/uploads/cropper_images/${imagePath}"
-              : widget.consumerInformation.consumerDetails.profilePicLink,
-          'guide_and_tips' : isSwitchGuideAndTips,
-          'smsMarketing' : isSwitchSmsMarket,
-          'necessaryMessages' : isSwitchNecessaryMessage,
-          'emailMarketing' : isSwitchEmailMarket,
-        };
-        // print();
-        Navigator.pop(context, data);
+        Navigator.pop(context, "https://s3-ap-southeast-2.amazonaws.com/hashching/uploads/cropper_images/$imagePath");
         snackBar("You have successfully updated your profile!");
       }
       print('profile Updated Successfully');
@@ -220,7 +189,7 @@ class _MyAccountSettingsState extends State<MyAccountSettings> {
                 padding: const EdgeInsets.only(
                     left: 25, right: 22, bottom: 16, top: 4),
                 child: Text(
-                  'Enter the OTP sent to ${widget.consumerInformation.consumerDetails.mobile}',
+                  'Enter the OTP sent to +61${widget.consumerInformation.consumerDetails.mobile}',
                   style: MasterStyle.blackWithSmallStyle,
                 ),
               ),
@@ -341,20 +310,7 @@ class _MyAccountSettingsState extends State<MyAccountSettings> {
 
                           isVerifyOtp = true;
                         });
-                        Map data = {
-                          "firstName" : firstNameController.text,
-                          "lastName" : lastNameController.text,
-                          "email" : emailController.text,
-                          "mobile" : phoneController.text,
-                          "profilePicLink": imagePath != ''
-                              ? "https://s3-ap-southeast-2.amazonaws.com/hashching/uploads/cropper_images/${imagePath}"
-                              : widget.consumerInformation.consumerDetails.profilePicLink,
-                          'guide_and_tips' : isSwitchGuideAndTips,
-                          'smsMarketing' : isSwitchSmsMarket,
-                          'necessaryMessages' : isSwitchNecessaryMessage,
-                          'emailMarketing' : isSwitchEmailMarket,
-                        };
-                        Navigator.pop(context,data);
+                        Navigator.pop(context);
                       } else {}
                     },
                   )
@@ -397,14 +353,17 @@ class _MyAccountSettingsState extends State<MyAccountSettings> {
   @override
   void initState() {
     getPrefData();
-    getMarketingPreferences();
-
-    emailController.text = widget.consumerAccount.consumer.email;
-    phoneController.text = widget.consumerAccount.consumer.mobile;
+    isSwitchTheme = widget.consumerInformation.darkTheme;
+    isSwitchGuideAndTips = widget.consumerInformation.guidesTips;
+    isSwitchEmailMarket = widget.consumerInformation.emailMarketing;
+    isSwitchSmsMarket = widget.consumerInformation.smsMarketing;
+    isSwitchNecessaryMessage = widget.consumerInformation.necessaryMessages;
+    emailController.text = widget.consumerInformation.consumerDetails.email;
+    phoneController.text = widget.consumerInformation.consumerDetails.mobile;
     firstNameController.text =
-        widget.consumerAccount.consumer.firstName;
+        widget.consumerInformation.consumerDetails.firstName;
     lastNameController.text =
-        widget.consumerAccount.consumer.lastName!;
+        widget.consumerInformation.consumerDetails.lastName;
     super.initState();
   }
 
@@ -428,20 +387,7 @@ class _MyAccountSettingsState extends State<MyAccountSettings> {
           ),
           leading: IconButton(
               onPressed: () {
-                Map data = {
-                  "firstName" : firstNameController.text,
-                  "lastName" : lastNameController.text,
-                  "email" : emailController.text,
-                  "mobile" : phoneController.text,
-                  "profilePicLink": imagePath != ''
-                      ? "https://s3-ap-southeast-2.amazonaws.com/hashching/uploads/cropper_images/${imagePath}"
-                      : widget.consumerInformation.consumerDetails.profilePicLink,
-                  'guide_and_tips' : isSwitchGuideAndTips,
-                  'smsMarketing' : isSwitchSmsMarket,
-                  'necessaryMessages' : isSwitchNecessaryMessage,
-                  'emailMarketing' : isSwitchEmailMarket,
-                };
-                Navigator.pop(context,data);
+                Navigator.pop(context);
               },
               icon: Icon(Icons.arrow_back_ios,
                   color: MasterStyle.appBarIconColor)),
@@ -460,221 +406,202 @@ class _MyAccountSettingsState extends State<MyAccountSettings> {
             )
           ],
         ),
-        body: WillPopScope(
-          onWillPop: () {
-            Map data = {
-              "firstName" : firstNameController.text,
-              "lastName" : lastNameController.text,
-              "email" : emailController.text,
-              "mobile" : phoneController.text,
-              "profilePicLink": imagePath != ''
-                  ? "https://s3-ap-southeast-2.amazonaws.com/hashching/uploads/cropper_images/${imagePath}"
-                  : widget.consumerInformation.consumerDetails.profilePicLink,
-              'guide_and_tips' : isSwitchGuideAndTips,
-              'smsMarketing' : isSwitchSmsMarket,
-              'necessaryMessages' : isSwitchNecessaryMessage,
-              'emailMarketing' : isSwitchEmailMarket,
-            };
-            Navigator.pop(context,data);
-            return Future.value(false);
-          },
-          child: Container(
-            margin: EdgeInsets.only(left: 16, right: 16, bottom: 0),
-            child: ListView(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Column(
-                      children: [
-                        Stack(
-                          alignment: Alignment.bottomLeft,
-                          children: [
-                            Container(
-                              height: 130.h,
-                              child: widget.consumerAccount.consumer.profilePic !=
-                                      ''
-                                  ? Container(
-                                height: 114.h,
-                                width: 114.w,
-                                decoration: BoxDecoration(
-                                    color: MasterStyle.whiteColor,
-                                    shape: BoxShape.circle),
-                                padding: EdgeInsets.all(1),
-                                child: CircleAvatar(
-                                    backgroundColor: Colors.white,
-                                    backgroundImage: NetworkImage(
-                                      widget.consumerAccount.consumer.profilePic,
-                                    ),),
-                              )
-                                  : !InitialData.isImageSelected
-                                      ? Container(
-                                          height: 114.h,
-                                          width: 114.w,
-                                          decoration: BoxDecoration(
-                                              color: Colors.grey[200],
-                                              shape: BoxShape.circle),
-                                          padding: EdgeInsets.all(1),
-                                          child: Center(
-                                              child: Text(
-                                            widget.consumerAccount
-                                                .consumer.firstName
-                                                .split("")
-                                                .first,
-                                            style: MasterStyle.dashbordHeader
-                                                .merge(TextStyle(
-                                                    color:
-                                                        MasterStyle.thedaryColor,
-                                                    fontSize: 60.sp)),
-                                          )))
-                                      : Container(
-                                          height: 114.h,
-                                          width: 114.w,
-                                          decoration: BoxDecoration(
-                                              color: MasterStyle.whiteColor,
-                                              shape: BoxShape.circle),
-                                          padding: EdgeInsets.all(1),
-                                          child: CircleAvatar(
-                                              backgroundColor: Colors.white,
-                                              backgroundImage: FileImage(
-                                                InitialData.image!,
-                                              )),
-                                        ),
-                            ),
-                            Positioned(
-                              right: 16,
-                              bottom: 6,
-                              left: MediaQuery.of(context).orientation ==
-                                      Orientation.landscape
-                                  ? 95
-                                  : null,
-                              child: InkWell(
-                                onTap: () {
-                                  //   _bottomSheet(context);
-                                  _handleImage(ImageSource.gallery);
-                                },
-                                child: Container(
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        shape: BoxShape.circle),
-                                    padding: EdgeInsets.all(4),
-                                    child: Icon(Icons.camera_alt_outlined,
-                                        color: MasterStyle.appIconColor,
-                                        size: 14)),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 4, bottom: 8),
-                          child: Text(
-                            widget.consumerAccount.consumer.uniqueId,
-                            style: MasterStyle.whiteStyleOpacityWithRegular,
+        body: Container(
+          margin: EdgeInsets.only(left: 16, right: 16, bottom: 0),
+          child: ListView(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Column(
+                    children: [
+                      Stack(
+                        alignment: Alignment.bottomLeft,
+                        children: [
+                          Container(
+                            height: 130.h,
+                            child: widget.consumerAccount.consumer.profilePic !=
+                                    ''
+                                ? Container(
+                              height: 114.h,
+                              width: 114.w,
+                              decoration: BoxDecoration(
+                                  color: MasterStyle.whiteColor,
+                                  shape: BoxShape.circle),
+                              padding: EdgeInsets.all(1),
+                              child: CircleAvatar(
+                                  backgroundColor: Colors.white,
+                                  backgroundImage: NetworkImage(
+                                    widget.consumerAccount.consumer.profilePic,
+                                  ),),
+                            )
+                                : !InitialData.isImageSelected
+                                    ? Container(
+                                        height: 114.h,
+                                        width: 114.w,
+                                        decoration: BoxDecoration(
+                                            color: Colors.grey[200],
+                                            shape: BoxShape.circle),
+                                        padding: EdgeInsets.all(1),
+                                        child: Center(
+                                            child: Text(
+                                          widget.consumerInformation
+                                              .consumerDetails.firstName
+                                              .split("")
+                                              .first,
+                                          style: MasterStyle.dashbordHeader
+                                              .merge(TextStyle(
+                                                  color:
+                                                      MasterStyle.thedaryColor,
+                                                  fontSize: 60.sp)),
+                                        )))
+                                    : Container(
+                                        height: 114.h,
+                                        width: 114.w,
+                                        decoration: BoxDecoration(
+                                            color: MasterStyle.whiteColor,
+                                            shape: BoxShape.circle),
+                                        padding: EdgeInsets.all(1),
+                                        child: CircleAvatar(
+                                            backgroundColor: Colors.white,
+                                            backgroundImage: FileImage(
+                                              InitialData.image!,
+                                            )),
+                                      ),
                           ),
+                          Positioned(
+                            right: 16,
+                            bottom: 6,
+                            left: MediaQuery.of(context).orientation ==
+                                    Orientation.landscape
+                                ? 95
+                                : null,
+                            child: InkWell(
+                              onTap: () {
+                                //   _bottomSheet(context);
+                                _handleImage(ImageSource.gallery);
+                              },
+                              child: Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      shape: BoxShape.circle),
+                                  padding: EdgeInsets.all(4),
+                                  child: Icon(Icons.camera_alt_outlined,
+                                      color: MasterStyle.appIconColor,
+                                      size: 14)),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4, bottom: 8),
+                        child: Text(
+                          widget.consumerAccount.consumer.uniqueId,
+                          style: MasterStyle.whiteStyleOpacityWithRegular,
                         ),
-                        Text(
-                          widget.consumerAccount.consumer.firstName +
-                              ' ' +
-                              widget.consumerAccount.consumer.lastName!,
-                          style: MasterStyle.whiteTextStyleMedium,
+                      ),
+                      Text(
+                        widget.consumerInformation.consumerDetails.firstName +
+                            ' ' +
+                            widget.consumerInformation.consumerDetails.lastName,
+                        style: MasterStyle.whiteTextStyleMedium,
+                      )
+                    ],
+                  )
+                ],
+              ),
+              Container(
+                margin: EdgeInsets.fromLTRB(0, 32, 0, 16),
+                padding: EdgeInsets.fromLTRB(16, 13, 16, 20),
+                decoration: boxCurvedDecoration,
+                child: NewColumn(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    textFormLabel('First Name'),
+                    firstNameTextField(
+                        firstNameController, isFirstNameInputField),
+                    Divider(
+                      height: 1.4,
+                      thickness: 1,
+                      color: MasterStyle.formBorderColor,
+                    ),
+                    SizedBox(
+                      height: 13,
+                    ),
+                    textFormLabel('Last Name'),
+                    lastNameTextField(lastNameController, isLastNameInputField),
+                    Divider(
+                      height: 1.4,
+                      thickness: 1,
+                      color: MasterStyle.formBorderColor,
+                    ),
+                    SizedBox(
+                      height: 13,
+                    ),
+                    textFormLabel('Email'),
+                    emailTextField(emailController, isEmailInputField),
+                    Divider(
+                      height: 1.4,
+                      thickness: 1,
+                      color: MasterStyle.formBorderColor,
+                    ),
+                    SizedBox(
+                      height: 13,
+                    ),
+                    textFormLabel('Phone'),
+                    phoneTextField(
+                      phoneController,
+                      isPhoneInputField,
+                    ),
+                    Divider(
+                      height: 1.4,
+                      thickness: 1,
+                      color: MasterStyle.formBorderColor,
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                decoration: boxCurvedDecoration,
+                padding: EdgeInsets.fromLTRB(16, 13, 16, 20),
+                child: NewColumn(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Switch Theme'),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                            child: Text('Switch your dashboard to light mode')),
+                        SizedBox(
+                          width: 16,
+                        ),
+                        Transform.scale(
+                          transformHitTests: false,
+                          scale: .54,
+                          child: CupertinoSwitch(
+                            value: isSwitchTheme,
+                            onChanged: (isChange) {
+                              setState(() {
+                                isSwitchTheme = !isSwitchTheme;
+                              });
+                            },
+                            activeColor: Colors.green,
+                            trackColor: MasterStyle.switchTileTrackColor,
+                          ),
                         )
                       ],
                     )
                   ],
                 ),
-                Container(
-                  margin: EdgeInsets.fromLTRB(0, 32, 0, 16),
-                  padding: EdgeInsets.fromLTRB(16, 13, 16, 20),
-                  decoration: boxCurvedDecoration,
-                  child: NewColumn(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      textFormLabel('First Name'),
-                      firstNameTextField(
-                          firstNameController, isFirstNameInputField),
-                      Divider(
-                        height: 1.4,
-                        thickness: 1,
-                        color: MasterStyle.formBorderColor,
-                      ),
-                      SizedBox(
-                        height: 13,
-                      ),
-                      textFormLabel('Last Name'),
-                      lastNameTextField(lastNameController, isLastNameInputField),
-                      Divider(
-                        height: 1.4,
-                        thickness: 1,
-                        color: MasterStyle.formBorderColor,
-                      ),
-                      SizedBox(
-                        height: 13,
-                      ),
-                      textFormLabel('Email'),
-                      emailTextField(emailController, isEmailInputField),
-                      Divider(
-                        height: 1.4,
-                        thickness: 1,
-                        color: MasterStyle.formBorderColor,
-                      ),
-                      SizedBox(
-                        height: 13,
-                      ),
-                      textFormLabel('Phone'),
-                      phoneTextField(
-                        phoneController,
-                        isPhoneInputField,
-                      ),
-                      Divider(
-                        height: 1.4,
-                        thickness: 1,
-                        color: MasterStyle.formBorderColor,
-                      ),
-                    ],
-                  ),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(
+                  vertical: 16,
                 ),
-                // Container(
-                //   decoration: boxCurvedDecoration,
-                //   padding: EdgeInsets.fromLTRB(16, 13, 16, 20),
-                //   child: NewColumn(
-                //     crossAxisAlignment: CrossAxisAlignment.start,
-                //     children: [
-                //       Text('Switch Theme'),
-                //       Row(
-                //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //         children: [
-                //           Expanded(
-                //               child: Text('Switch your dashboard to light mode')),
-                //           SizedBox(
-                //             width: 16,
-                //           ),
-                //           Transform.scale(
-                //             transformHitTests: false,
-                //             scale: .54,
-                //             child: CupertinoSwitch(
-                //               value: isSwitchTheme,
-                //               onChanged: (isChange) {
-                //                 setState(() {
-                //                   isSwitchTheme = !isSwitchTheme;
-                //                 });
-                //               },
-                //               activeColor: Colors.green,
-                //               trackColor: MasterStyle.switchTileTrackColor,
-                //             ),
-                //           )
-                //         ],
-                //       )
-                //     ],
-                //   ),
-                // ),
-                Container(
-                  margin: EdgeInsets.symmetric(
-                    vertical: 16,
-                  ),
-                  child: toggleSwitchColumn(),
-                )
-              ],
-            ),
+                child: toggleSwitchColumn(),
+              )
+            ],
           ),
         ));
   }
@@ -706,15 +633,13 @@ class _MyAccountSettingsState extends State<MyAccountSettings> {
                     scale: .54,
                     child: CupertinoSwitch(
                       value: isSwitchGuideAndTips,
-                      onChanged: (isChangeValue) async  {
+                      onChanged: (isChangeValue) {
                         setState(() {
-                          isSwitchGuideAndTips = !isSwitchGuideAndTips;
-                          if (isSwitchGuideAndTips) {
-                            isSwitchNecessaryMessage = false;
-                          }
-                        });
-                       await ApiServices.setGuideTips(isSwitchGuideAndTips);
+                          isSwitchNecessaryMessage = false;
 
+                          isSwitchGuideAndTips = !isSwitchGuideAndTips;
+                        });
+                        updatedConsumerProfileSettings(false);
                       },
                       activeColor: Colors.green,
                       trackColor: MasterStyle.switchTileTrackColor,
@@ -743,18 +668,14 @@ class _MyAccountSettingsState extends State<MyAccountSettings> {
                     scale: .54,
                     child: CupertinoSwitch(
                       value: isSwitchEmailMarket,
-                      onChanged: (isChangeValue) async  {
+                      onChanged: (isChangeValue) {
                         print('isSwitchChange  $isSwitchEmailMarket');
                         setState(() {
+                          isSwitchNecessaryMessage = false;
 
                           isSwitchEmailMarket = !isSwitchEmailMarket;
-                          if (isSwitchEmailMarket) {
-                            isSwitchNecessaryMessage = false;
-                          }
                         });
-
-                        await ApiServices.setEmailMarketing(isSwitchEmailMarket);
-
+                        updatedConsumerProfileSettings(false);
                         print('isSwitch  $isSwitchEmailMarket');
                       },
                       activeColor: Colors.green,
@@ -784,18 +705,13 @@ class _MyAccountSettingsState extends State<MyAccountSettings> {
                     scale: .54,
                     child: CupertinoSwitch(
                       value: isSwitchSmsMarket,
-                      onChanged: (isChangeValue) async {
+                      onChanged: (isChangeValue) {
                         print('isSwitchSmsMarket  $isSwitchSmsMarket');
                         setState(() {
-
+                          isSwitchNecessaryMessage = false;
                           isSwitchSmsMarket = !isSwitchSmsMarket;
-                          if (isSwitchSmsMarket) {
-                            isSwitchNecessaryMessage = false;
-
-                          }
                         });
-                     await ApiServices.setSmsMarketing(isSwitchSmsMarket);
-
+                        updatedConsumerProfileSettings(false);
                         print('isSwitchSmsMarketElse  $isSwitchSmsMarket');
                       },
                       activeColor: Colors.green,
@@ -825,20 +741,15 @@ class _MyAccountSettingsState extends State<MyAccountSettings> {
                     scale: .54,
                     child: CupertinoSwitch(
                       value: isSwitchNecessaryMessage,
-                      onChanged: (isChangeValue) async {
+                      onChanged: (isChangeValue) {
                         setState(() {
                           isSwitchNecessaryMessage = !isSwitchNecessaryMessage;
-                          if (isSwitchNecessaryMessage) {
-                            isSwitchGuideAndTips = false;
-                            isSwitchEmailMarket = false;
-                            isSwitchSmsMarket = false;
-                          }
+                          isSwitchGuideAndTips = false;
+                          isSwitchEmailMarket = false;
+                          isSwitchSmsMarket = false;
                         });
-
-                        await ApiServices.setNecessaryMessages(isSwitchNecessaryMessage);
-
-
-                        print('isSwitch  $isSwitchNecessaryMessage');
+                        updatedConsumerProfileSettings(false);
+                        print('isSwitch  $isSwitchSmsMarket');
                       },
                       activeColor: Colors.green,
                       trackColor: MasterStyle.switchTileTrackColor,
@@ -992,7 +903,7 @@ class _MyAccountSettingsState extends State<MyAccountSettings> {
             setState(() {
               isLastNameInputField = !isLastNameInputField;
             });
-            if (!isLastNameInputField) {
+            if (!isFirstNameInputField) {
               updatedConsumerProfileSettings(true);
             }
           },
@@ -1173,20 +1084,7 @@ class _MyAccountSettingsState extends State<MyAccountSettings> {
               InkWell(
                 onTap: () {
                   _handleImage(ImageSource.gallery);
-                  Map data = {
-                    "firstName" : firstNameController.text,
-                    "lastName" : lastNameController.text,
-                    "email" : emailController.text,
-                    "mobile" : phoneController.text,
-                    "profilePicLink": imagePath != ''
-                        ? "https://s3-ap-southeast-2.amazonaws.com/hashching/uploads/cropper_images/${imagePath}"
-                        : widget.consumerInformation.consumerDetails.profilePicLink,
-                    'guide_and_tips' : isSwitchGuideAndTips,
-                    'smsMarketing' : isSwitchSmsMarket,
-                    'necessaryMessages' : isSwitchNecessaryMessage,
-                    'emailMarketing' : isSwitchEmailMarket,
-                  };
-                  Navigator.pop(context,data);
+                  Navigator.pop(context);
                 },
                 child: Container(
                   padding: EdgeInsets.only(top: 10.h, bottom: 10.h),
@@ -1210,20 +1108,7 @@ class _MyAccountSettingsState extends State<MyAccountSettings> {
                     InitialData.image = null;
                     isImageChanged = true;
                   });
-                  Map data = {
-                    "firstName" : firstNameController.text,
-                    "lastName" : lastNameController.text,
-                    "email" : emailController.text,
-                    "mobile" : phoneController.text,
-                    "profilePicLink": imagePath != ''
-                        ? "https://s3-ap-southeast-2.amazonaws.com/hashching/uploads/cropper_images/${imagePath}"
-                        : widget.consumerInformation.consumerDetails.profilePicLink,
-                    'guide_and_tips' : isSwitchGuideAndTips,
-                    'smsMarketing' : isSwitchSmsMarket,
-                    'necessaryMessages' : isSwitchNecessaryMessage,
-                    'emailMarketing' : isSwitchEmailMarket,
-                  };
-                  Navigator.pop(context,data);
+                  Navigator.pop(context);
                 },
                 child: Container(
                   padding: EdgeInsets.only(top: 10.h, bottom: 10.h),

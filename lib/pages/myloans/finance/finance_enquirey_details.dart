@@ -179,7 +179,7 @@ Widget financeLoanContactDetails(Checkbox checkBox) {
     Padding(
       padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
          Theme(data: ThemeData(unselectedWidgetColor:HexColor('#6D7B95')),
          child: checkBox),

@@ -10,7 +10,7 @@ import 'package:hashching/Utilities/simplefiedwidgets.dart';
 import 'package:hashching/Utilities/validator.dart';
 import 'package:hashching/listprovider/loadnlist_provider.dart';
 import 'package:hashching/models/consumer_account_model.dart';
-import 'package:hashching/models/consumer_dashboard_model.dart';
+import 'package:hashching/models/consumer_dashboard.dart';
 import 'package:hashching/pages/myloans/businessloan/business_loan_personal_details.dart';
 import 'package:hashching/pages/myloans/loans_widget_expansion.dart/loan_amount_form.dart';
 import 'package:hashching/pages/myloans/loans_widget_expansion.dart/loan_contact_form.dart';
@@ -92,7 +92,7 @@ class _BusinessLoanEnquireyState extends State<BusinessLoanEnquirey>
 
   initData() {
     firstNameController.text = widget.consumerAccountModel.consumer.firstName;
-    lastNameController.text = widget.consumerAccountModel.consumer.lastName!;
+    lastNameController.text = widget.consumerAccountModel.consumer.lastName;
     emailController.text = widget.consumerAccountModel.consumer.email;
     phoneController.text = widget.consumerAccountModel.consumer.convertMobile;
     consumerMobileNumber = widget.consumerAccountModel.consumer.convertMobile;
@@ -378,7 +378,7 @@ class _BusinessLoanEnquireyState extends State<BusinessLoanEnquirey>
       "last_name": lastNameController.text,
       "email": emailController.text,
       "mobile": phoneController.text,
-      "loan_amount": amountController.text.toString().replaceAll(',', ''),
+      "loan_amount": amountController.text.toString(),
       "postcode_s": postcodeController.text.toString(),
       "postcode_id": "42253",
       "suburb": postcodeController.text.toString(),
@@ -392,21 +392,20 @@ class _BusinessLoanEnquireyState extends State<BusinessLoanEnquirey>
     };
     var addNewLoan = await ApiServices.addNewLoan(addNewLoanDetails);
     Random _rend = Random();
-    // Provider.of<LoanListProvider>(context, listen: false).addsinglelist(
-    //     AllLoans(
-    //         id: _rend.nextInt(1000),
-    //         leadType: "New Loan",
-    //         productType: "Home Loan",
-    //         loanAmount:amountController.text.toString().replaceAll(',', ''),
-    //         status: 1,
-    //         brokerLeadID: 2,
-    //         createdAt: DateFormat("yyyyMMdd").format(DateTime.now()),
-    //         uniqueId: "42253",
-    //         encryptkey: "qwertyuiop",
-    //         loantypeshow: "Business Loan",
-    //         createdate: DateFormat("yyyyMMdd").format(DateTime.now()),
-    //         statusname: "New"));
-    Provider.of<LoanListProvider>(context, listen: false).changeListFromApi();
+    Provider.of<LoanListProvider>(context, listen: false).addsinglelist(
+        AllLoans(
+            id: _rend.nextInt(1000),
+            leadType: "New Loan",
+            productType: "Home Loan",
+            loanAmount: amountController.text.toString(),
+            status: 1,
+            brokerLeadID: 2,
+            createdAt: DateFormat("yyyyMMdd").format(DateTime.now()),
+            uniqueId: "42253",
+            encryptkey: "qwertyuiop",
+            loantypeshow: "Business Loan",
+            createdate: DateFormat("yyyyMMdd").format(DateTime.now()),
+            statusname: "New"));
     print('addNewLoan : $addNewLoan');
     if (addNewLoan) {
       ApiServices.fetchConsumerLoansList();

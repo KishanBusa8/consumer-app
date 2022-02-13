@@ -5,12 +5,10 @@ class HashConnectListModel {
   });
   late final int status;
   late final List<HashconnectList> hashconnectList;
-
   HashConnectListModel.fromJson(Map<String, dynamic> json){
     status = json['status'];
     hashconnectList = List.from(json['hashconnect_list']).map((e)=>HashconnectList.fromJson(e)).toList();
   }
-
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
     _data['status'] = status;
@@ -18,7 +16,6 @@ class HashConnectListModel {
     return _data;
   }
 }
-
 class HashconnectList {
   HashconnectList({
     required this.id,
@@ -31,7 +28,7 @@ class HashconnectList {
     required this.submittedBy,
     required this.managerId,
     required this.managerName,
-    this.title,
+    required this.title,
     required this.firstName,
     required this.lastName,
     required this.email,
@@ -66,7 +63,7 @@ class HashconnectList {
   late final String submittedBy;
   late final String managerId;
   late final String managerName;
-  late final String? title;
+  late final String title;
   late final String firstName;
   late final String lastName;
   late final String email;
@@ -90,7 +87,6 @@ class HashconnectList {
   late final String createdAt;
   late final String updatedAt;
   late final String statusname;
-
   HashconnectList.fromJson(Map<String, dynamic> json){
     id = json['id'];
     referenceId = json['reference_id'];
@@ -98,11 +94,11 @@ class HashconnectList {
     agentId = json['agent_id'];
     agentName = json['agent_name'];
     userType = json['user_type'];
-    uniqueId = json['unique_id']??'';
+    uniqueId = json['unique_id'] ??'';
     submittedBy = json['submitted_by'];
     managerId = json['manager_id'];
     managerName = json['manager_name'];
-    title = null;
+    title = json['title'];
     firstName = json['first_name'];
     lastName = json['last_name'];
     email = json['email'];
@@ -127,7 +123,6 @@ class HashconnectList {
     updatedAt = json['updated_at'];
     statusname = json['statusname'];
   }
-
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
     _data['id'] = id;

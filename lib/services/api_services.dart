@@ -1,7 +1,6 @@
 // ignore_for_file: unused_local_variable
 
 import 'dart:convert';
-import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hashching/Utilities/constants.dart';
@@ -12,12 +11,9 @@ import 'package:hashching/models/carmake_model_list.dart';
 import 'package:hashching/models/carmakemodel.dart';
 import 'package:hashching/models/consumer_account_model.dart';
 import 'package:hashching/models/consumer_brokers_list_model.dart';
-import 'package:hashching/models/consumer_dashboard_model.dart';
+import 'package:hashching/models/consumer_dashboard.dart';
 import 'package:hashching/models/consumer_details_model.dart';
 import 'package:hashching/models/consumer_documet_list_model.dart';
-import 'package:hashching/models/consumer_notification_model.dart';
-import 'package:hashching/models/consumer_setting_model.dart';
-import 'package:hashching/models/fetch_loan_model.dart';
 import 'package:hashching/models/hash_auto_model.dart';
 import 'package:hashching/models/hash_connect_model.dart';
 import 'package:hashching/models/hash_convenyancing_model.dart';
@@ -74,26 +70,7 @@ class ApiServices {
       return null;
     }
   }
-//   static Future<ConsumerSettingModel?> fetchConsumerSettings() async {
-//     SharedPreferences preferences = await SharedPreferences.getInstance();
-//
-//
-//     String? userToken = preferences.getString(LocalConstants.userToken);
-//     LocalStorage.UserToken = await userToken!;
-//     var url = Uri.parse(LocalConstants.ConsumerSettingUrl);
-//     final response = await http.get(url, headers: <String, String>{
-//       'Accept': 'application/json',
-//       'Authorization': 'Bearer $userToken'
-//     });
-//     print("response.statusCode :${response.statusCode}");
-//     print("**********consumerDashboard ########## ${response.body}");
-//     if (response.statusCode == 200) {
-// //print("respone ${response.body}");
-//       return ConsumerSettingModel.fromJson(jsonDecode(response.body));
-//     } else {
-//       return null;
-//     }
-//   }
+
   static Future<ConsumerLoansModel?> fetchConsumerLoansList() async {
     String? userToken = LocalStorage.UserToken;
 
@@ -115,118 +92,7 @@ class ApiServices {
       return null;
     }
   }
-  static Future<bool> setGuideTips(bool guide_tips) async {
-    String? userToken = LocalStorage.UserToken;
 
-    var url = Uri.parse(LocalConstants.ConsumerGuideTipsUrl);
-    final response = await http.post(url, headers: <String, String>{
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $userToken'
-    }, body: jsonEncode({
-      "guide_tips" : guide_tips
-    }));
-    print("response.statusCode :${response.statusCode}");
-    print("***** response body${response.body}");
-    if (response.statusCode == 200) {
-      var jsonResponse = json.decode(response.body);
-      return true;
-    } else {
-      return false;
-    }
-  }
-  static Future<bool> setGuideTips2(bool guide_tips) async {
-    String? userToken = LocalStorage.UserToken;
-
-    var url = Uri.parse(LocalConstants.ConsumerEmailMarketingUrl);
-    final response = await http.post(url, headers: <String, String>{
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $userToken'
-    }, body: jsonEncode({
-      "email_marketing" : guide_tips
-    }));
-    print("response.statusCode :${response.statusCode}");
-    print("***** response body${response.body}");
-    if (response.statusCode == 200) {
-      var jsonResponse = json.decode(response.body);
-      return true;
-    } else {
-      return false;
-    }
-  }
-  static Future<bool> setEmailMarketing(bool email_marketing) async {
-    String? userToken = LocalStorage.UserToken;
-
-    var url = Uri.parse(LocalConstants.ConsumerEmailMarketingUrl);
-    print(url);
-    
-    
-    
-    
-    final response = await http.post(url, headers: <String, String>{
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $userToken'
-    }, body: email_marketing ?  {
-      "email_marketing" : email_marketing.toString()
-    } : jsonEncode( {
-      "email_marketing" : email_marketing.toString()
-    }));
-    print("response.statusCode :${jsonEncode({
-      "email_marketing" : email_marketing
-    })}");
-    print("***** response body${response.body}");
-    if (response.statusCode == 200) {
-      var jsonResponse = json.decode(response.body);
-      return true;
-    } else {
-      return false;
-    }
-  }
-  static Future<bool> setSmsMarketing(bool sms_marketing) async {
-    String? userToken = LocalStorage.UserToken;
-
-    var url = Uri.parse(LocalConstants.ConsumerSmsMarketingUrl);
-    log(userToken);
-    final response = await http.post(url, headers: <String, String>{
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $userToken'
-    }, body: sms_marketing ? {
-    "sms_marketing" : sms_marketing.toString()
-    } :  jsonEncode({
-      "sms_marketing" : sms_marketing
-    }));
-    print("response.statusCode :${response.statusCode}");
-    if (response.statusCode == 200) {
-      var jsonResponse = json.decode(response.body);
-      print("***** response body${jsonResponse}");
-
-      return true;
-    } else {
-      return false;
-    }
-  }
-  static Future<bool> setNecessaryMessages(bool necessary_messages) async {
-    String? userToken = LocalStorage.UserToken;
-
-    var url = Uri.parse(LocalConstants.ConsumerNecessaryMessageUrl);
-    print("apiUrl :${url}");
-
-    final response = await http.post(url, headers: <String, String>{
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $userToken'
-    }, body:necessary_messages ?  {
-      "necessary_messages" : necessary_messages.toString()
-    } : jsonEncode({
-      "necessary_messages" : necessary_messages
-    }));
-    print("response.statusCode :${response.statusCode}");
-    print("***** response body${response.body}");
-    if (response.statusCode == 200) {
-      var jsonResponse = json.decode(response.body);
-      return true;
-    } else {
-      return false;
-    }
-  }
   static Future<ConsumerDetailsModel?> getConsumerSettings() async {
     String? userToken = LocalStorage.UserToken;
     var url = Uri.parse(LocalConstants.ConsumerSettingsUrl);
@@ -415,30 +281,6 @@ class ApiServices {
     }
   }
 
-  static Future<FetchLoanModel?> fetchLoans({
-    String? encryptId,
-  }) async {
-    var jsonData = jsonEncode({"encrypt_id": encryptId});
-
-    String? userToken = LocalStorage.UserToken;
-    var url = Uri.parse(LocalConstants.fetchLoanDetailsUrl);
-    final response = await http.post(url,
-        headers: <String, String>{
-          'Accept': 'application/json',
-          'Authorization': 'Bearer $userToken'
-        },
-        body: jsonData);
-    print(response.statusCode);
-    print('loan fetch**${response.body}');
-
-    if (response.statusCode == 200) {
-      var jsonResponse = jsonDecode(response.body);
-
-      return FetchLoanModel.fromJson(jsonDecode(response.body));
-    } else {
-      return null;
-    }
-  }
   static Future<LoanEnquireyModel?> fetchLoanDetails({
     String? encryptId,
   }) async {
@@ -518,7 +360,6 @@ class ApiServices {
 
   static Future addNewLoan(Object addNewLoanDetails) async {
     var jsonData = jsonEncode(addNewLoanDetails);
-    log('  response.statusCode : ${jsonData} ');
 
     String? userToken = LocalStorage.UserToken;
     var url = Uri.parse(LocalConstants.addNewLoanUrl);
@@ -949,7 +790,6 @@ class ApiServices {
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
-      getConsumerAllDocuments();
       print(await response.stream.bytesToString());
     } else {
       print(response.reasonPhrase);
@@ -1076,27 +916,6 @@ class ApiServices {
       }
     } else {
       print('"****** body: ${response.body}');
-    }
-  }
-    static Future<ConsumerNotificationsModel?> fetchConsumerNotification() async {
-    String? userToken = LocalStorage.UserToken;
-    var url = Uri.parse(LocalConstants.getConsumerNotificationUrl);
-    final response = await http.get(
-      url,
-      headers: <String, String>{
-        'Accept': 'application/json',
-        'Authorization': 'Bearer $userToken'
-      },
-    );
-    print('response.statusCode : ${response.statusCode} ');
-    print('getConsumerNotification response : ${response.body} ');
-    if (response.statusCode == 200) {
-      print('getConsumerNotification body : ${response.body} ');
-      
-      return ConsumerNotificationsModel.fromJson(jsonDecode(response.body));
-    } else {
-     // throw Exception('Failed to load response');
-       return null;
     }
   }
 }

@@ -243,7 +243,7 @@ class _SignupPageState extends State<SignupPage> {
                   ),
                 ),
             ),
-              // Container(child: BottomWidget())
+              Container(child: BottomWidget())
             ],
           ),
         ),

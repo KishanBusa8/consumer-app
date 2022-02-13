@@ -5,22 +5,18 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:hashching/Utilities/simplefiedwidgets.dart';
-import 'package:hashching/Utilities/validator.dart';
 import 'package:hashching/listprovider/loadnlist_provider.dart';
 import 'package:hashching/models/carmake_model_list.dart';
 import 'package:hashching/models/carmakemodel.dart';
 import 'package:hashching/models/consumer_account_model.dart';
-import 'package:hashching/models/consumer_dashboard_model.dart';
+import 'package:hashching/models/consumer_dashboard.dart';
 import 'package:hashching/pages/myloans/carloan/equipment_details.dart';
 import 'package:hashching/pages/myloans/loans_widget_expansion.dart/carloan_amount_form.dart';
 import 'package:hashching/pages/myloans/loans_widget_expansion.dart/loan_amount_form.dart';
 import 'package:hashching/pages/myloans/loans_widget_expansion.dart/loan_contact_form.dart';
-import 'package:hashching/pages/myloans/loans_widget_expansion.dart/new_loan_personal_details.dart';
 import 'package:hashching/provider/initialdata.dart';
 import 'package:hashching/services/api_services.dart';
-import 'package:hashching/styles/hexcolor.dart';
 import 'package:hashching/styles/masterstyle.dart';
 import 'package:intl/intl.dart';
 import 'package:page_view_indicators/linear_progress_page_indicator.dart';
@@ -50,11 +46,7 @@ class _CarLoanEnquireyRootState extends State<CarLoanEnquireyRoot> {
   final equipmentDetailsKey = GlobalKey<FormState>();
   final loanAmountFormkey = GlobalKey<FormState>();
   final selectContactFormkey = GlobalKey<FormState>();
-   final personalDetailsFormkey = GlobalKey<FormState>();
-  TextEditingController firstNameController = TextEditingController(text: '');
-  TextEditingController lastNameController = TextEditingController(text: '');
-  TextEditingController emailController = TextEditingController(text: '');
-  TextEditingController phoneController = TextEditingController(text: '');
+
   TextEditingController buildYearController = TextEditingController();
   TextEditingController makeController = TextEditingController();
   TextEditingController carPriceController = TextEditingController();
@@ -73,19 +65,9 @@ class _CarLoanEnquireyRootState extends State<CarLoanEnquireyRoot> {
   bool carMakeValidate = false;
   bool carMakeModelValidate = false;
   bool carEquipmentSubmit = false;
-   bool isSendCodeLoading = false;
-     String responseId = '';
-     bool isSendCode = false;
-       bool isVerifyOtp = false;
-  bool isValidOtp = false;
-  bool isResend = false;
-  late String consumerMobileNumber;
-  List verifiedConsumer = [];
+
   int maxYear = 2022;
   late int currentYear;
-    final _otpFormKey = GlobalKey<FormState>();
-  TextEditingController otpController = TextEditingController(text: '');
- 
   range(int a, [int? stop, int? step]) {
     int start;
     if (stop == null) {
@@ -121,195 +103,6 @@ class _CarLoanEnquireyRootState extends State<CarLoanEnquireyRoot> {
   }
 
   bool isExpanded = false;
-
-  mappingTextEditingController() {
-    firstNameController.text = widget.consumerAccountModel.consumer.firstName;
-    lastNameController.text = widget.consumerAccountModel.consumer.lastName!;
-    emailController.text = widget.consumerAccountModel.consumer.email;
-    phoneController.text = widget.consumerAccountModel.consumer.convertMobile;
-    consumerMobileNumber = widget.consumerAccountModel.consumer.convertMobile;
-    print("----------------->");
-    print(consumerMobileNumber);
-    verifiedConsumer.add(widget.consumerAccountModel.consumer.convertMobile);
-  }
-   otpResend(request) async {
-    FocusScope.of(context).unfocus();
-    setState(() {
-      isResend = true;
-    });
-    var sendcodeResponse = await ApiServices.sendCode(request);
-    if (sendcodeResponse['status'] == 101) {
-      snackBar('A one time passcode has been resend!');
-    } else {
-      snackBar('Failed resend!');
-    }
-
-    setState(() {
-      isResend = false;
-      otpController.text = '';
-    });
-  }
-
-    Future _otpInputDialog(BuildContext context) async {
-    var request = {"mobile": phoneController.text.substring(1)};
-    return showDialog(
-      context: context,
-      barrierDismissible:
-          true, // dialog is dismissible with a tap on the barrier
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(14.0))),
-          contentPadding: EdgeInsets.only(top: 19.0),
-          backgroundColor: HexColor('#D1D5DB'),
-          content: NewColumnMin(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                'Enter verification code',
-                style: MasterStyle.blackWithSemiBoldStyle,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                    left: 25, right: 22, bottom: 16, top: 4),
-                child: Text(
-                  'Enter the OTP sent to ${phoneController.text}',
-                  style: MasterStyle.blackWithSmallStyle,
-                ),
-              ),
-              Form(
-                key: _otpFormKey,
-                child: Container(
-                  // height: 30,
-                  margin: EdgeInsets.only(left: 16, right: 17, bottom: 4),
-                  padding: EdgeInsets.only(top: 0),
-                  child: new TextFormField(
-                    maxLength: 6,
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return 'Please enter the otp';
-                      } else if (value.trim().length < 6) {
-                        return 'Please enter the valid otp';
-                      }
-                      return null;
-                    },
-                    controller: otpController,
-                    cursorColor: MasterStyle.appSecondaryColor,
-                    keyboardType: TextInputType.number,
-                    decoration: new InputDecoration(
-                        isDense: true,
-                        focusedErrorBorder: InputBorder.none,
-                        hoverColor: MasterStyle.whiteColor,
-                        contentPadding: EdgeInsets.only(
-                          top: 7,
-                          left: 5,
-                          bottom: 5,
-                        ),
-                        filled: true,
-                        counterText: '',
-                        fillColor: MasterStyle.whiteColor,
-                        errorBorder: const OutlineInputBorder(
-                          gapPadding: 50.0,
-                          borderSide:
-                              const BorderSide(color: Colors.grey, width: 0.0),
-                        ),
-                        enabledBorder: const OutlineInputBorder(
-                          borderSide:
-                              const BorderSide(color: Colors.grey, width: 0.0),
-                        ),
-                        focusedBorder: const OutlineInputBorder(
-                          borderSide:
-                              const BorderSide(color: Colors.grey, width: 0.0),
-                        ),
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
-                          gapPadding: 50.0,
-                        ),
-                        hintText: 'Enter the OTP',
-                        hintStyle: GoogleFonts.sourceSerifPro(
-                            color: HexColor("#3C3C434D"), fontSize: 13)),
-                    onChanged: (value) {
-                      if (value.trim().isEmpty || value.trim().length < 6) {
-                        setState(() {
-                          isValidOtp == true;
-                        });
-                      }
-                      setState(() {
-                        isValidOtp == false;
-                      });
-                    },
-                  ),
-                ),
-              ),
-              InkWell(
-                onTap: () => otpResend(request),
-                child: Container(
-                  padding: EdgeInsets.only(right: 20),
-                  child: isResend
-                      ? CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                              MasterStyle.backgroundColor),
-                        )
-                      : Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                              Text(
-                                'Resend code',
-                                style: MasterStyle.primaryContentStyle,
-                              )
-                            ]),
-                ),
-              ),
-              Divider(
-                color: Colors.grey,
-                thickness: 1,
-              ),
-              Container(
-                padding: EdgeInsets.only(bottom: 4),
-                child:
-                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  TextButton(
-                    child: Text(
-                      'Verify',
-                      style: MasterStyle.primaryContentStyle,
-                    ),
-                    onPressed: () async {
-                      if (_otpFormKey.currentState!.validate()) {
-                        FocusScope.of(context).unfocus();
-                        var checkIfValidate = await ApiServices.verifyMobileOtp(
-                            mobile: phoneController.text.substring(1),
-                            sms: otpController.text,
-                            uuid: responseId);
-                        if (checkIfValidate['status'] != null) {
-                          if (checkIfValidate['status'] == 'pass') {
-                            snackBar('Phone number successfully verified!');
-                            verifiedConsumer.add(phoneController.text);
-                            otpController.clear();
-                            Navigator.pop(context);
-                          } else if (checkIfValidate['status'] == 'failed') {
-                            snackBar(checkIfValidate['message']['error']);
-                          }
-                        } else {
-                          snackBar(checkIfValidate['message'].toString());
-                        }
-
-                        setState(() {
-                          isSendCode = true;
-                        });
-                      } else {}
-                    },
-                  )
-                ]),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-
   initialData() async {
     if (InitialData.carMakeList.length == 0) {
       setState(() {
@@ -332,143 +125,16 @@ class _CarLoanEnquireyRootState extends State<CarLoanEnquireyRoot> {
 
   @override
   void initState() {
-    mappingTextEditingController();
     initialData();
-
     buildYear = getSuggestions();
     super.initState();
   }
-    Widget phoneNumberInputField() {
-    return Container(
-      padding: EdgeInsets.only(bottom: 8),
-      child: TextFormField(
-        style: MasterStyle.whiteTextInputStyle,
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        validator: (value) => FormValidator.phoneNumberValidation(value),
-        controller: phoneController,
-        keyboardType: TextInputType.number,
-        onChanged: (value) {
-          setState(() {
-            phoneController.text == value;
-          });
-          print("${verifiedConsumer.toString()}");
-
-          if (verifiedConsumer.contains(phoneController.text)) {
-            setState(() {
-              isSendCode = true;
-            });
-            print('true  $isSendCode');
-          } else if (phoneController.text == consumerMobileNumber) {
-            setState(() {
-              isSendCode = true;
-            });
-            print('true ! $isSendCode');
-          } else {
-            print('false 1 $isSendCode');
-            setState(() {
-              isSendCode = false;
-            });
-            print('false 2 $isSendCode');
-          }
-        },
-        maxLength: 10,
-        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-        decoration: InputDecoration(
-          counterText: '',
-          errorMaxLines: 3,
-          contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          hintText: '04XXXXXXXX',
-          hintStyle: MasterStyle.whiteHintStyle,
-          enabledBorder: SimplifiedWidgets.outlineInputBorder,
-          border: SimplifiedWidgets.outlineInputBorder,
-          focusedBorder: SimplifiedWidgets.outlineInputBorder,
-        ),
-      ),
-    );
-  }
-
-  Widget sendCodeButton() {
-    return isSendCodeLoading
-        ? Center(
-            child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation(MasterStyle.appSecondaryColor),
-            ),
-          )
-        : !verifiedConsumer.contains(phoneController.text) &&
-                phoneController.text.length == 10
-            ? Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                Container(
-                  height: 25.h,
-                  child: SimplifiedWidgets.elevatedButton(
-                      padding: EdgeInsets.only(
-                          left: 25.w, right: 25.w, top: 3.h, bottom: 3.h),
-                      text: 'Send code',
-                      textStyle: MasterStyle.whiteStyleRegularNormal,
-                      color: MasterStyle.appSecondaryColor,
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      onPresed: () async {
-                        if (personalDetailsFormkey.currentState!.validate()) {
-                          setState(() {
-                            isSendCodeLoading = true;
-                          });
-                          var request = {
-                            "mobile": phoneController.text.substring(1)
-                          };
-                          var sendCodeDetails =
-                              await ApiServices.sendCode(request);
-                          if (sendCodeDetails['status'] == 101) {
-                            setState(() {
-                              responseId = sendCodeDetails['responseId'];
-                            });
-                            _otpInputDialog(context);
-                            setState(() {
-                              isSendCodeLoading = false;
-                            });
-                          } else if (sendCodeDetails['status'] == 103) {
-                            snackBar('Something went wrong');
-                            setState(() {
-                              isSendCodeLoading = false;
-                            });
-                          } else {
-                            setState(() {
-                              isSendCodeLoading = false;
-                            });
-                          }
-                        } else {
-                          snackBar('Please enter required fields');
-                        }
-                      }),
-                )
-              ])
-            : SizedBox();
-  }
-
-  snackBar(String? message) {
-    return ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        backgroundColor: MasterStyle.appSecondaryColor,
-        content: Text(message!),
-        duration: Duration(seconds: 2),
-      ),
-    );
-  }
-
 
   List listOfPages() {
     if (isUsedType) {
       return [
         EquipmentType(),
         DealershipType(),
-            Form(
-          key: personalDetailsFormkey,
-          child: NewLoanPersonalDetails(
-            firstNameController: firstNameController,
-            lastNameController: lastNameController,
-            emailController: emailController,
-            phoneController: phoneController,
-            sendCodeButton: sendCodeButton(),
-            phoneNumberInputField: phoneNumberInputField(),
-          )),
         Form(key: equipmentDetailsKey, child: carEquipmentDetailsSection()
             //  NewEquipmentDetails(
             //   carMakevalue: carMakevalue,
@@ -497,16 +163,6 @@ class _CarLoanEnquireyRootState extends State<CarLoanEnquireyRoot> {
       return [
         EquipmentType(),
         Container(),
-           Form(
-          key: personalDetailsFormkey,
-          child: NewLoanPersonalDetails(
-            firstNameController: firstNameController,
-            lastNameController: lastNameController,
-            emailController: emailController,
-            phoneController: phoneController,
-            sendCodeButton: sendCodeButton(),
-            phoneNumberInputField: phoneNumberInputField(),
-          )),
         Form(key: equipmentDetailsKey, child: carEquipmentDetailsSection()
             //  NewEquipmentDetails(
             //   carMakevalue: carMakevalue,
@@ -998,11 +654,11 @@ class _CarLoanEnquireyRootState extends State<CarLoanEnquireyRoot> {
   submitaddnewloan() async {
     var addNewLoanDetails = {
       "product_type": "Car Finance",
-      "first_name":firstNameController.text,
-      "last_name": lastNameController.text,
-      "email": emailController.text,
-      "mobile":phoneController.text,
-      "loan_amount": amountController.text.toString().replaceAll(',', ''),
+      "first_name": widget.consumerAccountModel.consumer.firstName,
+      "last_name": widget.consumerAccountModel.consumer.lastName,
+      "email": widget.consumerAccountModel.consumer.email,
+      "mobile": widget.consumerAccountModel.consumer.mobile,
+      "loan_amount": amountController.text.toString(),
       "postcode_s": postcodeController.text.toString(),
       "postcode_id": 42253,
       "suburb": postcodeController.text.toString(),
@@ -1022,7 +678,20 @@ class _CarLoanEnquireyRootState extends State<CarLoanEnquireyRoot> {
     };
     var addNewLoan = await ApiServices.addNewLoan(addNewLoanDetails);
     Random _rend = Random();
-    Provider.of<LoanListProvider>(context, listen: false).changeListFromApi();
+    Provider.of<LoanListProvider>(context, listen: false).addsinglelist(
+        AllLoans(
+            id: _rend.nextInt(1000),
+            leadType: "New Loan",
+            productType: "Car Finance",
+            loanAmount: amountController.text.toString(),
+            status: 1,
+            brokerLeadID: 2,
+            createdAt: DateFormat("yyyyMMdd").format(DateTime.now()),
+            uniqueId: "42253",
+            encryptkey: "qwertyuiop",
+            loantypeshow: "Business Loan",
+            createdate: DateFormat("yyyyMMdd").format(DateTime.now()),
+            statusname: "New"));
     print('addNewLoan : $addNewLoan');
     if (addNewLoan) {
       ApiServices.fetchConsumerLoansList();
@@ -1269,29 +938,6 @@ class _CarLoanEnquireyRootState extends State<CarLoanEnquireyRoot> {
                                         curve: Curves.easeIn);
                                   }
                                 } else if (_currentPageNotifier.value == 2) {
-                                  if (personalDetailsFormkey.currentState!
-                                      .validate()) {
-                                     if (consumerMobileNumber !=
-                                        phoneController.text) {
-                                      print(isSendCode);
-                                      if (isSendCode) {
-                                        await pageController.animateToPage(
-                                            pageController.page!.toInt() + 1,
-                                            duration:
-                                                Duration(milliseconds: 400),
-                                            curve: Curves.easeIn);
-                                      } else {
-                                        snackBar(
-                                            "Please verify your phone number");
-                                      }
-                                    } else {
-                                      await pageController.animateToPage(
-                                          pageController.page!.toInt() + 1,
-                                          duration: Duration(milliseconds: 400),
-                                          curve: Curves.easeIn);
-                                    }
-                                  } else {}
-                                }  else if (_currentPageNotifier.value == 3) {
                                   if (!isCarModelLoading) {
                                     if (equipmentDetailsKey.currentState!
                                         .validate()) {
@@ -1319,7 +965,7 @@ class _CarLoanEnquireyRootState extends State<CarLoanEnquireyRoot> {
                                       isDealershipRequire = true;
                                     });
                                   }
-                                } else if (_currentPageNotifier.value == 4) {
+                                } else if (_currentPageNotifier.value == 3) {
                                   if (loanAmountFormkey.currentState!
                                       .validate()) {
                                     pageController.animateToPage(
@@ -1327,7 +973,7 @@ class _CarLoanEnquireyRootState extends State<CarLoanEnquireyRoot> {
                                         duration: Duration(milliseconds: 400),
                                         curve: Curves.easeIn);
                                   } else {}
-                                } else if (_currentPageNotifier.value == 5) {
+                                } else if (_currentPageNotifier.value == 4) {
                                   if (selectContactFormkey.currentState!
                                       .validate()) {
                                     if (isCheckBox) {
@@ -1382,7 +1028,15 @@ class _CarLoanEnquireyRootState extends State<CarLoanEnquireyRoot> {
         : SizedBox();
   }
 
-
+  snackBar(String? message) {
+    return ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: MasterStyle.appSecondaryColor,
+        content: Text(message!),
+        duration: Duration(seconds: 2),
+      ),
+    );
+  }
 }
 
 var _locale = 'en';

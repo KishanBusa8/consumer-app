@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hashching/Utilities/simplefiedwidgets.dart';
 import 'package:hashching/models/consumer_brokers_list_model.dart';
-import 'package:hashching/models/consumer_dashboard_model.dart';
+import 'package:hashching/models/consumer_dashboard.dart';
 import 'package:hashching/pages/brokers/brokerprofile.dart';
 import 'package:hashching/pages/brokers/brokerschat.dart';
 import 'package:hashching/styles/masterstyle.dart';
@@ -127,28 +127,28 @@ class _BrokersState extends State<Brokers> {
                     ),
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      // InkWell(
-                      //   onTap: () {
-                      //     Navigator.push(
-                      //         context,
-                      //         MaterialPageRoute(
-                      //             builder: (context) => BrokersChat(consumerBrokers: consumerInformation,)));
-                      //   },
-                      //   child: Container(
-                      //     height: 28,
-                      //     width: 28,
-                      //     decoration: BoxDecoration(
-                      //         color: MasterStyle.iconBackgroundColor,
-                      //         shape: BoxShape.circle),
-                      //     child: Icon(
-                      //       Icons.sms_outlined,
-                      //       color: MasterStyle.appIconColor,
-                      //       size: 14,
-                      //     ),
-                      //   ),
-                      // ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => BrokersChat(consumerBrokers: consumerInformation,)));
+                        },
+                        child: Container(
+                          height: 28,
+                          width: 28,
+                          decoration: BoxDecoration(
+                              color: MasterStyle.iconBackgroundColor,
+                              shape: BoxShape.circle),
+                          child: Icon(
+                            Icons.sms_outlined,
+                            color: MasterStyle.appIconColor,
+                            size: 14,
+                          ),
+                        ),
+                      ),
                       InkWell(
                         onTap: () {
                           SimplifiedWidgets.triggerToCall(phoneNumber);

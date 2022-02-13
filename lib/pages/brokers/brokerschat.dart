@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hashching/Utilities/simplefiedwidgets.dart';
 import 'package:hashching/models/chatmessage.dart';
-import 'package:hashching/models/consumer_dashboard_model.dart';
+import 'package:hashching/models/consumer_dashboard.dart';
 import 'package:hashching/pages/brokers/brokerprofile.dart';
 import 'package:hashching/pages/brokers/chatscreen/send_message_screen.dart';
 import 'package:hashching/services/api_services.dart';

@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hashching/Utilities/simplefiedwidgets.dart';
 import 'package:hashching/models/brokers_details_model.dart';
 import 'package:hashching/models/consumer_brokers_list_model.dart';
-import 'package:hashching/models/consumer_dashboard_model.dart';
+import 'package:hashching/models/consumer_dashboard.dart';
 import 'package:hashching/services/api_services.dart';
 import 'package:hashching/styles/masterstyle.dart';
 
@@ -166,16 +166,16 @@ class _BrokerProfileState extends State<BrokerProfile> {
                       bodyContent('Email', 'lynda@gmail.com'),
                       bodyContent(
                           'Location', widget.consumerBrokers.locality + ', ' +widget.consumerBrokers.state),
-                      // Center(
-                      //   child: Container(
-                      //       height: 57,
-                      //       width: 57,
-                      //       margin: EdgeInsets.only(top: 17, bottom: 37),
-                      //       child: Image(
-                      //         image:
-                      //             AssetImage('assets/images/award_image.png'),
-                      //       )),
-                      // ),
+                      Center(
+                        child: Container(
+                            height: 57,
+                            width: 57,
+                            margin: EdgeInsets.only(top: 17, bottom: 37),
+                            child: Image(
+                              image:
+                                  AssetImage('assets/images/award_image.png'),
+                            )),
+                      ),
                       customDivider()
                     ],
                   ),

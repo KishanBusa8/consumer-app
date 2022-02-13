@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hashching/models/consumer_dashboard_model.dart';
-import 'package:hashching/services/api_services.dart';
+import 'package:hashching/models/consumer_dashboard.dart';
 
 class LoanListProvider extends ChangeNotifier {
   List<AllLoans> _list = [];
@@ -12,18 +11,8 @@ class LoanListProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // addsinglelist(AllLoans loan) {
-  //   _list.add(loan);
-  //   notifyListeners();
-  // }
-  changeListFromApi() {
-    ApiServices.fetchConsumerLoansList().then((value) {
-
-      _list = value!.allLoans;
-
-      notifyListeners();
-
-    });
-
+  addsinglelist(AllLoans loan) {
+    _list.add(loan);
+    notifyListeners();
   }
 }

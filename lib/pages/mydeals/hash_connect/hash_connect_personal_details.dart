@@ -206,7 +206,7 @@ class _HashConnectPersonalDetailsFormState
      Padding(
                 padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Theme(
                         data: ThemeData(

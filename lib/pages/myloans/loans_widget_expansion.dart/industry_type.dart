@@ -104,7 +104,7 @@ class _IndustryTypeState extends State<IndustryType> {
         Padding(
           padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Theme(
                   data: ThemeData(unselectedWidgetColor: HexColor('#6D7B95')),

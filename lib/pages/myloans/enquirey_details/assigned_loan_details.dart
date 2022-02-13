@@ -6,7 +6,7 @@ import 'package:hashching/Utilities/constants.dart';
 import 'package:hashching/Utilities/newloan_process_timeline.dart';
 import 'package:hashching/Utilities/simplefiedwidgets.dart';
 import 'package:hashching/Utilities/sizedbox.dart';
-import 'package:hashching/models/consumer_dashboard_model.dart';
+import 'package:hashching/models/consumer_dashboard.dart';
 import 'package:hashching/models/newloan_enquirey_model.dart';
 import 'package:hashching/pages/brokers/brokerschat.dart';
 import 'package:hashching/pages/myloans/enquirey_details/assigned_loan_enquirey_report.dart';
@@ -47,7 +47,7 @@ class _AssignedLoanEnquireyDetailsState
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               dynamic loanEnquireyModel = snapshot.data;
-              print('loanEnquireyModel${loanEnquireyModel['loan']}');
+              print('loanEnquireyModel${loanEnquireyModel!}');
 
               return Container(
                   child: ListView(
@@ -140,8 +140,7 @@ class _AssignedLoanEnquireyDetailsState
                             color: MasterStyle.dashColor,
                             thickness: 1,
                           ),
-                      loanEnquireyModel['loan']['lead_details_mystro_requested']|| loanEnquireyModel['loan']['bank_statement_request']
-                          ?InkWell(
+                          InkWell(
                             onTap: () {
                               setState(() {
                                 isClickToComplete = !isClickToComplete;
@@ -174,9 +173,9 @@ class _AssignedLoanEnquireyDetailsState
                                 ]),
                               ),
                             ),
-                          ) :SizedBox(),
+                          ),
                           isClickToComplete
-                              ? completeLoanEnquireyCard(loanEnquireyModel['loan'])
+                              ? completeLoanEnquireyCard()
                               : SizedBox(
                                   height: 8,
                                 ),
@@ -232,7 +231,7 @@ class _AssignedLoanEnquireyDetailsState
     );
   }
 
-  Widget completeLoanEnquireyCard(loanEnquireyModel) {
+  Widget completeLoanEnquireyCard() {
     return Card(
       margin: EdgeInsets.only(bottom: 16),
       elevation: 0,
@@ -242,63 +241,66 @@ class _AssignedLoanEnquireyDetailsState
       ),
       child: Column(
         children: [
-          Visibility(
-            visible: loanEnquireyModel['bank_statement_request'],
-            child: InkWell(
-                onTap: () {
-                  SimplifiedWidgets.launchInBrowser(
-                      loanEnquireyModel['bank_statement_iframe_link'], context);
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(top: 16, bottom: 8),
-                      child: Text(
-                        'Upload bank statements',
-                        style: MasterStyle.appBarSecondaryTextWithOpacityStyle,
-                      ),
+          InkWell(
+              onTap: () {
+                SimplifiedWidgets.launchInBrowser(
+                    LocalConstants.uploadBankStatement, context);
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 16, bottom: 8),
+                    child: Text(
+                      'Upload bank statements',
+                      style: MasterStyle.appBarSecondaryTextWithOpacityStyle,
                     ),
-                  ],
-                )),
+                  ),
+                ],
+              )),
+          Divider(
+            color: MasterStyle.customGreyColor,
+            thickness: 1,
+            height: 6,
           ),
-          Visibility(
-            visible: loanEnquireyModel['bank_statement_request'],
-            child: Divider(
-              color: MasterStyle.customGreyColor,
-              thickness: 1,
-              height: 6,
-            ),
-          ),
-          loanEnquireyModel['mystro_services_list'].length !=0?  ListView.separated(itemBuilder: (context ,index){
-            return InkWell(
-                onTap: () {
-                  SimplifiedWidgets.launchInBrowser(
-                      loanEnquireyModel['mystro_services_list'][index]['iframe_link'], context);
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(top: 16, bottom: 8),
-                      child: Text(
-                        loanEnquireyModel['mystro_services_list'][index]['title'],
-                        style: MasterStyle.appBarSecondaryTextWithOpacityStyle,
-                      ),
+          InkWell(
+              onTap: () {
+                SimplifiedWidgets.launchInBrowser(
+                    LocalConstants.completeFactFind, context);
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 16, bottom: 8),
+                    child: Text(
+                      'Complete fact find',
+                      style: MasterStyle.appBarSecondaryTextWithOpacityStyle,
                     ),
-                  ],
-                ));
-
-          }, separatorBuilder: (context,index){
-            return Container(
-              height: 1,
-              color:  MasterStyle.customGreyColor,
-            );
-          }, itemCount: loanEnquireyModel['mystro_services_list'].length,
-          ):SizedBox(),
-
-
-
+                  ),
+                ],
+              )),
+          Divider(
+            color: MasterStyle.customGreyColor,
+            thickness: 1,
+            height: 6,
+          ),
+          InkWell(
+              onTap: () {
+                print('click');
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 16, bottom: 14),
+                    child: Text(
+                      'Upload documents',
+                      style: MasterStyle.appBarSecondaryTextWithOpacityStyle,
+                    ),
+                  ),
+                ],
+              )),
         ],
       ),
     );
@@ -322,7 +324,7 @@ class _AssignedLoanEnquireyDetailsState
             title,
             style: isClick
                 ? MasterStyle.appBarSecondaryBoldStyle
-                : MasterStyle.unselectstatusStyle.merge(TextStyle(color:Colors.grey)),
+                : MasterStyle.unselectstatusStyle,
           ),
         ),
       ),

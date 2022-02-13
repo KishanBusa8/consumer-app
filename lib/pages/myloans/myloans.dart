@@ -6,9 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hashching/Utilities/simplefiedwidgets.dart';
 import 'package:hashching/Utilities/sizedbox.dart';
-import 'package:hashching/listprovider/loadnlist_provider.dart';
 import 'package:hashching/models/consumer_account_model.dart';
-import 'package:hashching/models/consumer_dashboard_model.dart';
+import 'package:hashching/models/consumer_dashboard.dart';
 import 'package:hashching/pages/myloans/alertdailougebox.dart';
 import 'package:hashching/pages/myloans/enquirey_details/assigned_loan_details.dart';
 import 'package:hashching/pages/myloans/enquirey_details/newloandetails.dart';
@@ -65,90 +64,85 @@ class _MyLoansState extends State<MyLoans> {
           //     icon: Icon(Icons.search, color: MasterStyle.appBarIconColor)),
         ],
       ),
-      body: Consumer<LoanListProvider>(builder:
-          (BuildContext context, LoanListProvider bloc,
-          Widget? child) {
-        return Container(
-          color: MasterStyle.backgroundColor,
-          child: ListView(
-            children: [
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 24),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [SvgPicture.asset('assets/myloans/myloan.svg')]),
+      body: Container(
+        color: MasterStyle.backgroundColor,
+        child: ListView(
+          children: [
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 24),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [SvgPicture.asset('assets/myloans/myloan.svg')]),
+            ),
+            Container(
+                child: CarouselSlider(
+              options: CarouselOptions(
+                height: 290.h,
+                // aspectRatio: 1.1,
+                viewportFraction: 0.58,
+                enlargeCenterPage: true,
+                enlargeStrategy: CenterPageEnlargeStrategy.height,
+                enableInfiniteScroll: false,
+                initialPage: 1,
+                autoPlay: false,
               ),
-              Container(
-                  child: CarouselSlider(
-                    options: CarouselOptions(
-                      height: 290.h,
-                      // aspectRatio: 1.1,
-                      viewportFraction: 0.58,
-                      enlargeCenterPage: true,
-                      enlargeStrategy: CenterPageEnlargeStrategy.height,
-                      enableInfiniteScroll: false,
-                      initialPage: 1,
-                      autoPlay: false,
-                    ),
-                    items: myLoansCard(bloc.list),
-                  )),
-              TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => MyLoansList(
-                                consumerAccountModel: consumerAccountModel,
-                                consumerLoansModel: consumerLoansModel)));
-                  },
-                  child: Container(
-                      padding: const EdgeInsets.only(
-                          top: 40, bottom: 32, left: 20, right: 20),
-                      child: Text(
-                        'Show list >',
-                        style: MasterStyle.primaryContentBold,
-                      ))),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SimplifiedWidgets.elevatedButton(
-                      color: MasterStyle.appSecondaryColor,
-                      textStyle: MasterStyle.buttonWhiteTextStyle,
-                      padding:
-                      EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
-                      text: 'Apply for a new loan',
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      onPresed: () {
-                        AlertDialogWidget.alertBox(context, consumerAccountModel);
-                      }),
-                ],
-              ),
-              // SizedBox(
-              //   height: 10.h,
-              // ),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: [
-              //     SimplifiedWidgets.elevatedButton(
-              //         color: MasterStyle.appSecondaryColor,
-              //         textStyle: MasterStyle.buttonWhiteTextStyle,
-              //         padding: EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-              //         text: 'Finish previous form',
-              //         borderRadius: BorderRadius.all(Radius.circular(10)),
-              //         onPresed: () {
-              //           Navigator.push(context,
-              //               MaterialPageRoute(builder: (context) => Progress()));
-              //         }),
-              //   ],
-              // ),
-              SizedBox(
-                height: 30.h,
-              ),
-            ],
-          ),
-        );
-      })
-      ,
+              items: myLoansCard(),
+            )),
+            TextButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MyLoansList(
+                              consumerAccountModel: consumerAccountModel,
+                              consumerLoansModel: consumerLoansModel)));
+                },
+                child: Container(
+                    padding: const EdgeInsets.only(
+                        top: 40, bottom: 32, left: 20, right: 20),
+                    child: Text(
+                      'Show list >',
+                      style: MasterStyle.primaryContentBold,
+                    ))),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SimplifiedWidgets.elevatedButton(
+                    color: MasterStyle.appSecondaryColor,
+                    textStyle: MasterStyle.buttonWhiteTextStyle,
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
+                    text: 'Apply for a new loan',
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    onPresed: () {
+                      AlertDialogWidget.alertBox(context, consumerAccountModel);
+                    }),
+              ],
+            ),
+            // SizedBox(
+            //   height: 10.h,
+            // ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   children: [
+            //     SimplifiedWidgets.elevatedButton(
+            //         color: MasterStyle.appSecondaryColor,
+            //         textStyle: MasterStyle.buttonWhiteTextStyle,
+            //         padding: EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+            //         text: 'Finish previous form',
+            //         borderRadius: BorderRadius.all(Radius.circular(10)),
+            //         onPresed: () {
+            //           Navigator.push(context,
+            //               MaterialPageRoute(builder: (context) => Progress()));
+            //         }),
+            //   ],
+            // ),
+            SizedBox(
+              height: 30.h,
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -191,11 +185,11 @@ class _MyLoansState extends State<MyLoans> {
     }
   }
 
-  List<Widget> myLoansCard(List<AllLoans>  bloc) {
+  List<Widget> myLoansCard() {
     ConsumerDashboardModel consumerLoansModel =
         Provider.of<ConsumerDashboardModel>(context);
 
-    return bloc.map((loansDetails) {
+    return consumerLoansModel.allLoans.map((loansDetails) {
       // readBrokerInfo(String brokerId) {
       //   var brokerDocument = consumerLoansModel.allConsumerBrokers
       //       .firstWhere((element) => element.userId.toString() == '193');
@@ -273,7 +267,7 @@ class _MyLoansState extends State<MyLoans> {
                       Row(
                         children: [
                           contentHeading('Broker name : '),
-                          Expanded(child: content(loansDetails.statusname!='New' ? loansDetails.brokerName:" _")),
+                          Expanded(child: content(" _")),
                         ],
                       ),
                       MySizedBox.height(8.h),

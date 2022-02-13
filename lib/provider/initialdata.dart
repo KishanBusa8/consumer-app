@@ -2,7 +2,7 @@ import 'package:hashching/models/all_loans_model.dart';
 import 'package:hashching/models/carmake_model_list.dart';
 import 'package:hashching/models/consumer_account_model.dart';
 import 'package:hashching/models/consumer_brokers_list_model.dart';
-import 'package:hashching/models/consumer_dashboard_model.dart';
+import 'package:hashching/models/consumer_dashboard.dart';
 import 'package:hashching/models/consumer_details_model.dart';
 import 'package:hashching/models/consumer_documet_list_model.dart';
 import 'package:hashching/models/rewards_model.dart';
@@ -31,7 +31,7 @@ class InitialData {
           allLoans: [],
           allConsumerBrokers: [],
           rewardPoints: 0,
-          consumerDocumentCount: 0, completeTask: false);
+          consumerDocumentCount: 0);
   static ConsumerLoansModel consumerLoansList =
       ConsumerLoansModel(allLoans: []);
   static ConsumerDocumentListModel consumerDocumentList =

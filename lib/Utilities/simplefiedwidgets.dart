@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hashching/styles/masterstyle.dart';
-import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 Column NewColumn(
@@ -67,18 +66,7 @@ class SimplifiedWidgets {
       ,
     );
   }
-static getloanAmountWithComma (string){
-  const _locale = 'en';
-  String _formatNumber(String s) =>
-      NumberFormat.decimalPattern(_locale).format(int.parse(s));
-  var stringToInt = int.parse(string.toString().split('.').first);
 
-    var formatter = NumberFormat('#,##,000');
-    var _dummy=NumberFormat.simpleCurrency(decimalDigits:0, name:"", locale: _locale).format(stringToInt);
-  return _dummy;
-
-  // return "";
-  }
   static snackBar(String? message, context) {
     return ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(

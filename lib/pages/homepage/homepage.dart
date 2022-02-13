@@ -5,7 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hashching/Utilities/simplefiedwidgets.dart';
 import 'package:hashching/listprovider/loadnlist_provider.dart';
 import 'package:hashching/models/consumer_account_model.dart';
-import 'package:hashching/models/consumer_dashboard_model.dart';
+import 'package:hashching/models/consumer_dashboard.dart';
 import 'package:hashching/models/consumer_details_model.dart';
 import 'package:hashching/models/consumer_documet_list_model.dart';
 import 'package:hashching/models/hash_convenyancing_model.dart';
@@ -41,7 +41,6 @@ class _HomePageState extends State<HomePage> {
   bool isProperty = false;
   bool isVault = false;
   bool setintthe = true;
-  bool isCompleteTask = false;
   Future<ConsumerAccountModel>? fetchConsumerData;
 
   @override
@@ -52,7 +51,6 @@ class _HomePageState extends State<HomePage> {
           Provider.of<ConsumerDashboardModel>(context, listen: false);
       Provider.of<LoanListProvider>(context, listen: false)
           .changewholelist(_dummy.allLoans);
-      isCompleteTask=  _dummy.completeTask;
       setintthe = false;
       setState(() {});
       print("===> End");
@@ -66,6 +64,9 @@ class _HomePageState extends State<HomePage> {
         Provider.of<ConsumerDashboardModel>(context, listen: false);
     ConsumerAccountModel consumerAccountModel =
         Provider.of<ConsumerAccountModel>(context, listen: false);
+    // HashConveyacingRawList hashConveyacingRawList =
+    // Provider.of<HashConveyacingRawList>(context);
+
 // if(consumerDashboardModel == InitialData.consumerDashboardInitialData ||consumerAccountModel== InitialData.consumerAccountDataInitialData ){
 //   return Center(
 //                     child: CircularProgressIndicator(
@@ -104,7 +105,8 @@ class _HomePageState extends State<HomePage> {
                                     "${consumerAccountModel.consumer.firstName} ${consumerAccountModel.consumer.lastName} 👋",
                                     style: MasterStyle.dashbordHeader,
                                   ),
-                                  if (bloc.list.length != 0 && consumerDashboardModel.completeTask) Padding(
+                                  bloc.list.length != 0
+                                      ? Padding(
                                           padding:
                                               const EdgeInsets.only(top: 20),
                                           child: Container(
@@ -116,19 +118,18 @@ class _HomePageState extends State<HomePage> {
                                                     MaterialPageRoute(
                                                         builder: (context) =>
                                                             CompleteTask(
-                                                              statusName: consumerDashboardModel.allLoans[0].statusname,
-                                                                encryptId:
-                                                                    consumerDashboardModel.allLoans[0].encryptkey)));
+                                                                consumerDashboardModel:
+                                                                    consumerDashboardModel)));
                                               },
                                               child: Text('Complete task',
                                                   style: MasterStyle
                                                       .whiteStyleRegularNormal
                                                       .merge(TextStyle(
                                                           fontSize: 14.sp))),
-
-                                                      style: ElevatedButton.styleFrom(
-                            padding: EdgeInsets.only(
-                            left: 13.w,             right: 21.w,
+                                              style: ElevatedButton.styleFrom(
+                                                  padding: EdgeInsets.only(
+                                                      left: 13.w,
+                                                      right: 21.w,
                                                       top: 4.h,
                                                       bottom: 5.h),
                                                   primary: MasterStyle
@@ -140,7 +141,8 @@ class _HomePageState extends State<HomePage> {
                                                                   15.0.r)))),
                                             ),
                                           ),
-                                        ) else SizedBox(),
+                                        )
+                                      : SizedBox(),
                                   bloc.list.length == 0
                                       ? NoLoans()
                                       : Container(
@@ -182,11 +184,12 @@ class _HomePageState extends State<HomePage> {
                                                           .loantypeshow,
                                                       status: bloc.list[index]
                                                           .statusname,
-                                                      loanAmount: SimplifiedWidgets.getloanAmountWithComma(bloc
+                                                      loanAmount: bloc
                                                           .list[index]
                                                           .loanAmount
                                                           .toString()
-                                                      ),
+                                                          .split('.')
+                                                          .first,
                                                       createDate: bloc
                                                           .list[index]
                                                           .createdate,
@@ -592,7 +595,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ],
                 ),
-               /* Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Flexible(
@@ -610,27 +613,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ],
-                ),*/
-
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.end,
-                //   children: [
-                //     Flexible(
-                //       child: RichText(
-                //         text: TextSpan(children: [
-                //           TextSpan(
-                //             text: 'Download your report now ',
-                //             style: MasterStyle.secondarySemiBoldTextStyle,
-                //           ),
-                //           WidgetSpan(
-                //               child: Icon(Icons.arrow_forward,
-                //                   color: MasterStyle.appSecondaryColor,
-                //                   size: 12.sp)),
-                //         ]),
-                //       ),
-                //     ),
-                //   ],
-                // ),
+                ),
               ],
             )),
       );
@@ -643,12 +626,7 @@ class _HomePageState extends State<HomePage> {
                   builder: (context) => DocumentVault(
                         consumerDocumentListModel: consumerDocumentListProvider,
                         consumerDashboardModel: consumerDashboardModel,
-                      ))).then((value) {
-                        print("llll $value");
-            consumerDashboardModel.consumerDocumentCount = value;
-                        setState(() {
-
-                      });});
+                      )));
         },
         child: Container(
             margin: EdgeInsets.only(bottom: 6),

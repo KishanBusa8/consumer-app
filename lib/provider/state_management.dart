@@ -4,10 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:hashching/Utilities/shared_preference.dart';
 import 'package:hashching/models/all_loans_model.dart';
 import 'package:hashching/models/consumer_account_model.dart';
-import 'package:hashching/models/consumer_dashboard_model.dart';
+import 'package:hashching/models/consumer_dashboard.dart';
 import 'package:hashching/models/consumer_details_model.dart';
 import 'package:hashching/models/consumer_documet_list_model.dart';
-import 'package:hashching/models/consumer_notification_model.dart';
 import 'package:hashching/models/rewards_model.dart';
 import 'package:hashching/pages/mainpage/hashcing_dashboard.dart';
 import 'package:hashching/provider/initialdata.dart';
@@ -21,7 +20,7 @@ class StateManagementProvider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     InitialData.uploaded_files = [];
-    InitialData.carMakeList = [];
+    InitialData.carMakeList =[];
     return MultiProvider(
         providers: [
           FutureProvider<ConsumerDashboardModel?>.value(
@@ -36,7 +35,7 @@ class StateManagementProvider extends StatelessWidget {
           var consumerDashboardContext =
               Provider.of<ConsumerDashboardModel>(context);
           var consumerAccountContext =
-              Provider.of<ConsumerAccountModel?>(context);
+              Provider.of<ConsumerAccountModel>(context);
           bool ConsumerAccountDataExists = consumerAccountContext !=
               InitialData.consumerAccountDataInitialData;
           bool ConsumerDashboardDataExists = consumerDashboardContext !=
@@ -61,14 +60,6 @@ class StateManagementProvider extends StatelessWidget {
                       FutureProvider<ConsumerLoansModel?>.value(
                           value: ApiServices.fetchConsumerLoansList(),
                           initialData: InitialData.consumerLoansList),
-                    ChangeNotifierProvider<ConsumerNotificationsModel?>(
-                      create: (_) =>  ConsumerNotificationsModel(
-                            consumerNotifications: [],
-                            consumerNotificationsUnread: 0),
-
-                        // create: (_) => ApiServices.fetchConsumerNotification(),
-                        // value: ApiServices.fetchConsumerNotification(),
-                      )
                     ],
                   builder: (context, child) {
                     return HaschingDashboard();

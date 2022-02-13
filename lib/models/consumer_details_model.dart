@@ -8,11 +8,11 @@ class ConsumerDetailsModel {
     required this.darkTheme,
   });
   late final ConsumerDetails consumerDetails;
-  bool? guidesTips;
-  bool? emailMarketing;
-  bool? smsMarketing;
-  bool? necessaryMessages;
-  bool? darkTheme;
+  late final bool guidesTips;
+  late final bool emailMarketing;
+  late final bool smsMarketing;
+  late final bool necessaryMessages;
+  late final bool darkTheme;
   
   ConsumerDetailsModel.fromJson(Map<String, dynamic> json){
     consumerDetails = ConsumerDetails.fromJson(json['consumer_details']);
