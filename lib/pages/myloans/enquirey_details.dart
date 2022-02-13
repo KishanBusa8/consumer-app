@@ -4,15 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:hashching/Utilities/process_timeline.dart';
 import 'package:hashching/Utilities/simplefiedwidgets.dart';
 import 'package:hashching/Utilities/sizedbox.dart';
+import 'package:hashching/models/all_loans_model.dart';
 import 'package:hashching/models/loan_enquirey_model.dart';
+import 'package:hashching/pages/myloans/approved_loan_details.dart';
 import 'package:hashching/pages/myloans/enquirey_report.dart';
 import 'package:hashching/pages/myloans/enquirey_timeline.dart';
+import 'package:hashching/pages/myloans/lodget_details.dart';
+import 'package:hashching/pages/myloans/setteld_loan_details.dart';
 import 'package:hashching/services/api_services.dart';
 import 'package:hashching/styles/hexcolor.dart';
 import 'package:hashching/styles/masterstyle.dart';
 
 class EnquireyDetails extends StatefulWidget {
-  EnquireyDetails({Key? key, required this.encryptkey}) : super(key: key);
+  EnquireyDetails(
+      {Key? key, required this.encryptkey})
+      : super(key: key);
 
   String encryptkey;
 
@@ -29,11 +35,9 @@ class _EnquireyDetailsState extends State<EnquireyDetails> {
   late Future<LoanEnquireyModel?> fetchLoanEnquireyDetails;
   @override
   void initState() {
-    fetchLoanEnquireyDetails =
-        ApiServices.fetchLoanDetails(encryptId: widget.encryptkey);
+    fetchLoanEnquireyDetails = ApiServices.fetchLoanDetails(encryptId: widget.encryptkey);
     super.initState();
   }
-
   @override
   Widget build(BuildContext context) {
     print("***********enquiry");
@@ -47,6 +51,7 @@ class _EnquireyDetailsState extends State<EnquireyDetails> {
               if (snapshot.hasData) {
                 var loanEnquireyModel = snapshot.data;
                 print('loanEnquireyModel${loanEnquireyModel!}');
+
                 return Container(
                     padding: EdgeInsets.symmetric(horizontal: 16),
                     child: ListView(shrinkWrap: true, children: [
@@ -62,17 +67,16 @@ class _EnquireyDetailsState extends State<EnquireyDetails> {
                           height: 51,
                           width: 51,
                           child: CircleAvatar(
-                            backgroundImage: NetworkImage(loanEnquireyModel
-                                .consumerType), //,.brokerDetail.profilePic),
+                            backgroundImage: NetworkImage(
+                                loanEnquireyModel.consumerType),//,.brokerDetail.profilePic),
                           ),
                         ),
                         title: Text(
-                          loanEnquireyModel.consumerType, //.brokerDetail.name,
+                          loanEnquireyModel.consumerType,//.brokerDetail.name,
                           style: MasterStyle.whiteStyleWithRegular,
                         ),
                         subtitle: Text(
-                            loanEnquireyModel.loan.status
-                                .toString(), //brokerDetail.mobile,
+                          loanEnquireyModel.loan.status.toString(),//brokerDetail.mobile,
                             style: MasterStyle.whiteTextStyleNormal),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -182,10 +186,10 @@ class _EnquireyDetailsState extends State<EnquireyDetails> {
                       Container(
                         height: 1,
                       ),
-                      // isSettled
-                      //     ? SettledLoanDetails(
-                      //         loanEnquiryModel: loanEnquiryModel)
-                      //    : SizedBox(),
+                      isSettled
+                          ? SettledLoanDetails(
+                              loanEnquireyModel: loanEnquireyModel)
+                          : SizedBox(),
                       myEnquireyCards(
                           title: 'Approved',
                           onTap: () {
@@ -208,9 +212,8 @@ class _EnquireyDetailsState extends State<EnquireyDetails> {
                         height: 1,
                       ),
                       isApproved
-                          ? SizedBox()
-                          // ? ApprovedLoanDetails(
-                          //     loanEnquiryModel: loanEnquireyModel)
+                          ? ApprovedLoanDetails(
+                              loanEnquireyModel: loanEnquireyModel)
                           : SizedBox(),
                       myEnquireyCards(
                           title: 'Lodged',
@@ -232,10 +235,10 @@ class _EnquireyDetailsState extends State<EnquireyDetails> {
                       Container(
                         height: 1,
                       ),
-                      // isLodget
-                      //     ? LodgedLoanDetails(
-                      //         loanEnquireyModel: loanEnquireyModel)
-                      //     : SizedBox(),
+                      isLodget
+                          ? LodgetLoanDetails(
+                              loanEnquireyModel: loanEnquireyModel)
+                          : SizedBox(),
                       myEnquireyCards(
                           title: 'Enquiry report',
                           onTap: () {
@@ -279,11 +282,7 @@ class _EnquireyDetailsState extends State<EnquireyDetails> {
                       MySizedBox.height(26),
                     ]));
               }
-              return Center(
-                  child: CircularProgressIndicator(
-                valueColor:
-                    AlwaysStoppedAnimation(MasterStyle.appSecondaryColor),
-              ));
+              return Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(MasterStyle.appSecondaryColor),));
             }));
   }
 

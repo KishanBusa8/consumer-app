@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:hashching/Utilities/constants.dart';
 import 'package:hashching/models/consumer_dashboard_model.dart';
 import 'package:hashching/models/consumer_documet_list_model.dart';
+import 'package:hashching/models/consumer_setting_model.dart';
 import 'package:hashching/models/rewards_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
@@ -76,6 +77,7 @@ class _MyAccountSettingsState extends State<MyAccountSettings> {
   String imageName = '';
   String imagePath = '';
   bool imageSelection = false;
+  late ConsumerSettingModel consumerSettingModel;
 
   _handleImage(ImageSource source) async {
     setState(() {
@@ -94,6 +96,21 @@ class _MyAccountSettingsState extends State<MyAccountSettings> {
       imageSelection = false;
     });
   }
+ late ConsumerDetailsModel consumerDetailsModel;
+  getMarketingPreferences() async {
+    consumerDetailsModel = (await ApiServices.getConsumerSettings())!;
+
+    isSwitchTheme = consumerDetailsModel.darkTheme;
+    isSwitchGuideAndTips = consumerDetailsModel.guidesTips;
+    isSwitchEmailMarket = consumerDetailsModel.emailMarketing;
+    isSwitchSmsMarket = consumerDetailsModel.smsMarketing;
+    isSwitchNecessaryMessage = consumerDetailsModel.necessaryMessages;
+    setState(() {
+
+    });
+  }
+
+
 
   updatedConsumerProfileSettings(bool isMainProfileupdated) async {
     //     File file = File(image!.path);
@@ -134,7 +151,18 @@ class _MyAccountSettingsState extends State<MyAccountSettings> {
 
     if (profileUpdated!.status) {
       if (isMainProfileupdated) {
-        Navigator.pop(context, "https://s3-ap-southeast-2.amazonaws.com/hashching/uploads/cropper_images/$imagePath");
+        Map data = {
+          "firstName" : firstNameController.text,
+          "lastName" : lastNameController.text,
+          "email" : emailController.text,
+          "mobile" : phoneController.text,
+          "profilePicLink": imagePath != ''
+              ? "https://s3-ap-southeast-2.amazonaws.com/hashching/uploads/cropper_images/${imagePath}"
+              : widget.consumerInformation.consumerDetails.profilePicLink,
+
+        };
+        // print();
+        Navigator.pop(context, data);
         snackBar("You have successfully updated your profile!");
       }
       print('profile Updated Successfully');
@@ -353,17 +381,14 @@ class _MyAccountSettingsState extends State<MyAccountSettings> {
   @override
   void initState() {
     getPrefData();
-    isSwitchTheme = widget.consumerInformation.darkTheme;
-    isSwitchGuideAndTips = widget.consumerInformation.guidesTips;
-    isSwitchEmailMarket = widget.consumerInformation.emailMarketing;
-    isSwitchSmsMarket = widget.consumerInformation.smsMarketing;
-    isSwitchNecessaryMessage = widget.consumerInformation.necessaryMessages;
-    emailController.text = widget.consumerInformation.consumerDetails.email;
-    phoneController.text = widget.consumerInformation.consumerDetails.mobile;
+    getMarketingPreferences();
+
+    emailController.text = widget.consumerAccount.consumer.email;
+    phoneController.text = widget.consumerAccount.consumer.mobile;
     firstNameController.text =
-        widget.consumerInformation.consumerDetails.firstName;
+        widget.consumerAccount.consumer.firstName;
     lastNameController.text =
-        widget.consumerInformation.consumerDetails.lastName;
+        widget.consumerAccount.consumer.lastName!;
     super.initState();
   }
 
@@ -445,8 +470,8 @@ class _MyAccountSettingsState extends State<MyAccountSettings> {
                                         padding: EdgeInsets.all(1),
                                         child: Center(
                                             child: Text(
-                                          widget.consumerInformation
-                                              .consumerDetails.firstName
+                                          widget.consumerAccount
+                                              .consumer.firstName
                                               .split("")
                                               .first,
                                           style: MasterStyle.dashbordHeader
@@ -501,9 +526,9 @@ class _MyAccountSettingsState extends State<MyAccountSettings> {
                         ),
                       ),
                       Text(
-                        widget.consumerInformation.consumerDetails.firstName +
+                        widget.consumerAccount.consumer.firstName +
                             ' ' +
-                            widget.consumerInformation.consumerDetails.lastName,
+                            widget.consumerAccount.consumer.lastName!,
                         style: MasterStyle.whiteTextStyleMedium,
                       )
                     ],
@@ -633,13 +658,17 @@ class _MyAccountSettingsState extends State<MyAccountSettings> {
                     scale: .54,
                     child: CupertinoSwitch(
                       value: isSwitchGuideAndTips,
-                      onChanged: (isChangeValue) {
+                      onChanged: (isChangeValue) async  {
                         setState(() {
-                          isSwitchNecessaryMessage = false;
-
                           isSwitchGuideAndTips = !isSwitchGuideAndTips;
+                          if (isSwitchGuideAndTips) {
+                            isSwitchNecessaryMessage = false;
+                          }
                         });
-                        updatedConsumerProfileSettings(false);
+                       await ApiServices.setGuideTips(isSwitchGuideAndTips);
+                        setState(() {
+
+                        });
                       },
                       activeColor: Colors.green,
                       trackColor: MasterStyle.switchTileTrackColor,
@@ -668,14 +697,20 @@ class _MyAccountSettingsState extends State<MyAccountSettings> {
                     scale: .54,
                     child: CupertinoSwitch(
                       value: isSwitchEmailMarket,
-                      onChanged: (isChangeValue) {
+                      onChanged: (isChangeValue) async  {
                         print('isSwitchChange  $isSwitchEmailMarket');
                         setState(() {
-                          isSwitchNecessaryMessage = false;
 
                           isSwitchEmailMarket = !isSwitchEmailMarket;
+                          if (isSwitchEmailMarket) {
+                            isSwitchNecessaryMessage = false;
+                          }
                         });
-                        updatedConsumerProfileSettings(false);
+
+                        await ApiServices.setEmailMarketing(isSwitchEmailMarket);
+                        setState(() {
+
+                        });
                         print('isSwitch  $isSwitchEmailMarket');
                       },
                       activeColor: Colors.green,
@@ -705,13 +740,20 @@ class _MyAccountSettingsState extends State<MyAccountSettings> {
                     scale: .54,
                     child: CupertinoSwitch(
                       value: isSwitchSmsMarket,
-                      onChanged: (isChangeValue) {
+                      onChanged: (isChangeValue) async {
                         print('isSwitchSmsMarket  $isSwitchSmsMarket');
                         setState(() {
-                          isSwitchNecessaryMessage = false;
+
                           isSwitchSmsMarket = !isSwitchSmsMarket;
+                          if (isSwitchSmsMarket) {
+                            isSwitchNecessaryMessage = false;
+
+                          }
                         });
-                        updatedConsumerProfileSettings(false);
+                     await ApiServices.setSmsMarketing(isSwitchSmsMarket);
+                        setState(() {
+
+                        });
                         print('isSwitchSmsMarketElse  $isSwitchSmsMarket');
                       },
                       activeColor: Colors.green,
@@ -741,15 +783,22 @@ class _MyAccountSettingsState extends State<MyAccountSettings> {
                     scale: .54,
                     child: CupertinoSwitch(
                       value: isSwitchNecessaryMessage,
-                      onChanged: (isChangeValue) {
+                      onChanged: (isChangeValue) async {
                         setState(() {
                           isSwitchNecessaryMessage = !isSwitchNecessaryMessage;
-                          isSwitchGuideAndTips = false;
-                          isSwitchEmailMarket = false;
-                          isSwitchSmsMarket = false;
+                          if (isSwitchNecessaryMessage) {
+                            isSwitchGuideAndTips = false;
+                            isSwitchEmailMarket = false;
+                            isSwitchSmsMarket = false;
+                          }
+
                         });
-                        updatedConsumerProfileSettings(false);
-                        print('isSwitch  $isSwitchSmsMarket');
+                        await ApiServices.setNecessaryMessages(isSwitchNecessaryMessage);
+
+                        setState(() {
+
+                        });
+                        print('isSwitch  $isSwitchNecessaryMessage');
                       },
                       activeColor: Colors.green,
                       trackColor: MasterStyle.switchTileTrackColor,
@@ -903,7 +952,7 @@ class _MyAccountSettingsState extends State<MyAccountSettings> {
             setState(() {
               isLastNameInputField = !isLastNameInputField;
             });
-            if (!isFirstNameInputField) {
+            if (!isLastNameInputField) {
               updatedConsumerProfileSettings(true);
             }
           },

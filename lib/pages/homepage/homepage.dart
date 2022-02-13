@@ -174,10 +174,7 @@ class _HomePageState extends State<HomePage> {
                                                   itemBuilder:
                                                       (BuildContext context,
                                                           int index) {
-                                                    print("-----------$index");
-                                                    print(bloc.list[index].loantypeshow);
                                                     return HomeMyLoansPanel(
-                                                      loanTypeDisplay : bloc.list[index].loanType ==""?bloc.list[index].loantypeshow:bloc.list[index].loanType,
                                                       encryptkey: bloc
                                                           .list[index]
                                                           .encryptkey,
@@ -646,7 +643,10 @@ class _HomePageState extends State<HomePage> {
                   builder: (context) => DocumentVault(
                         consumerDocumentListModel: consumerDocumentListProvider,
                         consumerDashboardModel: consumerDashboardModel,
-                      ))).then((value) {setState(() {
+                      ))).then((value) {
+                        print("llll $value");
+            consumerDashboardModel.consumerDocumentCount = value;
+                        setState(() {
 
                       });});
         },

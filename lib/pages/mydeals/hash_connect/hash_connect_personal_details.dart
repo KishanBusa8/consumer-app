@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:hashching/Utilities/simplefiedwidgets.dart';
 import 'package:hashching/Utilities/validator.dart';
-import 'package:hashching/pages/myloans/loans_widget_expansion/new_loan_personal_details.dart';
-import 'package:hashching/pages/myloans/loans_widget_expansion/loan_components.dart';
+import 'package:hashching/pages/myloans/loans_widget_expansion.dart/new_loan_personal_details.dart';
+import 'package:hashching/pages/myloans/loans_widget_expansion.dart/loan_components.dart';
 import 'package:hashching/services/api_services.dart';
 import 'package:hashching/styles/hexcolor.dart';
 import 'package:hashching/styles/masterstyle.dart';
@@ -206,7 +206,7 @@ class _HashConnectPersonalDetailsFormState
      Padding(
                 padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Theme(
                         data: ThemeData(

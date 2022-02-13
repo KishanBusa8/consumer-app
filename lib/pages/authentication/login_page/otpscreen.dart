@@ -76,8 +76,11 @@ class _OtpScreenState extends State<OtpScreen> {
         setState(() {
           issubmit = false;
         });
+
+
+
         // print('*********** status :  ${jsonResponse["success"]['status']}');
-        if (jsonResponse["success"]['status'] == 101) {
+        if (jsonResponse["success"]!= null && jsonResponse["success"]['status'] == 101) {
           var token = jsonResponse["success"]["token"];
           print("token $token");
           print('Success');
