@@ -95,7 +95,7 @@ class _LoanAmountFormState extends State<LoanAmountForm> {
                   value: widget.selectedLender,
                   validator: (value) {
                     if (value == null) {
-                      return 'select build year';
+                      return 'select lender';
                     }
                     return null;
                   },
@@ -126,7 +126,7 @@ class _LoanAmountFormState extends State<LoanAmountForm> {
                       right: 15.w,
                       bottom: 8.h,
                     ),
-                    hintText: listOfHintTextNew[0],
+                    hintText: "Select lender",
                     hintStyle: MasterStyle.whiteHintStyle,
                     enabledBorder: SimplifiedWidgets.outlineInputBorder,
                     border: SimplifiedWidgets.outlineInputBorder,

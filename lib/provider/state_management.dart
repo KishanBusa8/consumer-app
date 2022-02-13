@@ -36,7 +36,7 @@ class StateManagementProvider extends StatelessWidget {
           var consumerDashboardContext =
               Provider.of<ConsumerDashboardModel>(context);
           var consumerAccountContext =
-              Provider.of<ConsumerAccountModel>(context);
+              Provider.of<ConsumerAccountModel?>(context);
           bool ConsumerAccountDataExists = consumerAccountContext !=
               InitialData.consumerAccountDataInitialData;
           bool ConsumerDashboardDataExists = consumerDashboardContext !=

@@ -122,8 +122,8 @@ class _HaschingDashboardState extends State<HaschingDashboard>
   }
 
   AppBar appBar(title) {
-    ConsumerAccountModel consumerAccountModel =
-        Provider.of<ConsumerAccountModel>(context);
+    ConsumerAccountModel? consumerAccountModel =
+        Provider.of<ConsumerAccountModel?>(context);
     if (isInbox) {
       return AppBar(
         backgroundColor: AppColors.themeColor,
@@ -190,7 +190,7 @@ class _HaschingDashboardState extends State<HaschingDashboard>
                 currenIndex = notificationPageIndex;
               });
             },
-            child: consumerAccountModel.messageNotification
+            child: consumerAccountModel!.messageNotification
                 ? Padding(
                     padding: EdgeInsets.only(left: 16, right: 12, bottom: 5),
                     child:
@@ -275,7 +275,7 @@ class _HaschingDashboardState extends State<HaschingDashboard>
                 currenIndex = notificationPageIndex;
               });
             },
-            child: consumerAccountModel.messageNotification
+            child: consumerAccountModel!.messageNotification
                 ? Padding(
                     padding: EdgeInsets.only(left: 16, right: 12, bottom: 5),
                     child:
