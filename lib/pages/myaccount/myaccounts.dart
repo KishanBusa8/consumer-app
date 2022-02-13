@@ -118,9 +118,19 @@ class _MyAccountState extends State<MyAccount> {
                           builder: (context) => MyAccountSettings(
                                 consumerInformation: consumerDetailsProvider,
                                 consumerAccount: consumerAccountModelProvider,
-                              ))).then((value) {
+                              ))).then((value) async {
+                                print("values ${ value}");
+                                if (value != null) {
+
+                                  // Provider.of<ConsumerDetailsModel>(context, listen: false).consumerDetails.firstName = value["firstName"];
+                                  // Provider.of<ConsumerAccountModel>(context, listen: false).consumer.firstName = value["firstName"];
+                                  consumerAccountModelProvider.consumer.firstName = value["firstName"];
+                                  consumerAccountModelProvider.consumer.lastName = value["lastName"];
+                                  consumerAccountModelProvider.consumer.mobile = value["mobile"];
+                                  consumerAccountModelProvider.consumer.email = value["email"];
+                                  consumerAccountModelProvider.consumer.profilePic = value["profilePicLink"];
+                                }
                                 setState(() {
-                                  consumerAccountModelProvider.consumer.profilePic = value;
                                 });
                   });
                 },
