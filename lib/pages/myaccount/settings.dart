@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:hashching/Utilities/constants.dart';
-import 'package:hashching/models/consumer_dashboard.dart';
+import 'package:hashching/models/consumer_dashboard_model.dart';
 import 'package:hashching/models/consumer_documet_list_model.dart';
 import 'package:hashching/models/rewards_model.dart';
 import 'package:http/http.dart' as http;
@@ -189,7 +189,7 @@ class _MyAccountSettingsState extends State<MyAccountSettings> {
                 padding: const EdgeInsets.only(
                     left: 25, right: 22, bottom: 16, top: 4),
                 child: Text(
-                  'Enter the OTP sent to +61${widget.consumerInformation.consumerDetails.mobile}',
+                  'Enter the OTP sent to ${widget.consumerInformation.consumerDetails.mobile}',
                   style: MasterStyle.blackWithSmallStyle,
                 ),
               ),
@@ -561,40 +561,40 @@ class _MyAccountSettingsState extends State<MyAccountSettings> {
                   ],
                 ),
               ),
-              Container(
-                decoration: boxCurvedDecoration,
-                padding: EdgeInsets.fromLTRB(16, 13, 16, 20),
-                child: NewColumn(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Switch Theme'),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                            child: Text('Switch your dashboard to light mode')),
-                        SizedBox(
-                          width: 16,
-                        ),
-                        Transform.scale(
-                          transformHitTests: false,
-                          scale: .54,
-                          child: CupertinoSwitch(
-                            value: isSwitchTheme,
-                            onChanged: (isChange) {
-                              setState(() {
-                                isSwitchTheme = !isSwitchTheme;
-                              });
-                            },
-                            activeColor: Colors.green,
-                            trackColor: MasterStyle.switchTileTrackColor,
-                          ),
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              ),
+              // Container(
+              //   decoration: boxCurvedDecoration,
+              //   padding: EdgeInsets.fromLTRB(16, 13, 16, 20),
+              //   child: NewColumn(
+              //     crossAxisAlignment: CrossAxisAlignment.start,
+              //     children: [
+              //       Text('Switch Theme'),
+              //       Row(
+              //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //         children: [
+              //           Expanded(
+              //               child: Text('Switch your dashboard to light mode')),
+              //           SizedBox(
+              //             width: 16,
+              //           ),
+              //           Transform.scale(
+              //             transformHitTests: false,
+              //             scale: .54,
+              //             child: CupertinoSwitch(
+              //               value: isSwitchTheme,
+              //               onChanged: (isChange) {
+              //                 setState(() {
+              //                   isSwitchTheme = !isSwitchTheme;
+              //                 });
+              //               },
+              //               activeColor: Colors.green,
+              //               trackColor: MasterStyle.switchTileTrackColor,
+              //             ),
+              //           )
+              //         ],
+              //       )
+              //     ],
+              //   ),
+              // ),
               Container(
                 margin: EdgeInsets.symmetric(
                   vertical: 16,

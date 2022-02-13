@@ -1,4 +1,4 @@
-import 'package:hashching/models/consumer_dashboard.dart';
+import 'package:hashching/models/consumer_dashboard_model.dart';
 
 class BrokerInfoGlobal{
   static ConsumerDashboardModel readBrokerInfoDoc(

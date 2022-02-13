@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hashching/models/consumer_dashboard.dart';
+import 'package:hashching/models/consumer_dashboard_model.dart';
 
 class LoanListProvider extends ChangeNotifier {
   List<AllLoans> _list = [];

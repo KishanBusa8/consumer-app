@@ -71,7 +71,7 @@ bool isSendCode = false;
   initData() {
     firstNameController.text = widget.consumerAccountModel.consumer.firstName;
     lastNameController.text =
-        widget.consumerAccountModel.consumer.lastName;
+        widget.consumerAccountModel.consumer.lastName!;
     emailController.text = widget.consumerAccountModel.consumer.email;
     phoneController.text = widget.consumerAccountModel.consumer.mobile;
     consumerMobileNumber = widget.consumerAccountModel.consumer.mobile;

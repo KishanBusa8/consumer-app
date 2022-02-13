@@ -1,6 +1,12 @@
 class LocalConstants {
   static final dashboard = 'Dashboard';
   static final notification = 'Notification';
+  static final hashauto = 'hash auto';
+  static final hashconveyance = 'hash conveyance';
+  static final hashconnect = 'hash connect';
+  static final videocall = 'video call';
+
+
   static String facebookLoginUrl =
       "https://www.hashching.co.uk/facebook-login-borrower";
   static String googleLoginUrl =
@@ -44,6 +50,8 @@ class LocalConstants {
       "https://api.hashching.com.au/api/v1/get-property-credit-info";
   static String fetchLoanDetailsUrl =
       "https://api.hashching.com.au/api/v1/fetch-loan-detail";
+  static String getConsumerNotificationUrl =
+      "https://api.hashching.com.au/api/v1/get-consumer-notifications";
   static String addNewLoanUrl =
       "https://api.hashching.com.au/api/v1/add-new-loan";
   static String addNewHashAutoUrl =

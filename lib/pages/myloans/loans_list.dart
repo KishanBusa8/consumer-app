@@ -5,11 +5,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hashching/Utilities/simplefiedwidgets.dart';
 import 'package:hashching/models/consumer_account_model.dart';
-import 'package:hashching/models/consumer_dashboard.dart';
+import 'package:hashching/models/consumer_dashboard_model.dart';
 import 'package:hashching/pages/myloans/alertdailougebox.dart';
 import 'package:hashching/pages/myloans/enquirey_details/assigned_loan_details.dart';
 import 'package:hashching/pages/myloans/enquirey_details/newloandetails.dart';
 import 'package:hashching/styles/masterstyle.dart';
+
+import 'loans_widget_expansion/closed_enquiry_details.dart';
+import 'loans_widget_expansion/loan_enquiry_details.dart';
 
 class MyLoansList extends StatefulWidget {
   MyLoansList(
@@ -135,23 +138,36 @@ class _MyLoansListState extends State<MyLoansList> {
                   ),
                   InkWell(
                     onTap: () {
-                      if (widget
-                              .consumerLoansModel.allLoans[index].statusname ==
-                          "New") {
+                      var loansDetails =
+                          widget.consumerLoansModel.allLoans[index];
+                      if (loansDetails.statusname == "New") {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => NewLoanEnquireyDetails(
-                                    encryptkey: widget.consumerLoansModel
-                                        .allLoans[index].encryptkey)));
+                                    encryptkey: loansDetails.encryptkey,
+                                    loanTypeDisplay: loansDetails.loanType == ''
+                                        ? loansDetails.loantypeshow
+                                        : loansDetails.loanType)));
+                      } else if (loansDetails.statusname == 'Closed') {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ClosedEnquiryDetails(
+                                    encryptkey: loansDetails.encryptkey,
+                                    loanTypeDisplay: loansDetails.loanType == ''
+                                        ? loansDetails.loantypeshow
+                                        : loansDetails.loanType)));
                       } else {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    AssignedLoanEnquireyDetails(
-                                        encryptkey: widget.consumerLoansModel
-                                            .allLoans[index].encryptkey)));
+                                builder: (context) => LoanEnquiryDetails(
+                                    encryptkey: loansDetails.encryptkey,
+                                    statusName: loansDetails.statusname,
+                                    loanTypeDisplay: loansDetails.loanType == ''
+                                        ? loansDetails.loantypeshow
+                                        : loansDetails.loanType)));
                       }
                     },
                     child: Container(
@@ -211,7 +227,12 @@ class _MyLoansListState extends State<MyLoansList> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
-                                    textWithStyle('  _'),
+                                    textWithStyle(widget.consumerLoansModel
+                                                .allLoans[index].statusname ==
+                                            'New'
+                                        ? '  _'
+                                        : widget.consumerLoansModel
+                                            .allLoans[index].brokerName),
                                     textWithStyle(
                                         '\$${widget.consumerLoansModel.allLoans[index].loanAmount.split('.').first}'),
                                     textWithStyle(widget

@@ -197,43 +197,43 @@ class _HaschingDashboardState extends State<HaschingDashboard>
                     ),
                   ),
           ),
-          Stack(
-            clipBehavior: Clip.hardEdge,
-            fit: StackFit.loose,
-            alignment: Alignment.center,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    isInbox = true;
-                    isHomePage = false;
-                    isNotification = false;
-                    currenIndex = inboxPageIndex;
-                  });
-                },
-                child: Padding(
-                    padding: const EdgeInsets.only(right: 18),
-                    child: SvgPicture.asset("assets/home_assets/inbox.svg")),
-              ),
-              consumerAccountModel.consumerNotificationsUnread
-                  ? Positioned(
-                      left: 0,
-                      right: 0,
-                      top: 18,
-                      child: new Container(
-                        padding: EdgeInsets.all(1),
-                        decoration: new BoxDecoration(
-                            color: MasterStyle.unreadBadgeColor,
-                            shape: BoxShape.circle),
-                        constraints: BoxConstraints(
-                          minWidth: 7,
-                          minHeight: 7,
-                        ),
-                      ),
-                    )
-                  : SizedBox()
-            ],
-          ),
+          // Stack(
+          //   clipBehavior: Clip.hardEdge,
+          //   fit: StackFit.loose,
+          //   alignment: Alignment.center,
+          //   children: [
+          //     GestureDetector(
+          //       onTap: () {
+          //         setState(() {
+          //           isInbox = true;
+          //           isHomePage = false;
+          //           isNotification = false;
+          //           currenIndex = inboxPageIndex;
+          //         });
+          //       },
+          //       child: Padding(
+          //           padding: const EdgeInsets.only(right: 18),
+          //           child: SvgPicture.asset("assets/home_assets/inbox.svg")),
+          //     ),
+          //     consumerAccountModel.consumerNotificationsUnread
+          //         ? Positioned(
+          //             left: 0,
+          //             right: 0,
+          //             top: 18,
+          //             child: new Container(
+          //               padding: EdgeInsets.all(1),
+          //               decoration: new BoxDecoration(
+          //                   color: MasterStyle.unreadBadgeColor,
+          //                   shape: BoxShape.circle),
+          //               constraints: BoxConstraints(
+          //                 minWidth: 7,
+          //                 minHeight: 7,
+          //               ),
+          //             ),
+          //           )
+          //         : SizedBox()
+          //   ],
+          // ),
         ],
       );
     } else if (isHomePage) {
@@ -279,43 +279,43 @@ class _HaschingDashboardState extends State<HaschingDashboard>
                     ),
                   ),
           ),
-          Stack(
-            clipBehavior: Clip.hardEdge,
-            fit: StackFit.loose,
-            alignment: Alignment.center,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    isInbox = true;
-                    isHomePage = false;
-                    isNotification = false;
-                    currenIndex = inboxPageIndex;
-                  });
-                },
-                child: Padding(
-                    padding: const EdgeInsets.only(right: 18),
-                    child: SvgPicture.asset("assets/home_assets/inbox.svg")),
-              ),
-              consumerAccountModel.consumerNotificationsUnread
-                  ? Positioned(
-                      left: 0,
-                      right: 0,
-                      top: 18,
-                      child: new Container(
-                        padding: EdgeInsets.all(1),
-                        decoration: new BoxDecoration(
-                            color: MasterStyle.unreadBadgeColor,
-                            shape: BoxShape.circle),
-                        constraints: BoxConstraints(
-                          minWidth: 7,
-                          minHeight: 7,
-                        ),
-                      ),
-                    )
-                  : SizedBox()
-            ],
-          ),
+          // Stack(
+          //   clipBehavior: Clip.hardEdge,
+          //   fit: StackFit.loose,
+          //   alignment: Alignment.center,
+          //   children: [
+          //     GestureDetector(
+          //       onTap: () {
+          //         setState(() {
+          //           isInbox = true;
+          //           isHomePage = false;
+          //           isNotification = false;
+          //           currenIndex = inboxPageIndex;
+          //         });
+          //       },
+          //       child: Padding(
+          //           padding: const EdgeInsets.only(right: 18),
+          //           child: SvgPicture.asset("assets/home_assets/inbox.svg")),
+          //     )
+          //     // consumerAccountModel.consumerNotificationsUnread
+          //     //     ? Positioned(
+          //     //         left: 0,
+          //     //         right: 0,
+          //     //         top: 18,
+          //     //         child: new Container(
+          //     //           padding: EdgeInsets.all(1),
+          //     //           decoration: new BoxDecoration(
+          //     //               color: MasterStyle.unreadBadgeColor,
+          //     //               shape: BoxShape.circle),
+          //     //           constraints: BoxConstraints(
+          //     //             minWidth: 7,
+          //     //             minHeight: 7,
+          //     //           ),
+          //     //         ),
+          //     //       )
+          //     //     : SizedBox()
+          //   ],
+          // ),
         ],
       );
     } else if (currenIndex != 3) {

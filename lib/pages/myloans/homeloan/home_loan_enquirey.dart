@@ -10,11 +10,11 @@ import 'package:hashching/Utilities/simplefiedwidgets.dart';
 import 'package:hashching/Utilities/validator.dart';
 import 'package:hashching/listprovider/loadnlist_provider.dart';
 import 'package:hashching/models/consumer_account_model.dart';
-import 'package:hashching/models/consumer_dashboard.dart';
+import 'package:hashching/models/consumer_dashboard_model.dart';
 import 'package:hashching/pages/myaccount/settings.dart';
-import 'package:hashching/pages/myloans/loans_widget_expansion.dart/new_loan_personal_details.dart';
-import 'package:hashching/pages/myloans/loans_widget_expansion.dart/loan_amount_form.dart';
-import 'package:hashching/pages/myloans/loans_widget_expansion.dart/loan_contact_form.dart';
+import 'package:hashching/pages/myloans/loans_widget_expansion/new_loan_personal_details.dart';
+import 'package:hashching/pages/myloans/loans_widget_expansion/loan_amount_form.dart';
+import 'package:hashching/pages/myloans/loans_widget_expansion/loan_contact_form.dart';
 import 'package:hashching/services/api_services.dart';
 import 'package:hashching/styles/hexcolor.dart';
 import 'package:hashching/styles/masterstyle.dart';
@@ -90,7 +90,7 @@ class _HomeLoanEnquireyState extends State<HomeLoanEnquirey>
 
   initData() {
     firstNameController.text = widget.consumerAccountModel.consumer.firstName;
-    lastNameController.text = widget.consumerAccountModel.consumer.lastName;
+    lastNameController.text = widget.consumerAccountModel.consumer.lastName!;
     emailController.text = widget.consumerAccountModel.consumer.email;
     phoneController.text = widget.consumerAccountModel.consumer.convertMobile;
     consumerMobileNumber = widget.consumerAccountModel.consumer.convertMobile;
@@ -672,7 +672,7 @@ class _HomeLoanEnquireyState extends State<HomeLoanEnquirey>
       "email": emailController.text,
       "mobile": phoneController.text,
       "estimated_property_value": "400324",
-      "loan_amount": amountController.text.toString(),
+      "loan_amount": amountController.text.toString().replaceAll(',', ''),
       "postcode_s": postcodeController.text.toString(),
       "postcode_id": "42253",
       "suburb": postcodeController.text.toString(),
@@ -692,7 +692,7 @@ class _HomeLoanEnquireyState extends State<HomeLoanEnquirey>
             id: _rend.nextInt(1000),
             leadType: isNewLoan ? "New Loan" : "Refinance",
             productType: "Home Loan",
-            loanAmount: amountController.text.toString(),
+            loanAmount: amountController.text.toString().replaceAll(',', ''),
             status: isNewLoan ? 1 : 0,
             brokerLeadID: 2,
             createdAt: DateFormat("yyyyMMdd").format(DateTime.now()),

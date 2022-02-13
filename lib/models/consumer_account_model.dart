@@ -52,7 +52,7 @@ late   bool consumerNotificationsUnread;
 class ConsumerModel{
  late  int id;
  late  String firstName;
-late   String lastName;
+late   String? lastName;
  late  String email;
 late   String mobile;
 late   String profilePic;
@@ -74,7 +74,7 @@ late   String uniqueId;
   ConsumerModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     firstName = json['first_name'];
-    lastName = json['last_name'];
+    lastName = json['last_name']??'';
     email = json['email'];
     mobile = json['mobile'];
     profilePic = json['profile_pic'];

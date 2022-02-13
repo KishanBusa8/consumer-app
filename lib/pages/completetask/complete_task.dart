@@ -3,15 +3,18 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hashching/Utilities/constants.dart';
 import 'package:hashching/Utilities/simplefiedwidgets.dart';
-import 'package:hashching/models/consumer_dashboard.dart';
+import 'package:hashching/models/consumer_dashboard_model.dart';
+import 'package:hashching/models/fetch_loan_model.dart';
 import 'package:hashching/services/api_services.dart';
 import 'package:hashching/styles/hexcolor.dart';
 import 'package:hashching/styles/masterstyle.dart';
 
 class CompleteTask extends StatefulWidget {
-  const CompleteTask({Key? key, required this.consumerDashboardModel})
+  const CompleteTask({Key? key, required this.encryptId,required this.statusName})
       : super(key: key);
-  final ConsumerDashboardModel consumerDashboardModel;
+
+  final String encryptId;
+  final String statusName;
 
   @override
   _CompleteTaskState createState() => _CompleteTaskState();
@@ -19,41 +22,37 @@ class CompleteTask extends StatefulWidget {
 
 class _CompleteTaskState extends State<CompleteTask> {
   List<AllLoans> consumerLoansList=[];
+ late FetchLoanModel? fetchLoanModel;
   bool isLoading = false;
-  initialData(){
-    for(var i =0; i<widget.consumerDashboardModel.allLoans.length;i++){
-      var status =widget.consumerDashboardModel.allLoans[i].statusname;
-   if( status == 'Qualified'||status == 'Assigned'|| status == 'Onhold'){
-     consumerLoansList.add(widget.consumerDashboardModel.allLoans[i]);
-     }
+  bool setInitThe = false;
+  initialData()  async {
 
-    }
     setState(() {
-      isLoading = true;
+      setInitThe = true;
+    });
+   fetchLoanModel = await ApiServices.fetchLoans(encryptId:widget.encryptId);
+    setState(() {
+      setInitThe = false;
     });
   
   }
   @override
   void initState() {
-  // initialData();
+   initialData();
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
-    print("object${widget.consumerDashboardModel.allLoans.length}");
-    return Scaffold(
+    return   Scaffold(
       backgroundColor: MasterStyle.backgroundColor,
       appBar: SimplifiedWidgets.appbar(
           appBarTitle: 'Complete task', context: context),
-      body: ListView.builder(
-        // physics: NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemCount: widget.consumerDashboardModel.allLoans.length,
-        itemBuilder: (BuildContext context, int index) {
-          return completedTaskCards(
-              consumerLoans: widget.consumerDashboardModel.allLoans[index]);
-        },
-      ),
+      body: setInitThe?  Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(MasterStyle.appSecondaryColor))): Column(
+        children: [
+          completedTaskCards(
+              consumerLoans: fetchLoanModel!),
+        ],
+      )
     );
   }
 
@@ -83,10 +82,9 @@ class _CompleteTaskState extends State<CompleteTask> {
   }
 
   Widget completedTaskCards({
-    required AllLoans consumerLoans,
+    required FetchLoanModel consumerLoans,
   }) {
-         var status = consumerLoans.statusname;
-    if(status == 'Qualified'||status == 'Assigned'|| status == 'Onhold'){
+
    return Container(
       margin: EdgeInsets.only(bottom: 16.h, left: 16.w, right: 16.w),
       decoration: BoxDecoration(
@@ -108,7 +106,7 @@ class _CompleteTaskState extends State<CompleteTask> {
                     width: 33.54.w,
                     margin: EdgeInsets.only(right: 11.w),
                     child: SvgPicture.asset(
-                      getImageAssets(consumerLoans.loantypeshow),
+                      getImageAssets(consumerLoans.loan.productType),
                       height: 31.1.h,
                       width: 32.54.w,
                     )),
@@ -118,16 +116,16 @@ class _CompleteTaskState extends State<CompleteTask> {
                       Row(
                         children: [
                           Text(
-                            consumerLoans.loantypeshow.toString(),
+                            consumerLoans.loan.loantypeLabel,
                             style: MasterStyle.blackTextSemiBoldMediumSize,
                           ),
                           SizedBox(
                             width: 9.w,
                           ),
                           Text(
-                            consumerLoans.statusname,
-                            style: consumerLoans.statusname == 'Settled' ||
-                                    consumerLoans.statusname == 'New'
+                            widget.statusName,
+                            style:  widget.statusName == 'Settled' ||
+                                widget.statusName == 'New'
                                 ? MasterStyle.possitiveStatusStyle
                                 : MasterStyle.assignedStatusStyle,
                           ),
@@ -140,7 +138,7 @@ class _CompleteTaskState extends State<CompleteTask> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Submitted on: ${consumerLoans.createdate}",
+                            "Submitted on: ${consumerLoans.loan.createdAt}",
                             style: MasterStyle.greySmallStyle,
                           ),
                           SizedBox(
@@ -150,7 +148,7 @@ class _CompleteTaskState extends State<CompleteTask> {
                             child: FittedBox(
                               fit: BoxFit.scaleDown,
                               child: Text(
-                                '\$${consumerLoans.loanAmount}',
+                                '\$${consumerLoans.loan.loanAmount}',
                                 style: MasterStyle.blackTextStyleNormalSize,
                                 // minFontSize: 10,
                                 // maxFontSize: 15,
@@ -167,43 +165,48 @@ class _CompleteTaskState extends State<CompleteTask> {
               ],
             ),
           ),
-          InkWell(
-            onTap: (){
-              SimplifiedWidgets.launchInBrowser(LocalConstants.uploadBankStatement, context);
-            },
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-              decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: HexColor("#E4E4E4")))),
-              child: Center(
-                child: Text(
-                  "Upload bank statements",
-                  style: MasterStyle.primaryContent,
+           Visibility(
+             child: InkWell(
+              onTap: (){
+                SimplifiedWidgets.launchInBrowser(consumerLoans.loan.bankStatementIframeLink, context);
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                decoration: BoxDecoration(
+                    border: Border(bottom: BorderSide(color: HexColor("#E4E4E4")))),
+                child: Center(
+                  child: Text(
+                    "Upload bank statements",
+                    style: MasterStyle.primaryContent,
+                  ),
                 ),
               ),
-            ),
           ),
-          InkWell(
-            onTap: (){
-              SimplifiedWidgets.launchInBrowser(LocalConstants.completeFactFind, context);
-              // submitCompleteFactFind(consumerLoans.encryptkey);
-            },
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-              child: Center(
-                child: Text(
-                  "Complete fact find",
-                  style: MasterStyle.primaryContent,
+             visible:  consumerLoans.loan.bankStatementRequest,
+           ),
+          Visibility(
+            child: InkWell(
+              onTap: (){
+                SimplifiedWidgets.launchInBrowser(consumerLoans.loan.mystroServicesList[0].iframeLink, context);
+                // submitCompleteFactFind(consumerLoans.encryptkey);
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                child: Center(
+                  child: Text(
+                    "Complete fact find",
+                    style: MasterStyle.primaryContent,
+                  ),
                 ),
               ),
+
             ),
+            visible:  consumerLoans.loan.leadDetailsMystroRequested,
           ),
         ],
       ),
     );
- 
-    }
-    return SizedBox();
+
   }
 
   submitCompleteFactFind(encrypt_id) async{

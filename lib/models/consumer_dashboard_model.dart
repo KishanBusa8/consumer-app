@@ -1,43 +1,40 @@
 class ConsumerDashboardModel {
   ConsumerDashboardModel({
     required this.allLoans,
+    required this.completeTask,
     required this.allConsumerBrokers,
     required this.rewardPoints,
     required this.consumerDocumentCount,
   });
   late final List<AllLoans> allLoans;
+  late final bool completeTask;
   late final List<AllConsumerBrokers> allConsumerBrokers;
   late final int rewardPoints;
   late final int consumerDocumentCount;
-
-  ConsumerDashboardModel.fromJson(Map<String, dynamic> json) {
-    allLoans =
-        List.from(json['allLoans']).map((e) => AllLoans.fromJson(e)).toList();
-    allConsumerBrokers = List.from(json['all_consumer_brokers'])
-        .map((e) => AllConsumerBrokers.fromJson(e))
-        .toList();
+  ConsumerDashboardModel.fromJson(Map<String, dynamic> json){
+    allLoans = List.from(json['allLoans']).map((e)=>AllLoans.fromJson(e)).toList();
+    completeTask = json['complete_task'];
+    allConsumerBrokers = List.from(json['all_consumer_brokers']).map((e)=>AllConsumerBrokers.fromJson(e)).toList();
     rewardPoints = json['reward_points'];
     consumerDocumentCount = json['consumer_document_count'];
   }
-
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
-    _data['allLoans'] = allLoans.map((e) => e.toJson()).toList();
-    _data['all_consumer_brokers'] =
-        allConsumerBrokers.map((e) => e.toJson()).toList();
+    _data['allLoans'] = allLoans.map((e)=>e.toJson()).toList();
+    _data['complete_task'] = completeTask;
+    _data['all_consumer_brokers'] = allConsumerBrokers.map((e)=>e.toJson()).toList();
     _data['reward_points'] = rewardPoints;
     _data['consumer_document_count'] = consumerDocumentCount;
     return _data;
   }
 }
-
 class AllLoans {
   AllLoans({
     required this.id,
     required this.leadType,
     required this.productType,
     required this.loanAmount,
-    this.loanType,
+     this.loanType,
     required this.status,
     this.leadBrokerUserID,
     required this.brokerLeadID,
@@ -49,44 +46,50 @@ class AllLoans {
     required this.loantypeshow,
     required this.createdate,
     required this.statusname,
+     this.bankStatementRequested,
+     this.leadDetailsMystroRequested,
+     this.brokerName,
   });
-  late final int id;
-  late final String leadType;
-  late final String productType;
-  late final String loanAmount;
-  late final String? loanType;
-  late final int status;
-  late final int? leadBrokerUserID;
-  late final int brokerLeadID;
-  late final String createdAt;
-  late final String? closingStatus;
-  late final int? brokerId;
-  late final String uniqueId;
-  late final String encryptkey;
-  late final String loantypeshow;
-  late final String createdate;
-  late final String statusname;
+  late final dynamic id;
+  late final dynamic leadType;
+  late final dynamic productType;
+  late final dynamic loanAmount;
+  late final dynamic loanType;
+  late final dynamic status;
+  late final dynamic leadBrokerUserID;
+  late final dynamic brokerLeadID;
+  late final dynamic createdAt;
+  late final dynamic closingStatus;
+  late final dynamic brokerId;
+  late final dynamic uniqueId;
+  late final dynamic encryptkey;
+  late final dynamic loantypeshow;
+  late final dynamic createdate;
+  late final dynamic statusname;
+  late final dynamic bankStatementRequested;
+  late final dynamic leadDetailsMystroRequested;
   late final dynamic brokerName;
-
-  AllLoans.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    leadType = json['lead_type'] ?? "null";
-    productType = json['product_type'] ?? "null";
-    loanAmount = json['loan_amount'] ?? "null";
-    loanType = null;
-    status = json['status'];
-    leadBrokerUserID = null;
-    brokerLeadID = json['broker_lead_ID'] ?? "null";
-    createdAt = json['created_at'] ?? "null";
-    closingStatus = null ?? "null";
-    brokerId = null;
-    uniqueId = json['unique_id'] ?? "null";
-    encryptkey = json['encryptkey'] ?? "null";
-    loantypeshow = json['loantypeshow'] ?? "null";
-    createdate = json['createdate'] ?? "null";
-    statusname = json['statusname'] ?? "null";
+  AllLoans.fromJson(Map<String, dynamic> json){
+    id = json['id']??'';
+    leadType = json['lead_type']??'';
+    productType = json['product_type']??'';
+    loanAmount = json['loan_amount']??'';
+    loanType = json['loan_type']??'';
+    status = json['status']??'';
+    leadBrokerUserID = json['lead_broker_userID']??'' ;
+    brokerLeadID = json['broker_lead_ID']??'';
+    createdAt = json['created_at']??'';
+    closingStatus = json['closing_status']??'';
+    brokerId = json['broker_id']??'';
+    uniqueId = json['unique_id']??'';
+    encryptkey = json['encryptkey']??'';
+    loantypeshow = json['loantypeshow']??'';
+    createdate = json['createdate']??'';
+    statusname = json['statusname']??'';
+    bankStatementRequested = json['bank_statement_requested']??'';
+    leadDetailsMystroRequested = json['lead_details_mystro_requested']??'';
+    brokerName = json['broker_name']??'';
   }
-
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
     _data['id'] = id;
@@ -105,17 +108,18 @@ class AllLoans {
     _data['loantypeshow'] = loantypeshow;
     _data['createdate'] = createdate;
     _data['statusname'] = statusname;
+    _data['bank_statement_requested'] = bankStatementRequested;
+    _data['lead_details_mystro_requested'] = leadDetailsMystroRequested;
+    _data['broker_name'] = brokerName;
     return _data;
   }
 }
-
 class AllConsumerBrokers {
   AllConsumerBrokers({
     required this.userId,
     required this.firstName,
     required this.lastName,
     required this.profilePic,
-    this.provider,
     required this.mobile,
     required this.state,
     required this.brokerId,
@@ -132,7 +136,7 @@ class AllConsumerBrokers {
   late final String firstName;
   late final String lastName;
   late final String profilePic;
-  late final Null provider;
+
   late final String mobile;
   late final String state;
   late final int brokerId;
@@ -144,33 +148,30 @@ class AllConsumerBrokers {
   late final String encodedId;
   late final bool onlineStatus;
   late final String mobilenew;
-
-  AllConsumerBrokers.fromJson(Map<String, dynamic> json) {
+  AllConsumerBrokers.fromJson(Map<String, dynamic> json){
     userId = json['user_id'];
-    firstName = json['first_name'] ?? "null";
-    lastName = json['last_name'] ?? "null";
-    profilePic = json['profile_pic'] ?? "null";
-    provider = null;
-    mobile = json['mobile'] ?? "null";
-    state = json['state'] ?? "null";
+    firstName = json['first_name'];
+    lastName = json['last_name'];
+    profilePic = json['profile_pic'];
+
+    mobile = json['mobile'];
+    state = json['state'];
     brokerId = json['broker_id'];
-    lastActivity = json['last_activity'] ?? "null";
-    locality = json['locality'] ?? "null";
-    statecode = json['statecode'] ?? "null";
+    lastActivity = json['last_activity'];
+    locality = json['locality'];
+    statecode = json['statecode'];
     unreadCount = json['unread_count'];
     sharedCount = json['shared_count'];
-    encodedId = json['encoded_id'] ?? "null";
+    encodedId = json['encoded_id'];
     onlineStatus = json['online_status'];
-    mobilenew = json['mobilenew'] ?? "null";
+    mobilenew = json['mobilenew'];
   }
-
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
     _data['user_id'] = userId;
     _data['first_name'] = firstName;
     _data['last_name'] = lastName;
     _data['profile_pic'] = profilePic;
-    _data['provider'] = provider;
     _data['mobile'] = mobile;
     _data['state'] = state;
     _data['broker_id'] = brokerId;

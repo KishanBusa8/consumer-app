@@ -6,22 +6,29 @@ import 'package:flutter/material.dart';
 import 'package:hashching/Utilities/constants.dart';
 import 'package:hashching/Utilities/shared_preference.dart';
 import 'package:hashching/models/all_loans_model.dart';
+import 'package:hashching/models/enquiry_details_static_model.dart';
 import 'package:hashching/models/brokers_details_model.dart';
 import 'package:hashching/models/carmake_model_list.dart';
 import 'package:hashching/models/carmakemodel.dart';
+import 'package:hashching/models/closed_enquiry_model.dart';
 import 'package:hashching/models/consumer_account_model.dart';
 import 'package:hashching/models/consumer_brokers_list_model.dart';
-import 'package:hashching/models/consumer_dashboard.dart';
+import 'package:hashching/models/consumer_dashboard_model.dart';
 import 'package:hashching/models/consumer_details_model.dart';
 import 'package:hashching/models/consumer_documet_list_model.dart';
+import 'package:hashching/models/consumer_notification_model.dart';
+import 'package:hashching/models/fetch_loan_model.dart';
 import 'package:hashching/models/hash_auto_model.dart';
 import 'package:hashching/models/hash_connect_model.dart';
 import 'package:hashching/models/hash_convenyancing_model.dart';
 import 'package:hashching/models/loan_enquirey_model.dart';
+import 'package:hashching/models/lodged_enquiry_model.dart';
 import 'package:hashching/models/newloan_enquirey_model.dart';
+import 'package:hashching/models/onhold_enquiry_model.dart';
 import 'package:hashching/models/postcode_model.dart';
 import 'package:hashching/models/property_details_model.dart';
 import 'package:hashching/models/property_suggestions_model.dart';
+import 'package:hashching/models/qualified_enquiry_model.dart';
 import 'package:hashching/models/rewards_model.dart';
 import 'package:hashching/models/updated_profile_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -281,6 +288,31 @@ class ApiServices {
     }
   }
 
+  static Future<FetchLoanModel?> fetchLoans({
+    String? encryptId,
+  }) async {
+    var jsonData = jsonEncode({"encrypt_id": encryptId});
+
+    String? userToken = LocalStorage.UserToken;
+    var url = Uri.parse(LocalConstants.fetchLoanDetailsUrl);
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $userToken'
+        },
+        body: jsonData);
+    print(response.statusCode);
+    print('loan fetch**${response.body}');
+
+    if (response.statusCode == 200) {
+      var jsonResponse = jsonDecode(response.body);
+
+      return FetchLoanModel.fromJson(jsonDecode(response.body));
+    } else {
+      return null;
+    }
+  }
+
   static Future<LoanEnquireyModel?> fetchLoanDetails({
     String? encryptId,
   }) async {
@@ -305,8 +337,7 @@ class ApiServices {
       return null;
     }
   }
-
-  static Future<NewLoanEnquireyModel?> fetchNewLoanDetails({
+  static Future<OnholdEnquiryModel?> fetchOnHoldLoanDetails({
     String? encryptId,
   }) async {
     var jsonData = jsonEncode({"encrypt_id": encryptId});
@@ -325,7 +356,131 @@ class ApiServices {
     if (response.statusCode == 200) {
       var jsonResponse = jsonDecode(response.body);
 
-      return NewLoanEnquireyModel.fromJson(jsonDecode(response.body));
+      return OnholdEnquiryModel.fromJson(jsonDecode(response.body));
+    } else {
+      return null;
+    }
+  }
+  static Future<ClosedEnquiryModel?> fetchClosedLoanDetails({
+    String? encryptId,
+  }) async {
+    var jsonData = jsonEncode({"encrypt_id": encryptId});
+
+    String? userToken = LocalStorage.UserToken;
+    var url = Uri.parse(LocalConstants.fetchLoanDetailsUrl);
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $userToken'
+        },
+        body: jsonData);
+    print(response.statusCode);
+    print('loanEnquireyModel**${response.body}');
+
+    if (response.statusCode == 200) {
+      var jsonResponse = jsonDecode(response.body);
+
+      return ClosedEnquiryModel.fromJson(jsonDecode(response.body));
+    } else {
+      return null;
+    }
+  }
+  static Future<LodgedEnquiryModel?> fetchLodgedLoanDetails({
+    String? encryptId,
+  }) async {
+    var jsonData = jsonEncode({"encrypt_id": encryptId});
+
+    String? userToken = LocalStorage.UserToken;
+    var url = Uri.parse(LocalConstants.fetchLoanDetailsUrl);
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $userToken'
+        },
+        body: jsonData);
+    print(response.statusCode);
+    print('loanEnquireyModel**${response.body}');
+
+    if (response.statusCode == 200) {
+      var jsonResponse = jsonDecode(response.body);
+
+      return LodgedEnquiryModel.fromJson(jsonDecode(response.body));
+    } else {
+      return null;
+    }
+  }
+
+  static Future<EnquiryDetailsStaticModel?> getEnquiryLoanDetails({
+    String? encryptId,
+  }) async {
+    var jsonData = jsonEncode({"encrypt_id": encryptId});
+
+    String? userToken = LocalStorage.UserToken;
+    var url = Uri.parse(LocalConstants.fetchLoanDetailsUrl);
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $userToken'
+        },
+        body: jsonData);
+    print(response.statusCode);
+    print('loanEnquireyModel**${response.body}');
+
+    if (response.statusCode == 200) {
+      print("***********************Alex");
+      var jsonResponse = jsonDecode(response.body);
+
+      return EnquiryDetailsStaticModel.fromJson(jsonDecode(response.body));
+    } else {
+      return null;
+    }
+  }
+
+  static Future<QualifiedEnquiryModel?> fetchQualifiedLoanDetails({
+    String? encryptId,
+  }) async {
+    var jsonData = jsonEncode({"encrypt_id": encryptId});
+
+    String? userToken = LocalStorage.UserToken;
+    var url = Uri.parse(LocalConstants.fetchLoanDetailsUrl);
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $userToken'
+        },
+        body: jsonData);
+    print(response.statusCode);
+    print('loanEnquireyModel**${response.body}');
+
+    if (response.statusCode == 200) {
+      var jsonResponse = jsonDecode(response.body);
+
+      return QualifiedEnquiryModel.fromJson(jsonDecode(response.body));
+    } else {
+      return null;
+    }
+  }
+
+  static Future<NewLoanEnquiryModel?> fetchNewLoanDetails({
+    String? encryptId,
+  }) async {
+    var jsonData = jsonEncode({"encrypt_id": encryptId});
+
+    String? userToken = LocalStorage.UserToken;
+    var url = Uri.parse(LocalConstants.fetchLoanDetailsUrl);
+    final response = await http.post(url,
+        headers: <String, String>{
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $userToken'
+        },
+        body: jsonData);
+    print(response.statusCode);
+    print('loanEnquireyModel**${response.body}');
+
+    if (response.statusCode == 200) {
+      var jsonResponse = jsonDecode(response.body);
+
+      return NewLoanEnquiryModel.fromJson(jsonDecode(response.body));
     } else {
       return null;
     }
@@ -790,6 +945,7 @@ class ApiServices {
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
+      getConsumerAllDocuments();
       print(await response.stream.bytesToString());
     } else {
       print(response.reasonPhrase);
@@ -916,6 +1072,27 @@ class ApiServices {
       }
     } else {
       print('"****** body: ${response.body}');
+    }
+  }
+    static Future<ConsumerNotificationsModel?> fetchConsumerNotification() async {
+    String? userToken = LocalStorage.UserToken;
+    var url = Uri.parse(LocalConstants.getConsumerNotificationUrl);
+    final response = await http.get(
+      url,
+      headers: <String, String>{
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $userToken'
+      },
+    );
+    print('response.statusCode : ${response.statusCode} ');
+    print('getConsumerNotification response : ${response.body} ');
+    if (response.statusCode == 200) {
+      print('getConsumerNotification body : ${response.body} ');
+      
+      return ConsumerNotificationsModel.fromJson(jsonDecode(response.body));
+    } else {
+     // throw Exception('Failed to load response');
+       return null;
     }
   }
 }

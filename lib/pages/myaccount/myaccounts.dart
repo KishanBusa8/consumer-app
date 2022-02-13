@@ -8,7 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:hashching/Utilities/constants.dart';
 import 'package:hashching/Utilities/simplefiedwidgets.dart';
 import 'package:hashching/models/consumer_account_model.dart';
-import 'package:hashching/models/consumer_dashboard.dart';
+import 'package:hashching/models/consumer_dashboard_model.dart';
 import 'package:hashching/models/consumer_details_model.dart';
 import 'package:hashching/models/consumer_documet_list_model.dart';
 import 'package:hashching/models/rewards_model.dart';
@@ -162,7 +162,7 @@ class _MyAccountState extends State<MyAccount> {
                                             .consumer.firstName +
                                         ' ' +
                                         consumerAccountModelProvider
-                                            .consumer.lastName,
+                                            .consumer.lastName!,
                                     style: MasterStyle.lightBlackBoldStyle,
                                   ),
                                 ),

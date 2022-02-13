@@ -7,13 +7,16 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hashching/Utilities/simplefiedwidgets.dart';
 import 'package:hashching/Utilities/sizedbox.dart';
 import 'package:hashching/models/consumer_account_model.dart';
-import 'package:hashching/models/consumer_dashboard.dart';
+import 'package:hashching/models/consumer_dashboard_model.dart';
 import 'package:hashching/pages/myloans/alertdailougebox.dart';
 import 'package:hashching/pages/myloans/enquirey_details/assigned_loan_details.dart';
 import 'package:hashching/pages/myloans/enquirey_details/newloandetails.dart';
 import 'package:hashching/pages/myloans/loans_list.dart';
 import 'package:hashching/styles/masterstyle.dart';
 import 'package:provider/provider.dart';
+
+import 'loans_widget_expansion/closed_enquiry_details.dart';
+import 'loans_widget_expansion/loan_enquiry_details.dart';
 
 List myLoansList = ['Home Loan', 'Personal Loan', 'Educational loan'];
 
@@ -206,21 +209,30 @@ class _MyLoansState extends State<MyLoans> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => NewLoanEnquireyDetails(
-                        encryptkey: loansDetails.encryptkey)));
+                        encryptkey: loansDetails.encryptkey,
+                        loanTypeDisplay: loansDetails.loanType == ''
+                            ? loansDetails.loantypeshow
+                            : loansDetails.loanType)));
+          } else if (loansDetails.statusname == 'Closed') {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ClosedEnquiryDetails(
+                        encryptkey: loansDetails.encryptkey,
+                        loanTypeDisplay: loansDetails.loanType == ''
+                            ? loansDetails.loantypeshow
+                            : loansDetails.loanType)));
           } else {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => AssignedLoanEnquireyDetails(
-                        encryptkey: loansDetails.encryptkey)));
+                    builder: (context) => LoanEnquiryDetails(
+                        encryptkey: loansDetails.encryptkey,
+                        statusName: loansDetails.statusname,
+                        loanTypeDisplay: loansDetails.loanType == ''
+                            ? loansDetails.loantypeshow
+                            : loansDetails.loanType)));
           }
-          // Navigator.push(
-          //     context,
-          //     MaterialPageRoute(
-          //         builder: (context) => EnquireyDetails(
-          //               consumerLoansModel: consumerLoansModel,
-          //               encryptkey:loansDetails.encryptkey
-          //             )));
         },
         child: Container(
           margin: EdgeInsets.symmetric(horizontal: 7.w),
@@ -267,7 +279,10 @@ class _MyLoansState extends State<MyLoans> {
                       Row(
                         children: [
                           contentHeading('Broker name : '),
-                          Expanded(child: content(" _")),
+                          Expanded(
+                              child: content(loansDetails.statusname != 'New'
+                                  ? loansDetails.brokerName
+                                  : " _")),
                         ],
                       ),
                       MySizedBox.height(8.h),

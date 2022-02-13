@@ -156,47 +156,47 @@ class _LoginScreenState extends State<LoginScreen> {
                       child:
                           Text("or log in with", style: TextFonts.primaryText),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        InkWell(
-                          onTap: () {
-                            if(!isLoading){
-                            SimplifiedWidgets.launchInBrowser(
-                                LocalConstants.facebookLoginUrl, context);
-                            }
-                          },
-                          child: Container(
-                              constraints:
-                                  BoxConstraints(maxHeight: 50, maxWidth: 50),
-                              child: Image.asset(
-                                'assets/fblogo.png',
-                              )),
-                        ),
-                        SizedBox(
-                          width: 16,
-                        ),
-                        InkWell(
-                          onTap: () {
-                            if(!isLoading){
-                            SimplifiedWidgets.launchInBrowser(
-                                LocalConstants.googleLoginUrl, context);
-                            }
-                          },
-                          child: Container(
-                            constraints:
-                                BoxConstraints(maxHeight: 50, maxWidth: 50),
-                            child: Image.asset(
-                              'assets/Gmaillogo.png',
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.center,
+                    //   children: <Widget>[
+                    //     InkWell(
+                    //       onTap: () {
+                    //         if(!isLoading){
+                    //         SimplifiedWidgets.launchInBrowser(
+                    //             LocalConstants.facebookLoginUrl, context);
+                    //         }
+                    //       },
+                    //       child: Container(
+                    //           constraints:
+                    //               BoxConstraints(maxHeight: 50, maxWidth: 50),
+                    //           child: Image.asset(
+                    //             'assets/fblogo.png',
+                    //           )),
+                    //     ),
+                    //     SizedBox(
+                    //       width: 16,
+                    //     ),
+                    //     InkWell(
+                    //       onTap: () {
+                    //         if(!isLoading){
+                    //         SimplifiedWidgets.launchInBrowser(
+                    //             LocalConstants.googleLoginUrl, context);
+                    //         }
+                    //       },
+                    //       child: Container(
+                    //         constraints:
+                    //             BoxConstraints(maxHeight: 50, maxWidth: 50),
+                    //         child: Image.asset(
+                    //           'assets/Gmaillogo.png',
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                   ],
                 ),
               ),
-              Container(child: BottomWidget())
+              // Container(child: BottomWidget())
             ],
           ),
         ),

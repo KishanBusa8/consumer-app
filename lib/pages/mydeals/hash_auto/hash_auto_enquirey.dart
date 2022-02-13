@@ -99,7 +99,7 @@ class _HashAutoEnquireyState extends State<HashAutoEnquirey> {
 
   initData() async {
     firstNameController.text = widget.consumerAccountModel.consumer.firstName;
-     lastNameController.text =   widget.consumerAccountModel.consumer.lastName;
+     lastNameController.text =   widget.consumerAccountModel.consumer.lastName!;
     emailController.text = widget.consumerAccountModel.consumer.email;
     phoneController.text = widget.consumerAccountModel.consumer.mobile;
     consumerMobileNumber = widget.consumerAccountModel.consumer.mobile;

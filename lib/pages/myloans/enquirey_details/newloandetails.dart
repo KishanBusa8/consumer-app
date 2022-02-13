@@ -11,16 +11,18 @@ import 'package:hashching/services/api_services.dart';
 import 'package:hashching/styles/masterstyle.dart';
 
 class NewLoanEnquireyDetails extends StatefulWidget {
-  NewLoanEnquireyDetails({Key? key, required this.encryptkey})
+  NewLoanEnquireyDetails(
+      {Key? key, required this.encryptkey, this.loanTypeDisplay})
       : super(key: key);
   String encryptkey;
+  dynamic loanTypeDisplay;
 
   @override
   _NewLoanEnquireyDetailsState createState() => _NewLoanEnquireyDetailsState();
 }
 
 class _NewLoanEnquireyDetailsState extends State<NewLoanEnquireyDetails> {
-  late Future<NewLoanEnquireyModel?> fetchLoanEnquireyDetails;
+  late Future<NewLoanEnquiryModel?> fetchLoanEnquireyDetails;
   @override
   void initState() {
     fetchLoanEnquireyDetails =
@@ -30,31 +32,31 @@ class _NewLoanEnquireyDetailsState extends State<NewLoanEnquireyDetails> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold( backgroundColor: MasterStyle.backgroundColor,
-        appBar: SimplifiedWidgets.appbar(
-            appBarTitle: 'Enquiry Details', context: context),
-      body: FutureBuilder<NewLoanEnquireyModel?>(
+    return Scaffold(
+      backgroundColor: MasterStyle.backgroundColor,
+      appBar: SimplifiedWidgets.appbar(
+          appBarTitle: widget.loanTypeDisplay, context: context),
+      body: FutureBuilder<NewLoanEnquiryModel?>(
           future: fetchLoanEnquireyDetails,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               var loanEnquireyModel = snapshot.data;
               print('loanEnquireyMode${loanEnquireyModel!}');
-    
+
               return Container(
-               
-                  child: ListView(shrinkWrap: true,
-                    children: [
-                       Container(
-                         padding: EdgeInsets.symmetric(horizontal: 8),
-                         child: NewLoanProcessTimelinePage()),
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 16),
-                        child: ListView( 
-                          physics: NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                         // crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                         
+                  child: ListView(
+                shrinkWrap: true,
+                children: [
+                  Container(
+                      padding: EdgeInsets.symmetric(horizontal: 8),
+                      child: NewLoanProcessTimelinePage()),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: ListView(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        // crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
                           Text(
                             'Loan details',
                             style: MasterStyle.whiteTextStyleMedium,
@@ -78,11 +80,14 @@ class _NewLoanEnquireyDetailsState extends State<NewLoanEnquireyDetails> {
                             height: 1,
                           ),
                           myEnquireyCards(
-                              title: 'Enquirey Details', onTap: () {}, isClick: true),
+                              title: 'Enquiry Details',
+                              onTap: () {},
+                              isClick: true),
                           Container(
                             height: 1,
                           ),
-                        //  NewLoanEnquireyReport(loanEnquireyModel: loanEnquireyModel),
+                          NewLoanEnquireyReport(
+                              loanEnquireyModel: loanEnquireyModel),
                           MySizedBox.height(16),
                           Text(
                             'Timeline',
@@ -92,9 +97,9 @@ class _NewLoanEnquireyDetailsState extends State<NewLoanEnquireyDetails> {
                           NewLoanEnquireyTimeline(),
                           MySizedBox.height(26),
                         ]),
-                      ),
-                    ],
-                  ));
+                  ),
+                ],
+              ));
             }
             return Center(
                 child: CircularProgressIndicator(
