@@ -153,7 +153,7 @@ class _MyAccountSettingsState extends State<MyAccountSettings> {
           : widget.consumerInformation.consumerDetails.profilePicLink,
       profilePic: imagePath != ''
           ? imagePath
-          : widget.consumerInformation.consumerDetails.profilePic,
+          : widget.consumerAccount.consumer.profilePic.split("cropper_images/")[1],
     );
 
     if (profileUpdated!.status) {
